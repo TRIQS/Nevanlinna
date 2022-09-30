@@ -1,7 +1,9 @@
 #pragma once
 #include <triqs/gfs.hpp>
 #include <triqs/mesh.hpp>
+#include <nda/nda.hpp>
 #include <h5/h5.hpp>
+#include <gmpxx.h>
 
 namespace nevanlinna {
 
@@ -25,6 +27,10 @@ namespace nevanlinna {
     /// Copy/Move assignment
     solver &operator=(solver const &) = default;
     solver &operator=(solver &&) = default;
+
+    nda::array<double, 2> solve(const nda::array<double, 2> & input);
   };
+
+  using SolverMPR = solver<mpf_class>;
 
 } // namespace nevanlinna
