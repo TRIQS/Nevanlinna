@@ -1,0 +1,60 @@
+easyblock = 'CMakeMake'
+
+name = 'TRIQS-nevanlinna'
+version = '3.1.0'
+
+homepage = 'https://triqs.github.io/nevanlinna/'
+description = """
+ PROVIDE HERE A DESCRIPTION OF YOUR APPLICATION
+"""
+
+docurls = ['https://triqs.github.io/nevanlinna/%(version_major_minor)s.x/']
+software_license = 'LicenseGPLv3'
+
+toolchain = {'name': 'foss', 'version': '2021b'}
+toolchainopts = {'pic': True, 'usempi': True}
+
+source_urls = ['https://github.com/TRIQS/nevanlinna/releases/download/%(version)s/']
+sources = ['nevanlinna-%(version)s.tar.gz']
+checksums = ['PUT HERE THE SHA256 OF THE RELEASE TARBALL']
+
+dependencies = [
+    ('Python', '3.9.6'),
+    ('SciPy-bundle', '2021.10'),
+    ('Boost', '1.77.0'),
+    ('Clang', '13.0.1'),
+    ('Clang-Python-bindings', '13.0.1'),
+    ('GMP', '6.2.1'),
+    ('HDF5', '1.10.7'),
+    ('Mako', '1.1.4'),
+    ('TRIQS', '3.1.0'),
+    ('NFFT', '3.5.2')
+]
+
+builddependencies = [
+    ('CMake', '3.22.1')
+]
+
+separate_build_dir = True
+
+runtest = 'test'
+
+sanity_check_paths = {
+    'files': ['lib/libnevanlinna_c.a'],
+    'dirs': ['include/nevanlinna', 'lib', 'share',
+             'lib/python%(pyshortver)s/site-packages/nevanlinna'],
+}
+
+sanity_check_commands = ["python -c 'import nevanlinna'"]
+
+modextrapaths = {
+    'CPLUS_INCLUDE_PATH': 'include',
+    'PYTHONPATH': 'lib/python%(pyshortver)s/site-packages',
+    'CMAKE_PREFIX_PATH': 'lib/cmake/nevanlinna',
+}
+modextravars = {
+    'NEVANLINNA_ROOT': '%(installdir)s',
+    'NEVANLINNA_VERSION': '%(version)s',
+}
+
+moduleclass = 'phys'
