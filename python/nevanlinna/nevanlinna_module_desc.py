@@ -12,6 +12,7 @@ module.add_include("nevanlinna/nevanlinna.hpp")
 
 # Add here anything to add in the C++ code at the start, e.g. namespace using
 module.add_preamble("""
+#include <cpp2py/converters/complex.hpp>
 #include <nda_py/cpp2py_converters.hpp>
 
 using namespace nevanlinna;
@@ -30,18 +31,14 @@ c.add_constructor("""(**nevanlinna_parameters_t)""", doc = r"""
 
 
 
-+----------------+--------+---------+---------------+
-| Parameter Name | Type   | Default | Documentation |
-+================+========+=========+===============+
-| N_omega        | int    | --      |               |
-+----------------+--------+---------+---------------+
-| Omega_min      | double | --      |               |
-+----------------+--------+---------+---------------+
-| Omega_max      | double | --      |               |
-+----------------+--------+---------+---------------+
++----------------+------+---------+---------------+
+| Parameter Name | Type | Default | Documentation |
++================+======+=========+===============+
+| precision      | int  | --      |               |
++----------------+------+---------+---------------+
 """)
 
-c.add_method("""void solve (nda::array<double, 2> input)""",
+c.add_method("""void solve (nda::array<std::complex<double>, 1> mesh, nda::array<std::complex<double>, 1> data)""",
              doc = r"""""")
 
 c.add_method("""nda::array<double, 1> evaluate (nda::array<double, 1> grid)""",
