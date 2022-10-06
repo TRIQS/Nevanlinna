@@ -1,5 +1,5 @@
 # Generated automatically using the command :
-# c++2py ../../c++/nevanlinna/nevanlinna.hpp -p --members_read_only -N nevanlinna -a nevanlinna -m nevanlinna_module -o nevanlinna_module --moduledoc="The nevanlinna python module" -C triqs --cxxflags="-std=c++17" --target_file_only
+# c++2py ../../c++/nevanlinna/nevanlinna.hpp -p --members_read_only -N nevanlinna -a nevanlinna -m nevanlinna_module -o nevanlinna_module --moduledoc="The nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver" --converter nda_py
 from cpp2py.wrap_generator import *
 
 # The module
@@ -12,65 +12,65 @@ module.add_include("nevanlinna/nevanlinna.hpp")
 
 # Add here anything to add in the C++ code at the start, e.g. namespace using
 module.add_preamble("""
-#include <cpp2py/converters/string.hpp>
+#include <nda_py/cpp2py_converters.hpp>
 
 using namespace nevanlinna;
 """)
 
 
-# The class toto
+# The class solver
 c = class_(
-        py_type = "Toto",  # name of the python class
-        c_type = "nevanlinna::toto",   # name of the C++ class
-        doc = r"""A very useful and important class""",   # doc of the C++ class
-        hdf5 = True,
-        arithmetic = ("add_only"),
-        comparisons = "==",
-        serializable = "tuple"
+        py_type = "Solver",  # name of the python class
+        c_type = "nevanlinna::solver",   # name of the C++ class
+        doc = r"""Nevanlinna analytical continuation solver""",   # doc of the C++ class
+        hdf5 = False,
 )
 
-c.add_constructor("""()""", doc = r"""""")
+c.add_constructor("""(**nevanlinna_parameters_t)""", doc = r"""
 
-c.add_constructor("""(int i_)""", doc = r"""Construct from integer
 
-Parameters
-----------
-i_
-     a scalar  :math:`G(\tau)`""")
 
-c.add_method("""int f (int u)""",
-             doc = r"""A simple function with :math:`G(\tau)`
++----------------+--------+---------+---------------+
+| Parameter Name | Type   | Default | Documentation |
++================+========+=========+===============+
+| N_omega        | int    | --      |               |
++----------------+--------+---------+---------------+
+| Omega_min      | double | --      |               |
++----------------+--------+---------+---------------+
+| Omega_max      | double | --      |               |
++----------------+--------+---------+---------------+
+""")
 
-Parameters
-----------
-u
-     Nothing useful""")
+c.add_method("""void solve (nda::array<double, 2> input)""",
+             doc = r"""""")
 
-c.add_method("""std::string hdf5_format ()""",
-             is_static = True,
-             doc = r"""HDF5""")
-
-c.add_property(name = "i",
-               getter = cfunction("int get_i ()"),
-               doc = r"""Simple accessor""")
+c.add_method("""nda::array<double, 1> evaluate (nda::array<double, 1> grid)""",
+             doc = r"""""")
 
 module.add_class(c)
 
-module.add_function ("int nevanlinna::chain (int i, int j)", doc = r"""Chain digits of two integers
 
-Parameters
-----------
-i
-     The first integer
+# Converter for nevanlinna_parameters_t
+c = converter_(
+        c_type = "nevanlinna::nevanlinna_parameters_t",
+        doc = r"""""",
+)
+c.add_member(c_name = "N_omega",
+             c_type = "int",
+             initializer = """  """,
+             doc = r"""""")
 
-j
-     The second integer
+c.add_member(c_name = "Omega_min",
+             c_type = "double",
+             initializer = """  """,
+             doc = r"""""")
 
-Returns
--------
-out
-     An integer containing the digits of both i and j""")
+c.add_member(c_name = "Omega_max",
+             c_type = "double",
+             initializer = """  """,
+             doc = r"""""")
 
+module.add_converter(c)
 
 
 module.generate_code()
