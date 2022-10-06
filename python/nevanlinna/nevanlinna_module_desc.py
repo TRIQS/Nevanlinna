@@ -55,18 +55,8 @@ c = converter_(
         c_type = "nevanlinna::nevanlinna_parameters_t",
         doc = r"""""",
 )
-c.add_member(c_name = "N_omega",
+c.add_member(c_name = "precision",
              c_type = "int",
-             initializer = """  """,
-             doc = r"""""")
-
-c.add_member(c_name = "Omega_min",
-             c_type = "double",
-             initializer = """  """,
-             doc = r"""""")
-
-c.add_member(c_name = "Omega_max",
-             c_type = "double",
              initializer = """  """,
              doc = r"""""")
 
