@@ -4,6 +4,8 @@ foreach(file ${all_h5_ref_files})
   configure_file(${file} ${file} COPYONLY)
 endforeach()
 
+add_definitions(-DTEST_PATH="${CMAKE_CURRENT_SOURCE_DIR}/data")
+
 # List of all tests
 file(GLOB_RECURSE all_tests RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 

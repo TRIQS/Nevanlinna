@@ -5,7 +5,7 @@
 #include <h5/h5.hpp>
 #include <gmpxx.h>
 
-#include "Eigen/Core"
+#include <Eigen/Dense>
 
 #include "nevanlinna_parameters_t.hpp"
 
@@ -38,12 +38,16 @@ namespace nevanlinna {
     solver &operator=(solver &&) = default;
 
     void solve(const nda::array<std::complex<double>, 1> & mesh, const nda::array<std::complex<double>, 1> & data);
+    void solve(const triqs::gfs::gf<triqs::mesh::imfreq,triqs::gfs::scalar_valued>& g_iw);
 
-    nda::array<double, 1> evaluate(const nda::array<double, 1> & grid);
+    nda::array<double, 1> evaluate(const nda::array<std::complex<double>, 1> & grid) const;
+    nda::array<double, 1> evaluate(const nda::array<double, 1> & grid, double eta = 0.05) const;
 
     private:
     std::vector<complex_t> _phis;
     std::vector<matrix_t> _abcds;
+    std::vector<complex_t> _mesh;
+
 
   };
 
