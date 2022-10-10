@@ -10,14 +10,15 @@ namespace nevanlinna {
     std::copy(g_iw.mesh().begin(), g_iw.mesh().end(), mesh.begin());
     solve(mesh, view);
   }
-//  template<typename T>
+
   void solver::solve(const nda::array<std::complex<double>, 1> & mesh, const nda::array<std::complex<double>, 1> & data) {
     assert(mesh.shape(0) == data.shape(0));
     size_t M = mesh.shape(0);
     _phis.resize(M);
     _abcds.resize(M);
     _mesh.resize(M);
-    _phis[0] = complex_t(data(0));
+    auto mdata = mobius_trasformation(data);
+    _phis[0] = mdata[0];
     for (int k = 0; k < M; k++) {
       _abcds[k] = matrix_t::Identity(2, 2);
       _mesh[k] = mesh(k);
@@ -25,14 +26,12 @@ namespace nevanlinna {
     matrix_t prod(2, 2);
     for (int j = 0; j < M - 1; j++) {
       for (int k = j; k < M; k++) {
-        prod(0,0) = (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j]));
-        prod(0,1) = _phis[j];
-        prod(1,0) = std::conj(_phis[j]) * (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j]));
-        prod(1,1) = complex_t{1., 0.};
+        prod <<  (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j])),  _phis[j],
+                std::conj(_phis[j]) * (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j])), complex_t{1., 0.};
         _abcds[k] *= prod;
       }
-      _phis[j + 1] = (- _abcds[j + 1](1, 1) * complex_t(data(j + 1)) + _abcds[j + 1](0, 1)) /
-         (_abcds[j + 1](1, 0) * complex_t(data(j + 1)) - _abcds[j + 1](0, 0));
+      _phis[j + 1] = (- _abcds[j + 1](1, 1) * mdata[j+1] + _abcds[j + 1](0, 1)) /
+         (_abcds[j + 1](1, 0) * mdata[j+1] - _abcds[j + 1](0, 0));
     }
     return;
   }
@@ -56,10 +55,8 @@ namespace nevanlinna {
       matrix_t result = matrix_t::Identity(2, 2);
       complex_t z = complex_t(grid(i));
       for (int j = 0; j < M; j++) {
-        prod(0,0) =  (z - _mesh[j]) / (z - std::conj(_mesh[j]));
-        prod(0,1) = _phis[j];
-        prod(1,0) = std::conj(_phis[j])* ((z - _mesh[j]) / (z - std::conj(_mesh[j])));
-        prod(1,1) = complex_t{1., 0.};
+        prod <<  (z - _mesh[j]) / (z - std::conj(_mesh[j])), _phis[j] ,
+             std::conj(_phis[j])* ((z - _mesh[j]) / (z - std::conj(_mesh[j]))), complex_t{1., 0.};
         result *= prod;
       }
       complex_t param {0., 0.}; //theta_{M+1}, choose to be constant function 0 here
@@ -71,6 +68,12 @@ namespace nevanlinna {
 
   solver::solver(nevanlinna_parameters_t const & p) {
     mpf_set_default_prec(p.precision);
+  }
+
+  std::vector<solver::complex_t> solver::mobius_trasformation(const nda::array<std::complex<double>, 1> & data) const {
+    std::vector<complex_t> mdata(data.shape(0));
+    std::transform(data.begin(), data.end(), mdata.begin(), [](const std::complex<double>&d) {return complex_t(-d - 1i) / complex_t(-d + 1i);});
+    return mdata;
   }
 
 } // namespace nevanlinna

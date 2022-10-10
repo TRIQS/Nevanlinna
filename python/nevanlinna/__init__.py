@@ -25,6 +25,6 @@ r"""
 DOC
 
 """
-from .nevanlinna_module import Toto, chain
+from .nevanlinna_module import Solver
 
-__all__ = ['Toto', 'chain']
+__all__ = ['Solver']

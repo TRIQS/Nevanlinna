@@ -2,7 +2,7 @@
 
 import unittest
 
-from nevanlinna import solver
+from nevanlinna import Solver
 from h5 import *
 from triqs.utility import mpi
 

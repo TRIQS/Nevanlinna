@@ -23,7 +23,6 @@ namespace nevanlinna {
     using matrix_t = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;
 
     public:
-//    solver() = default;
     ~solver() = default;
 
     CPP2PY_ARG_AS_DICT
@@ -48,6 +47,7 @@ namespace nevanlinna {
     std::vector<matrix_t> _abcds;
     std::vector<complex_t> _mesh;
 
+    std::vector<complex_t> mobius_trasformation(const nda::array<std::complex<double>, 1> & data) const;
 
   };
 
