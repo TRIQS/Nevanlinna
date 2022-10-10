@@ -39,7 +39,6 @@ TEST(Nevanlinna, TriqsGFData) { // NOLINT
   nda::array<std::complex<double>, 1> im_grid;
   triqs::gfs::gf<triqs::mesh::imfreq> gf;
   h5_read(data, "input/gf", gf);
-std::cout<<gf[0]<<std::endl;
 
   nda::array<double, 1> re_grid(100);
   nda::array<double, 1> re_data(re_grid.shape(0));
@@ -47,7 +46,7 @@ std::cout<<gf[0]<<std::endl;
   for(size_t i = 0; i < re_grid.shape(0); ++i) re_grid(i) = -5.0 + (10.0 * i) /re_grid.shape(0);
   std::transform(re_grid.begin(), re_grid.end(), re_data.begin(), [&](double w) {return -(1.0/(w + eta * 1i)).imag()/M_PI;});
   a.solve(gf);
-  nda::array<double, 1> result = a.evaluate(re_grid);
+  nda::array<double, 1> result = a.evaluate(re_grid, eta);
   ASSERT_TRUE(array_are_close(re_data, result, 1e-10));
 }
 

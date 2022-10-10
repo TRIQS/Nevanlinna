@@ -4,11 +4,18 @@
 
 namespace nevanlinna {
 
-  void solver::solve(const triqs::gfs::gf<triqs::mesh::imfreq,triqs::gfs::scalar_valued>& g_iw) {
-    nda::array_view<std::complex<double>, 1> view = g_iw.data();
-    nda::array<std::complex<double>, 1> mesh(view.size());
-    std::copy(g_iw.mesh().begin(), g_iw.mesh().end(), mesh.begin());
-    solve(mesh, view);
+  void solver::solve(const triqs::gfs::gf<triqs::mesh::imfreq>& g_iw) {
+    size_t N = g_iw.mesh().positive_only() ? g_iw.mesh().size() : g_iw.mesh().size()/2;
+    nda::array<std::complex<double>, 1> data(N);
+    nda::array<std::complex<double>, 1> mesh(N);
+    int i = 0, j = 0;
+    for(auto pt = g_iw.mesh().begin(); pt!=g_iw.mesh().end(); ++pt, ++j) {
+      if(pt.to_point().imag()<0) continue;
+      data(i) = g_iw.data()(j, 0, 0);
+      mesh(i) = pt.to_point();
+      ++i;
+    }
+    solve(mesh, data);
   }
 
   void solver::solve(const nda::array<std::complex<double>, 1> & mesh, const nda::array<std::complex<double>, 1> & data) {

@@ -37,7 +37,7 @@ namespace nevanlinna {
     solver &operator=(solver &&) = default;
 
     void solve(const nda::array<std::complex<double>, 1> & mesh, const nda::array<std::complex<double>, 1> & data);
-    void solve(const triqs::gfs::gf<triqs::mesh::imfreq,triqs::gfs::scalar_valued>& g_iw);
+    void solve(const triqs::gfs::gf<triqs::mesh::imfreq>& g_iw);
 
     nda::array<double, 1> evaluate(const nda::array<std::complex<double>, 1> & grid) const;
     nda::array<double, 1> evaluate(const nda::array<double, 1> & grid, double eta = 0.05) const;
