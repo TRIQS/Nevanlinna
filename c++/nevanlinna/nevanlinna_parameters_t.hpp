@@ -3,7 +3,7 @@
 namespace nevanlinna {
 
   struct nevanlinna_parameters_t {
-    int precision;
+    int precision = 128;
   };
 
 }
