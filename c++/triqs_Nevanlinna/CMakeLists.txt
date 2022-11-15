@@ -3,7 +3,7 @@ add_library(${PROJECT_NAME}_c ${sources})
 add_library(${PROJECT_NAME}::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
 
 # Link against triqs and enable warnings
-target_link_libraries(${PROJECT_NAME}_c PUBLIC triqs PRIVATE $<BUILD_INTERFACE:${PROJECT_NAME}_warnings> Eigen3::Eigen Boost::boost)
+target_link_libraries(${PROJECT_NAME}_c PUBLIC triqs PRIVATE $<BUILD_INTERFACE:${PROJECT_NAME}_warnings>)
 
 # Configure target and compilation
 set_target_properties(${PROJECT_NAME}_c PROPERTIES
@@ -24,6 +24,13 @@ target_compile_definitions(${PROJECT_NAME}_c PUBLIC
 install(TARGETS ${PROJECT_NAME}_c EXPORT ${PROJECT_NAME}-targets DESTINATION lib)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING PATTERN "*.hpp" PATTERN "*.h")
 
+# ========= Library Dependencies ==========
+
+find_package(Eigen3 REQUIRED)
+target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
+
+find_package(Boost REQUIRED)
+target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
 
 # ========= Static Analyzer Checks ==========
 

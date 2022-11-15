@@ -34,9 +34,6 @@ get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 # Load TRIQS and CPP2PY
 find_package(TRIQS 3.1 REQUIRED)
 
-find_package(Eigen3 REQUIRED)
-find_package(Boost REQUIRED)
-
 # Get the git hash & print status
 triqs_get_git_hash_of_source_dir(PROJECT_GIT_HASH)
 message(STATUS "${PROJECT_NAME} version : ${PROJECT_VERSION}")
