@@ -1,12 +1,12 @@
 #include <triqs/test_tools/gfs.hpp>
-#include "nevanlinna/solver.hpp"
+#include <triqs_Nevanlinna/solver.hpp>
 
-using namespace nevanlinna;
+using namespace triqs_Nevanlinna;
 using nda::clef::placeholder;
 using namespace std::complex_literals;
 
 TEST(NevanlinnaSolver, TriqsGFData) { // NOLINT
-  nevanlinna_parameters_t p;
+  Nevanlinna_parameters_t p;
   solver a(p);
   const double eta = 0.1;
   const double mu = 1.0;

@@ -8,11 +8,11 @@
 
 #include <Eigen/Dense>
 
-#include "nevanlinna_error.hpp"
+#include "Nevanlinna_error.hpp"
 
 using namespace std::complex_literals;
 
-namespace nevanlinna {
+namespace triqs_Nevanlinna {
   class kernel {
     using complex_t = std::complex<mpf_class>;
     using matrix_t = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;

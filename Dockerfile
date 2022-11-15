@@ -1,6 +1,6 @@
 # See ../triqs/packaging for other options
 FROM flatironinstitute/triqs:unstable-ubuntu-clang
-ARG APPNAME=nevanlinna
+ARG APPNAME=Nevanlinna
 
 COPY requirements.txt /src/$APPNAME/requirements.txt
 RUN pip3 install -r /src/$APPNAME/requirements.txt

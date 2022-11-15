@@ -1,33 +1,33 @@
 # Generated automatically using the command :
-# c++2py ../../c++/nevanlinna/solver.hpp -p --members_read_only -N nevanlinna -a nevanlinna -m nevanlinna_module -o nevanlinna_module --moduledoc="The nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver" --converter nda_py
+# c++2py ../../c++/Nevanlinna/solver.hpp -p --members_read_only -N triqs_Nevanlinna -a triqs_Nevanlinna -m solver -o solver --moduledoc="The Nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver" --converter nda_py
 from cpp2py.wrap_generator import *
 
 # The module
-module = module_(full_name = "nevanlinna_module", doc = r"The nevanlinna python module", app_name = "nevanlinna")
+module = module_(full_name = "solver", doc = r"The Nevanlinna python module", app_name = "triqs_Nevanlinna")
 
 # Imports
 module.add_imports(*['triqs.gf', 'triqs.gf.meshes'])
 
 # Add here all includes
-module.add_include("nevanlinna/solver.hpp")
+module.add_include("triqs_Nevanlinna/solver.hpp")
 
 # Add here anything to add in the C++ code at the start, e.g. namespace using
 module.add_preamble("""
 #include <triqs/cpp2py_converters/gf.hpp>
 
-using namespace nevanlinna;
+using namespace triqs_Nevanlinna;
 """)
 
 
 # The class solver
 c = class_(
         py_type = "Solver",  # name of the python class
-        c_type = "nevanlinna::solver",   # name of the C++ class
+        c_type = "triqs_Nevanlinna::solver",   # name of the C++ class
         doc = r"""Nevanlinna analytical continuation solver for TRIQS GFs""",   # doc of the C++ class
         hdf5 = False,
 )
 
-c.add_constructor("""(**nevanlinna_parameters_t)""", doc = r"""
+c.add_constructor("""(**Nevanlinna_parameters_t)""", doc = r"""
 
 
 
@@ -66,9 +66,9 @@ out
 module.add_class(c)
 
 
-# Converter for nevanlinna_parameters_t
+# Converter for Nevanlinna_parameters_t
 c = converter_(
-        c_type = "nevanlinna::nevanlinna_parameters_t",
+        c_type = "triqs_Nevanlinna::Nevanlinna_parameters_t",
         doc = r"""""",
 )
 c.add_member(c_name = "precision",
