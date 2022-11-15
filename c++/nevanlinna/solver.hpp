@@ -20,7 +20,7 @@ namespace nevanlinna {
     ~solver() = default;
 
     CPP2PY_ARG_AS_DICT
-    solver(nevanlinna_parameters_t const & p);
+    solver(nevanlinna_parameters_t const &p);
 
     // Copy/Move construction
     solver(solver const &) = default;
@@ -28,14 +28,14 @@ namespace nevanlinna {
 
     /// Copy/Move assignment
     solver &operator=(solver const &) = default;
-    solver &operator=(solver &&) = default;
+    solver &operator=(solver &&)      = default;
 
     /**
      * Construct a Nevanlinna factorization for matrix-valued Matsubara frequency Green's function
      *
      * @param g_iw - matrix-valued Matsubara frequency Green's function
      */
-    void solve(const triqs::gfs::gf<triqs::mesh::imfreq, triqs::gfs::matrix_valued>& g_iw);
+    void solve(const triqs::gfs::gf<triqs::mesh::imfreq, triqs::gfs::matrix_valued> &g_iw);
 
     /**
      * Evaluate diagonal part of the real-frequency Green's function on a chosen grid
@@ -45,12 +45,12 @@ namespace nevanlinna {
      * @param eta - Lorentzian broadening
      * @return Real-frequency matrix-valued TRIQS Green's function on a chosen grid.
      */
-    [[nodiscard]] triqs::gfs::gf<triqs::mesh::refreq, triqs::gfs::matrix_valued> evaluate(const triqs::mesh::refreq & grid, double eta) const;
+    [[nodiscard]] triqs::gfs::gf<triqs::mesh::refreq, triqs::gfs::matrix_valued> evaluate(const triqs::mesh::refreq &grid, double eta) const;
 
     private:
     // vector of Nevanlinna factorization kernels for multi-orbital factorization
     std::vector<kernel> _kernels;
   };
 
-//  typedef solver<mpf_class> SolverMpf;
+  //  typedef solver<mpf_class> SolverMpf;
 } // namespace nevanlinna

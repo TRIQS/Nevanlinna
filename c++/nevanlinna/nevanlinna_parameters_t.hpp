@@ -6,4 +6,4 @@ namespace nevanlinna {
     int precision = 128;
   };
 
-}
+} // namespace nevanlinna
