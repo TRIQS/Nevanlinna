@@ -1,9 +1,9 @@
 #include <cmath>
 #include <gmpxx.h>
 #include "./solver.hpp"
-#include "nevanlinna_error.hpp"
+#include "Nevanlinna_error.hpp"
 
-namespace nevanlinna {
+namespace triqs_Nevanlinna {
 
   void solver::solve(const triqs::gfs::gf<triqs::mesh::imfreq> &g_iw) {
     _kernels.clear();
@@ -37,6 +37,8 @@ namespace nevanlinna {
     return result;
   }
 
-  solver::solver(nevanlinna_parameters_t const &p) { mpf_set_default_prec(p.precision); }
+  solver::solver(Nevanlinna_parameters_t const & p) {
+    mpf_set_default_prec(p.precision);
+  }
 
-} // namespace nevanlinna
+} // namespace triqs_Nevanlinna

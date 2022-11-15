@@ -1,4 +1,4 @@
-def projectName = "nevanlinna" /* set to app/repo name */
+def projectName = "Nevanlinna" /* set to app/repo name */
 
 def dockerName = projectName.toLowerCase();
 /* which platform to build documentation on */
@@ -175,7 +175,7 @@ Changes:
 End of build log:
 \${BUILD_LOG,maxLines=60}
     """,
-    to: 'nwentzell@flatironinstitute.org',
+    to: 'nwentzell@flatironinstitute.org, siskakov@umich.edu',
     recipientProviders: [
       [$class: 'DevelopersRecipientProvider'],
     ],

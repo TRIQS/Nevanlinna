@@ -3,16 +3,16 @@
 #include <triqs/mesh.hpp>
 #include <nda/nda.hpp>
 #include <h5/h5.hpp>
-#include "nevanlinna_parameters_t.hpp"
+#include "Nevanlinna_parameters_t.hpp"
 #include "kernel.hpp"
 
-namespace nevanlinna {
+namespace triqs_Nevanlinna {
 
   /**
    * Nevanlinna analytical continuation solver for TRIQS GFs
    *
    * @note Perform analytical continuation for the diagonal part of the matrix-values TRIQS Green's function
-   * @include nevanlinna/nevanlinna.hpp
+   * @include triqs_Nevanlinna/Nevanlinna.hpp
    */
   class solver {
 
@@ -20,7 +20,7 @@ namespace nevanlinna {
     ~solver() = default;
 
     CPP2PY_ARG_AS_DICT
-    solver(nevanlinna_parameters_t const &p);
+    solver(Nevanlinna_parameters_t const & p);
 
     // Copy/Move construction
     solver(solver const &) = default;
@@ -52,5 +52,5 @@ namespace nevanlinna {
     std::vector<kernel> _kernels;
   };
 
-  //  typedef solver<mpf_class> SolverMpf;
-} // namespace nevanlinna
+//  typedef solver<mpf_class> SolverMpf;
+} // namespace triqs_Nevanlinna

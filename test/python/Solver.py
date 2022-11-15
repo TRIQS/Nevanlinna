@@ -2,7 +2,7 @@
 
 import unittest
 
-from nevanlinna import Solver
+from triqs_Nevanlinna import Solver
 from h5 import *
 from triqs.gf import GfImFreq, GfReFreq, MeshReFreq, iOmega_n, Omega, inverse
 

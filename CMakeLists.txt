@@ -1,20 +1,20 @@
 # ##############################################################################
 #
-# nevanlinna - An example application using triqs and cpp2py
+# Nevanlinna - An example application using triqs and cpp2py
 #
 # Copyright (C) ...
 #
-# nevanlinna is free software: you can redistribute it and/or modify it under the
+# Nevanlinna is free software: you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
 # Foundation, either version 3 of the License, or (at your option) any later
 # version.
 #
-# nevanlinna is distributed in the hope that it will be useful, but WITHOUT ANY
+# Nevanlinna is distributed in the hope that it will be useful, but WITHOUT ANY
 # WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 # A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with
-# nevanlinna (in the file COPYING.txt in this directory). If not, see
+# Nevanlinna (in the file COPYING.txt in this directory). If not, see
 # <http://www.gnu.org/licenses/>.
 #
 # ##############################################################################
@@ -27,7 +27,7 @@ endif()
 
 # ############
 # Define Project
-project(nevanlinna VERSION 3.1.0 LANGUAGES C CXX)
+project(triqs_Nevanlinna VERSION 3.1.0 LANGUAGES C CXX)
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
 # ############
@@ -166,7 +166,7 @@ if(BUILD_DEBIAN_PACKAGE AND NOT IS_SUBPROJECT)
   set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
   set(CPACK_GENERATOR "DEB")
   set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-  set(CPACK_PACKAGE_CONTACT "https://github.com/TRIQS/${PROJECT_NAME}")
+  set(CPACK_PACKAGE_CONTACT "https://github.com/TRIQS/Nevanlinna")
   execute_process(COMMAND dpkg --print-architecture OUTPUT_VARIABLE CMAKE_DEBIAN_PACKAGE_ARCHITECTURE OUTPUT_STRIP_TRAILING_WHITESPACE)
   set(CPACK_DEBIAN_PACKAGE_DEPENDS "triqs (>= 3.1)")
   set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)

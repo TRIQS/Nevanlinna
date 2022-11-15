@@ -4,12 +4,13 @@
 
 #include "kernel.hpp"
 
-namespace nevanlinna {
+
+namespace triqs_Nevanlinna {
 
   void kernel::solve(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 1> &data) {
     assert(mesh.shape(0) == data.shape(0));
-    if (std::any_of(mesh.begin(), mesh.end(), [](const std::complex<double> &v) { return v.imag() < 0; })) {
-      throw nevanlinna_negative_grid_error("Data should be defined on the positive Matsubara frequencies.");
+    if(std::any_of(mesh.begin(), mesh.end(), [](const std::complex<double> & v) {return v.imag()<0;})) {
+      throw Nevanlinna_negative_grid_error("Data should be defined on the positive Matsubara frequencies.");
     }
     size_t M = mesh.shape(0);
     _phis.resize(M);
@@ -44,9 +45,11 @@ namespace nevanlinna {
 
   nda::array<std::complex<double>, 1> kernel::evaluate(const nda::array<std::complex<double>, 1> &grid) const {
     size_t M = _phis.size();
-    if (M == 0) { throw nevanlinna_error("Empty continuation data. Please run solve(...) first."); }
-    complex_t I{0., 1.};
-    complex_t One{1., 0.};
+    if(M == 0) {
+      throw Nevanlinna_error("Empty continuation data. Please run solve(...) first.");
+    }
+    complex_t I {0., 1.};
+    complex_t One {1., 0.};
     nda::array<std::complex<double>, 1> results(grid.shape());
     matrix_t prod(2, 2);
     for (int i = 0; i < grid.shape(0); ++i) {
@@ -71,4 +74,6 @@ namespace nevanlinna {
     return mdata;
   }
 
-} // namespace nevanlinna
+
+
+}

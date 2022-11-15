@@ -1,7 +1,7 @@
 #include <triqs/test_tools/gfs.hpp>
-#include <nevanlinna/kernel.hpp>
+#include <triqs_Nevanlinna/kernel.hpp>
 
-using namespace nevanlinna;
+using namespace triqs_Nevanlinna;
 
 TEST(NevanlinnaKernel, EvaluateData) { // NOLINT
   std::string root = TEST_PATH;
@@ -30,7 +30,7 @@ TEST(NevanlinnaKernel, NegativeImGrid) { // NOLINT
   h5_read(data, "input/data", im_data);
   h5_read(data, "input/grid", im_grid);
   im_grid *= -1;
-  ASSERT_THROW(a.solve(im_grid, im_data), nevanlinna_negative_grid_error);
+  ASSERT_THROW(a.solve(im_grid, im_data), Nevanlinna_negative_grid_error);
 }
 
 TEST(NevanlinnaKernel, CheckEta) { // NOLINT

@@ -8,12 +8,12 @@
 #include <Eigen/Dense>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
-#include "nevanlinna_error.hpp"
+#include "Nevanlinna_error.hpp"
 
 
 using namespace std::complex_literals;
 
-namespace nevanlinna {
+namespace triqs_Nevanlinna {
   class kernel {
     using complex_t = std::complex<boost::multiprecision::cpp_dec_float_100>;
     using matrix_t  = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;

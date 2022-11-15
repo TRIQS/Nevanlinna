@@ -25,6 +25,6 @@ r"""
 DOC
 
 """
-from .nevanlinna_module import Solver
+from .solver import Solver
 
 __all__ = ['Solver']
