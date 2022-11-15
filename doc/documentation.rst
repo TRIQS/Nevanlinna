@@ -26,4 +26,4 @@ Python reference manual
    :template: autosummary_module_template.rst
    :recursive:
 
-   nevanlinna
+   triqs_Nevanlinna
