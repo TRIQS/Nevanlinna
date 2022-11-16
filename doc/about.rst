@@ -1,6 +1,6 @@
 .. _about:
 
-About nevanlinna
+About Nevanlinna
 ***************
 
 An example application using ``cpp2py`` and TRIQS.

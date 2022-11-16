@@ -1,17 +1,17 @@
 .. _welcome:
 
-nevanlinna
+Nevanlinna
 *********
 
-.. sidebar:: nevanlinna |PROJECT_VERSION|
+.. sidebar:: Nevanlinna |PROJECT_VERSION|
 
-   This is the homepage of nevanlinna |PROJECT_VERSION|.
+   This is the homepage of Nevanlinna |PROJECT_VERSION|.
    For changes see the :ref:`changelog page <changelog>`.
       
       .. image:: _static/logo_github.png
          :width: 75%
          :align: center
-         :target: https://github.com/triqs/nevanlinna
+         :target: https://github.com/triqs/Nevanlinna
 
 
 An example application using cpp2py and :ref:`TRIQS <triqslibs:welcome>`.
@@ -19,7 +19,7 @@ An example application using cpp2py and :ref:`TRIQS <triqslibs:welcome>`.
 This documentation is generated based on `rst <https://de.wikipedia.org/wiki/ReStructuredText>`_ files
 and the comments in the sources and headers.
 
-Learn how to use nevanlinna in the :ref:`documentation`.
+Learn how to use Nevanlinna in the :ref:`documentation`.
 
     
 .. toctree::

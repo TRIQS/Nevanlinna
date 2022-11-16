@@ -2,10 +2,10 @@
 
 .. _install:
 
-Install nevanlinna
+Install Nevanlinna
 *******************
 
-Compiling nevanlinna from source
+Compiling Nevanlinna from source
 ===============================
 
 .. note:: To guarantee reproducibility in scientific calculations we strongly recommend the use of a stable `release <https://github.com/TRIQS/triqs/releases>`_ of both TRIQS and its applications.
@@ -19,13 +19,13 @@ Prerequisites
 Installation steps
 ------------------
 
-#. Download the source code of the latest stable version by cloning the ``TRIQS/nevanlinna`` repository from GitHub::
+#. Download the source code of the latest stable version by cloning the ``TRIQS/Nevanlinna`` repository from GitHub::
 
-     $ git clone https://github.com/TRIQS/nevanlinna nevanlinna.src
+     $ git clone https://github.com/TRIQS/Nevanlinna nevanlinna.src
 
 #. Create and move to a new directory where you will compile the code::
 
-     $ mkdir nevanlinna.build && cd nevanlinna.build
+     $ mkdir Nevanlinna.build && cd nevanlinna.build
 
 #. Ensure that your shell contains the TRIQS environment variables by sourcing the ``triqsvars.sh`` file from your TRIQS installation::
 
@@ -33,7 +33,7 @@ Installation steps
 
 #. In the build directory call cmake, including any additional custom CMake options, see below::
 
-     $ cmake ../nevanlinna.src
+     $ cmake ../Nevanlinna.src
 
 #. Compile the code, run the tests and install the application::
 
@@ -44,12 +44,12 @@ Installation steps
 Version compatibility
 ---------------------
 
-Keep in mind that the version of ``nevanlinna`` must be compatible with your TRIQS library version,
+Keep in mind that the version of ``Nevanlinna`` must be compatible with your TRIQS library version,
 see :ref:`TRIQS website <triqslibs:versions>`.
 In particular the Major and Minor Version numbers have to be the same.
 To use a particular version, go into the directory with the sources, and look at all available versions::
 
-     $ cd nevanlinna.src && git tag
+     $ cd Nevanlinna.src && git tag
 
 Checkout the version of the code that you want::
 
@@ -60,14 +60,14 @@ and follow steps 2 to 4 above to compile the code.
 Custom CMake options
 --------------------
 
-The compilation of ``nevanlinna`` can be configured using CMake-options::
+The compilation of ``Nevanlinna`` can be configured using CMake-options::
 
-    cmake ../nevanlinna.src -DOPTION1=value1 -DOPTION2=value2 ...
+    cmake ../Nevanlinna.src -DOPTION1=value1 -DOPTION2=value2 ...
 
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Options                                                         | Syntax                                        |
 +=================================================================+===============================================+
-| Specify an installation path other than path_to_triqs           | -DCMAKE_INSTALL_PREFIX=path_to_nevanlinna      |
+| Specify an installation path other than path_to_triqs           | -DCMAKE_INSTALL_PREFIX=path_to_Nevanlinna      |
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Build in Debugging Mode                                         | -DCMAKE_BUILD_TYPE=Debug                      |
 +-----------------------------------------------------------------+-----------------------------------------------+
