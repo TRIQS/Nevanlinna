@@ -1,5 +1,5 @@
 # Generated automatically using the command :
-# c++2py ../../c++/Nevanlinna/solver.hpp -p --members_read_only -N triqs_Nevanlinna -a triqs_Nevanlinna -m solver -o solver --moduledoc="The Nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver" --converter nda_py
+# c++2py ../../c++/triqs_Nevanlinna/solver.hpp -p --members_read_only -N triqs_Nevanlinna -a triqs_Nevanlinna -m solver -o solver --moduledoc="The Nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver" --converter nda_py
 from cpp2py.wrap_generator import *
 
 # The module
@@ -21,21 +21,21 @@ using namespace triqs_Nevanlinna;
 
 # The class solver
 c = class_(
-        py_type = "Solver",  # name of the python class
-        c_type = "triqs_Nevanlinna::solver",   # name of the C++ class
-        doc = r"""Nevanlinna analytical continuation solver for TRIQS GFs""",   # doc of the C++ class
-        hdf5 = False,
+    py_type = "Solver",  # name of the python class
+    c_type = "triqs_Nevanlinna::solver",   # name of the C++ class
+    doc = r"""Nevanlinna analytical continuation solver for TRIQS GFs""",   # doc of the C++ class
+    hdf5 = False,
 )
 
 c.add_constructor("""(**Nevanlinna_parameters_t)""", doc = r"""
 
 
 
-+----------------+------+---------+---------------+
-| Parameter Name | Type | Default | Documentation |
-+================+======+=========+===============+
-| precision      | int  | 128     |               |
-+----------------+------+---------+---------------+
++----------------+---------+------------+---------------+
+| Parameter Name | Type    | Default    | Documentation |
++================+=========+============+===============+
+| kernel         | kernels | NEVANLINNA |               |
++----------------+---------+------------+---------------+
 """)
 
 c.add_method("""void solve (triqs::gfs::gf<triqs::mesh::imfreq, triqs::gfs::matrix_valued> g_iw)""",
@@ -68,12 +68,12 @@ module.add_class(c)
 
 # Converter for Nevanlinna_parameters_t
 c = converter_(
-        c_type = "triqs_Nevanlinna::Nevanlinna_parameters_t",
-        doc = r"""""",
+    c_type = "triqs_Nevanlinna::Nevanlinna_parameters_t",
+    doc = r"""""",
 )
-c.add_member(c_name = "precision",
-             c_type = "int",
-             initializer = """ 128 """,
+c.add_member(c_name = "kernel",
+             c_type = "kernels",
+             initializer = """ NEVANLINNA """,
              doc = r"""""")
 
 module.add_converter(c)
