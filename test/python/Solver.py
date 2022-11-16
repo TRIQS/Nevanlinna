@@ -4,6 +4,7 @@ import unittest
 
 from triqs_Nevanlinna import Solver
 from h5 import *
+import numpy as np
 from triqs.gf import GfImFreq, GfReFreq, MeshReFreq, iOmega_n, Omega, inverse
 
 class test_solver(unittest.TestCase):
@@ -18,7 +19,7 @@ class test_solver(unittest.TestCase):
         solver = Solver(precision=128)
         solver.solve(g_im)
         g_re_solver = solver.evaluate(m, eta)
-        pass
+        self.assertTrue(np.allclose(g_re_solver.data, g_re.data))
 
 
 if __name__ == '__main__':

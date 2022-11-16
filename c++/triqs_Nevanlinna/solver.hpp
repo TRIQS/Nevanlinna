@@ -49,7 +49,7 @@ namespace triqs_Nevanlinna {
 
     private:
     // vector of Nevanlinna factorization kernels for multi-orbital factorization
-    std::vector<kernel> _kernels;
+    kernel& _kernel;
   };
 
 //  typedef solver<mpf_class> SolverMpf;
