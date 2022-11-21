@@ -3,11 +3,6 @@
 #include <complex>
 
 #include <nda/nda.hpp>
-#include <Eigen/Dense>
-#include <boost/multiprecision/cpp_dec_float.hpp>
-
-
-#include "Nevanlinna_factorization.hpp"
 
 namespace triqs_Nevanlinna {
   class kernel {

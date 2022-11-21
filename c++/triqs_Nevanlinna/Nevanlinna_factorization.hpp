@@ -6,7 +6,12 @@
 #include <complex>
 
 #include <Eigen/Dense>
+
+#ifdef WITH_MPFR
+#include <boost/multiprecision/mpfr.hpp>
+#else
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#endif
 
 #include "Nevanlinna_error.hpp"
 
@@ -17,7 +22,12 @@ namespace triqs_Nevanlinna {
    * Class to construct Nevanlinna factorization for single orbital
    */
   class Nevanlinna_factorization {
-    using complex_t = std::complex<boost::multiprecision::cpp_dec_float_100>;
+#ifdef WITH_MPFR
+    using real_t = boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<100>, boost::multiprecision::et_off>;
+#else
+    using real_t = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<100>, boost::multiprecision::et_off>;
+#endif
+    using complex_t = std::complex<real_t>;
     using matrix_t  = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;
     public:
 

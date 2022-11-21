@@ -30,6 +30,9 @@ endif()
 project(triqs_Nevanlinna VERSION 3.1.0 LANGUAGES C CXX)
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
+
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 # ############
 # Load TRIQS and CPP2PY
 find_package(TRIQS 3.1 REQUIRED)
