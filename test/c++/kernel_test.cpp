@@ -14,9 +14,9 @@ TEST(NevanlinnaKernelFactorization, EvaluateData) {
   const int n_omega = 100;
   Nevanlinna_kernel a;
   nda::array<std::complex<double>, 3> im_data(n_iw, 2, 2);
-  nda::array<std::complex<double>, 1> im_grid(n_iw);
+  nda::vector<std::complex<double>> im_grid(n_iw);
   nda::array<std::complex<double>, 3> re_data(n_omega, 2, 2);
-  nda::array<std::complex<double>, 1> re_grid(n_omega);
+  nda::vector<std::complex<double>> re_grid(n_omega);
 
   for(int iw=0, w = -n_iw/2; iw < n_iw; ++iw, ++w) {
     im_grid(iw) = (2*iw + 1) * M_PI * 1i/beta;

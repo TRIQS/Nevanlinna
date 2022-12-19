@@ -27,7 +27,8 @@ namespace triqs_Nevanlinna {
      * @param mesh - Matsubara frequency mesh
      * @param data - Matsubara frequency data
      */
-    void build(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 1> &data);
+    void build(nda::vector_const_view<std::complex<double>> mesh, nda::vector_const_view<std::complex<double>> data);
+
     /**
      * Evaluate real-frequency data on specified grid with selected Lorentzian broadening
      *
@@ -35,20 +36,21 @@ namespace triqs_Nevanlinna {
      * @param eta  - Lorentzian broadening
      * @return Nevanlinna continuation on the specified grid
      */
-    [[nodiscard]] nda::array<double, 1> evaluate(const nda::array<double, 1> &grid, double eta = 0.05) const;
+    [[nodiscard]] nda::vector<double> evaluate(nda::vector_const_view<double> grid, double eta = 0.05) const;
+
     /**
      * Evaluate Nevanlinna continuation on a complex-valued grid
      * @param grid - grid for continuation evaluation
      * @return Nevanlinna continuation on the specified grid
      */
-    [[nodiscard]] nda::array<std::complex<double>, 1> evaluate(const nda::array<std::complex<double>, 1> &grid) const;
+    [[nodiscard]] nda::vector<std::complex<double>> evaluate(nda::vector_const_view<std::complex<double>> grid) const;
 
     private:
     std::vector<complex_t> _phis;
     std::vector<matrix_t> _abcds;
     std::vector<complex_t> _mesh;
 
-    std::vector<complex_t> mobius_trasformation(const nda::array<std::complex<double>, 1> &data) const;
+    std::vector<complex_t> mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const;
 
   };
 

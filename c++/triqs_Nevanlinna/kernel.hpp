@@ -12,8 +12,8 @@
 namespace triqs_Nevanlinna {
   class kernel {
     public:
-    kernel() = default;
     virtual ~kernel() = default;
+    kernel() = default;
 
     // Copy/Move construction
     kernel(kernel const &) = default;
@@ -23,10 +23,10 @@ namespace triqs_Nevanlinna {
     kernel &operator=(kernel const &) = default;
     kernel &operator=(kernel &&)      = default;
 
-    virtual void init(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 3> &data) = 0;
-    virtual nda::array<std::complex<double>, 3> evaluate(const nda::array<std::complex<double>, 1> &grid) const = 0;
+    virtual void init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) = 0;
+    [[nodiscard]] virtual nda::array<std::complex<double>, 3> evaluate(nda::vector_const_view<std::complex<double>> grid) const = 0;
 
-    virtual size_t size() const = 0;
+    [[nodiscard]] virtual size_t size() const = 0;
   };
 
 } // namespace nevanlinna
