@@ -36,8 +36,8 @@ namespace triqs_Nevanlinna {
     Caratheodory_kernel &operator=(Caratheodory_kernel const &) = default;
     Caratheodory_kernel &operator=(Caratheodory_kernel &&)      = default;
 
-    void init(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 3> &data) override;
-    [[nodiscard]] nda::array<std::complex<double>, 3> evaluate(const nda::array<std::complex<double>, 1> &grid) const override;
+    void init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) override;
+    [[nodiscard]] nda::array<std::complex<double>, 3> evaluate(nda::vector_const_view<std::complex<double>> grid) const override;
 
     [[nodiscard]] virtual size_t size() const override {
       return _dim;

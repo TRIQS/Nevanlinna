@@ -2,7 +2,7 @@
 #include "Nevanlinna_error.hpp"
 
 namespace triqs_Nevanlinna {
-  void Caratheodory_kernel::init(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 3> &data) {
+  void Caratheodory_kernel::init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) {
     _Ws.clear();
     _mesh.clear();
     _sqrt_one.clear();
@@ -53,7 +53,7 @@ namespace triqs_Nevanlinna {
     _sqrt_one[0] = sqrt_m(id - _Ws[0] * _Ws[0].adjoint(), is_Schur);
     _sqrt_two[0] = sqrt_m(id - _Ws[0].adjoint() * _Ws[0], is_Schur).inverse();
   }
-  nda::array<std::complex<double>, 3> Caratheodory_kernel::evaluate(const nda::array<std::complex<double>, 1> &grid) const {
+  nda::array<std::complex<double>, 3> Caratheodory_kernel::evaluate(nda::vector_const_view<std::complex<double>> grid) const {
     if(_dim == 0) {
       throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first.");
     }

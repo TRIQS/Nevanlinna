@@ -9,13 +9,13 @@
 namespace triqs_Nevanlinna{
 class kernel_factory {
   public:
-  static kernel* get_kernel(kernels k) {
+  static std::unique_ptr<kernel> get_kernel(kernels k) {
     switch(k) {
       case(NEVANLINNA):
-        return new Nevanlinna_kernel();
+        return std::make_unique<Nevanlinna_kernel>();
         break;
       case(CARATHEODORY):
-        return new Caratheodory_kernel();
+        return std::make_unique<Caratheodory_kernel>();
         break;
       default:
         throw unimplemented_kernel_error("Kernel is not implemented");

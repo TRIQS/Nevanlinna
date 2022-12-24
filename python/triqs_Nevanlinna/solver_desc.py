@@ -22,24 +22,24 @@ module.add_enum("kernels", ['kernels::NEVANLINNA', 'kernels::CARATHEODORY'], "tr
 
 # The class solver
 c = class_(
-    py_type = "Solver",  # name of the python class
-    c_type = "triqs_Nevanlinna::solver",   # name of the C++ class
-    doc = r"""Nevanlinna analytical continuation solver for TRIQS GFs""",   # doc of the C++ class
-    hdf5 = False,
+        py_type = "Solver",  # name of the python class
+        c_type = "triqs_Nevanlinna::solver",   # name of the C++ class
+        doc = r"""Nevanlinna analytical continuation solver for TRIQS GFs""",   # doc of the C++ class
+        hdf5 = False,
 )
 
-c.add_constructor("""(**Nevanlinna_parameters_t)""", doc = r"""
+c.add_constructor("""(**triqs_Nevanlinna::Nevanlinna_parameters_t)""", doc = r"""
 
 
 
-+----------------+---------+------------+---------------+
-| Parameter Name | Type    | Default    | Documentation |
-+================+=========+============+===============+
-| kernel         | kernels | NEVANLINNA |               |
-+----------------+---------+------------+---------------+
++----------------+---------------------------+------------+---------------+
+| Parameter Name | Type                      | Default    | Documentation |
++================+===========================+============+===============+
+| kernel         | triqs_Nevanlinna::kernels | NEVANLINNA |               |
++----------------+---------------------------+------------+---------------+
 """)
 
-c.add_method("""void solve (triqs::gfs::gf<triqs::mesh::imfreq, triqs::gfs::matrix_valued> g_iw)""",
+c.add_method("""void solve (triqs::gfs::gf_view<triqs::mesh::imfreq> g_iw)""",
              doc = r"""Construct a Nevanlinna factorization for matrix-valued Matsubara frequency Green's function
 
 Parameters
@@ -47,7 +47,7 @@ Parameters
 g_iw
      - matrix-valued Matsubara frequency Green's function""")
 
-c.add_method("""triqs::gfs::gf<triqs::mesh::refreq, triqs::gfs::matrix_valued> evaluate (triqs::mesh::refreq grid, double eta)""",
+c.add_method("""triqs::gfs::gf<triqs::mesh::refreq> evaluate (triqs::mesh::refreq grid, double eta)""",
              doc = r"""Evaluate diagonal part of the real-frequency Green's function on a chosen grid
  based on the precomputed Nevanlinna factorization
 
@@ -69,11 +69,11 @@ module.add_class(c)
 
 # Converter for Nevanlinna_parameters_t
 c = converter_(
-    c_type = "triqs_Nevanlinna::Nevanlinna_parameters_t",
-    doc = r"""""",
+        c_type = "triqs_Nevanlinna::Nevanlinna_parameters_t",
+        doc = r"""""",
 )
 c.add_member(c_name = "kernel",
-             c_type = "kernels",
+             c_type = "triqs_Nevanlinna::kernels",
              initializer = """ NEVANLINNA """,
              doc = r"""""")
 
