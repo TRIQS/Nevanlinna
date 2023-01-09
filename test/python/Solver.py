@@ -16,7 +16,7 @@ class test_solver(unittest.TestCase):
         g_re = GfReFreq(indices = [1], mesh = m)
         g_im << inverse(iOmega_n + 0.5)
         g_re << inverse(Omega + eta*1.j + 0.5)
-        solver = Solver(precision=128)
+        solver = Solver(kernel="kernels::NEVANLINNA")
         solver.solve(g_im)
         g_re_solver = solver.evaluate(m, eta)
         self.assertTrue(np.allclose(g_re_solver.data, g_re.data))

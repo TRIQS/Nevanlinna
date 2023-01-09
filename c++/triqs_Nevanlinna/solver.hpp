@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <triqs/gfs.hpp>
 #include <triqs/mesh.hpp>
 #include <nda/nda.hpp>
@@ -49,8 +50,7 @@ namespace triqs_Nevanlinna {
 
     private:
     // vector of Nevanlinna factorization kernels for multi-orbital factorization
+
     std::unique_ptr<kernel> _kernel;
   };
-
-//  typedef solver<mpf_class> SolverMpf;
 } // namespace triqs_Nevanlinna

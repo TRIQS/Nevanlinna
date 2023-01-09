@@ -1,5 +1,5 @@
 # Generated automatically using the command :
-# c++2py ../../c++/triqs_Nevanlinna/solver.hpp -p --members_read_only -N triqs_Nevanlinna -a triqs_Nevanlinna -m solver -o solver --moduledoc="The Nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver" --converter nda_py
+# c++2py ../../c++/triqs_Nevanlinna/solver.hpp -p --members_read_only -N triqs_Nevanlinna -a triqs_Nevanlinna -m solver -o solver --moduledoc="The Nevanlinna python module" -C triqs --cxxflags="-std=c++20" --only="solver kernels" --converter nda_py
 from cpp2py.wrap_generator import *
 
 # The module
@@ -18,6 +18,7 @@ module.add_preamble("""
 using namespace triqs_Nevanlinna;
 """)
 
+module.add_enum("kernels", ['kernels::NEVANLINNA', 'kernels::CARATHEODORY'], "triqs_Nevanlinna", doc = r"""""")
 
 # The class solver
 c = class_(
