@@ -1,24 +1,18 @@
-#ifndef NEVANLINNA_KERNEL_HPP
-#define NEVANLINNA_KERNEL_HPP
-#include <nda/nda.hpp>
-
+#ifndef TRIQS_NEVANLINNA_KERNEL_HPP
+#define TRIQS_NEVANLINNA_KERNEL_HPP
 #include <complex>
 
-#include <gmpxx.h>
+#include <nda/nda.hpp>
 #include <Eigen/Dense>
 #include <boost/multiprecision/cpp_dec_float.hpp>
 
-#include "Nevanlinna_error.hpp"
 
-
-using namespace std::complex_literals;
+#include "Nevanlinna_factorization.hpp"
 
 namespace triqs_Nevanlinna {
   class kernel {
-    using complex_t = std::complex<boost::multiprecision::cpp_dec_float_100>;
-    using matrix_t  = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;
-
     public:
+    virtual ~kernel() = default;
     kernel() = default;
 
     // Copy/Move construction
@@ -29,17 +23,11 @@ namespace triqs_Nevanlinna {
     kernel &operator=(kernel const &) = default;
     kernel &operator=(kernel &&)      = default;
 
-    void solve(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 1> &data);
-    nda::array<double, 1> evaluate(const nda::array<double, 1> &grid, double eta = 0.05) const;
-    nda::array<std::complex<double>, 1> evaluate(const nda::array<std::complex<double>, 1> &grid) const;
+    virtual void init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) = 0;
+    [[nodiscard]] virtual nda::array<std::complex<double>, 3> evaluate(nda::vector_const_view<std::complex<double>> grid) const = 0;
 
-    private:
-    std::vector<complex_t> _phis;
-    std::vector<matrix_t> _abcds;
-    std::vector<complex_t> _mesh;
-
-    std::vector<complex_t> mobius_trasformation(const nda::array<std::complex<double>, 1> &data) const;
+    [[nodiscard]] virtual size_t size() const = 0;
   };
 
 } // namespace nevanlinna
-#endif //NEVANLINNA_KERNEL_HPP
+#endif //TRIQS_NEVANLINNA_KERNEL_HPP

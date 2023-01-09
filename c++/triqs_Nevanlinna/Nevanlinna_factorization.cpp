@@ -1,15 +1,17 @@
-//
-// Created by iskakoff on 10/12/22.
-//
-
-#include "kernel.hpp"
-
+#include "Nevanlinna_factorization.hpp"
 
 namespace triqs_Nevanlinna {
 
-  void kernel::solve(const nda::array<std::complex<double>, 1> &mesh, const nda::array<std::complex<double>, 1> &data) {
+  std::vector<Nevanlinna_factorization::complex_t>
+  Nevanlinna_factorization::mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const {
+    std::vector<complex_t> mdata(data.shape(0));
+    std::transform(data.begin(), data.end(), mdata.begin(), [](const std::complex<double> &d) { return complex_t(-d - 1i) / complex_t(-d + 1i); });
+    return mdata;
+  }
+
+  void Nevanlinna_factorization::build(nda::vector_const_view<std::complex<double>> mesh, nda::vector_const_view<std::complex<double>> data) {
     assert(mesh.shape(0) == data.shape(0));
-    if(std::any_of(mesh.begin(), mesh.end(), [](const std::complex<double> & v) {return v.imag()<0;})) {
+    if(std::any_of(mesh.begin(), mesh.end(), [](const std::complex<double> & v) {return v.real() != 0.0 or v.imag()<0;})) {
       throw Nevanlinna_negative_grid_error("Data should be defined on the positive Matsubara frequencies.");
     }
     size_t M = mesh.shape(0);
@@ -34,27 +36,26 @@ namespace triqs_Nevanlinna {
     return;
   }
 
-  nda::array<double, 1> kernel::evaluate(const nda::array<double, 1> &grid, double eta) const {
-    nda::array<std::complex<double>, 1> complex_grid(grid.shape());
-    complex_grid                            = grid + eta * 1i;
-    nda::array<std::complex<double>, 1> G_w = evaluate(complex_grid);
-    nda::array<double, 1> A_w(G_w.shape());
+  nda::vector<double> Nevanlinna_factorization::evaluate(nda::vector_const_view<double> grid, double eta) const {
+    auto complex_grid = make_regular(grid + eta * 1i);
+    nda::vector<std::complex<double>> G_w = evaluate(complex_grid);
+    nda::vector<double> A_w(G_w.shape());
     std::transform(G_w.begin(), G_w.end(), A_w.begin(), [](const std::complex<double> &v) { return -v.imag() / M_PI; });
     return A_w;
   }
 
-  nda::array<std::complex<double>, 1> kernel::evaluate(const nda::array<std::complex<double>, 1> &grid) const {
+  nda::vector<std::complex<double>> Nevanlinna_factorization::evaluate(nda::vector_const_view<std::complex<double>> grid) const {
     size_t M = _phis.size();
     if(M == 0) {
-      throw Nevanlinna_error("Empty continuation data. Please run solve(...) first.");
+      throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first.");
     }
     complex_t I {0., 1.};
     complex_t One {1., 0.};
-    nda::array<std::complex<double>, 1> results(grid.shape());
+    nda::vector<std::complex<double>> results(grid.shape());
     matrix_t prod(2, 2);
     for (int i = 0; i < grid.shape(0); ++i) {
       matrix_t result = matrix_t::Identity(2, 2);
-      complex_t z     = complex_t(grid(i));
+      auto z          = complex_t(grid(i));
       for (int j = 0; j < M; j++) {
         prod << (z - _mesh[j]) / (z - std::conj(_mesh[j])), _phis[j], std::conj(_phis[j]) * ((z - _mesh[j]) / (z - std::conj(_mesh[j]))),
            complex_t{1., 0.};
@@ -68,12 +69,6 @@ namespace triqs_Nevanlinna {
     return results;
   }
 
-  std::vector<kernel::complex_t> kernel::mobius_trasformation(const nda::array<std::complex<double>, 1> &data) const {
-    std::vector<complex_t> mdata(data.shape(0));
-    std::transform(data.begin(), data.end(), mdata.begin(), [](const std::complex<double> &d) { return complex_t(-d - 1i) / complex_t(-d + 1i); });
-    return mdata;
-  }
-
-
-
 }
+
+

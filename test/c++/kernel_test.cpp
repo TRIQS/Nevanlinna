@@ -1,55 +1,36 @@
 #include <triqs/test_tools/gfs.hpp>
-#include <triqs_Nevanlinna/kernel.hpp>
+#include <triqs_Nevanlinna/Nevanlinna_kernel.hpp>
 
 using namespace triqs_Nevanlinna;
 
-TEST(NevanlinnaKernel, EvaluateData) { // NOLINT
-  std::string root = TEST_PATH;
-  kernel a;
-  h5::file data(root + "/data.h5", 'r');
-  nda::array<std::complex<double>, 1> im_data;
-  nda::array<std::complex<double>, 1> im_grid;
-  nda::array<double, 1> re_data;
-  nda::array<double, 1> re_grid;
-  h5_read(data, "input/data", im_data);
-  h5_read(data, "input/grid", im_grid);
-  h5_read(data, "output/data", re_data);
-  h5_read(data, "output/grid", re_grid);
+TEST(NevanlinnaKernelFactorization, EvaluateData) {
+  const double eta = 0.1;
+  const double mu1 = 1.0;
+  const double mu2 = 1.0;
+  const double beta = 10.0;
+  const double omega_min = -5.0;
+  const double omega_max = 5.0;
+  const int n_iw = 100;
+  const int n_omega = 100;
+  Nevanlinna_kernel a;
+  nda::array<std::complex<double>, 3> im_data(n_iw, 2, 2);
+  nda::vector<std::complex<double>> im_grid(n_iw);
+  nda::array<std::complex<double>, 3> re_data(n_omega, 2, 2);
+  nda::vector<std::complex<double>> re_grid(n_omega);
 
-  a.solve(im_grid, im_data);
-  nda::array<double, 1> result = a.evaluate(re_grid);
-  ASSERT_TRUE(array_are_close(re_data, result, 1e-10));
-}
+  for(int iw=0, w = -n_iw/2; iw < n_iw; ++iw, ++w) {
+    im_grid(iw) = (2*iw + 1) * M_PI * 1i/beta;
+    im_data(iw, 0, 0) = 1./(im_grid(iw) - mu1);
+    im_data(iw, 1, 1) = 1./(im_grid(iw) - mu2);
+  }
 
-TEST(NevanlinnaKernel, NegativeImGrid) { // NOLINT
-  std::string root = TEST_PATH;
-  kernel a;
-  h5::file data(root + "/data.h5", 'r');
-  nda::array<std::complex<double>, 1> im_data;
-  nda::array<std::complex<double>, 1> im_grid;
-  h5_read(data, "input/data", im_data);
-  h5_read(data, "input/grid", im_grid);
-  im_grid *= -1;
-  ASSERT_THROW(a.solve(im_grid, im_data), Nevanlinna_negative_grid_error);
-}
+  for(size_t iw = 0; iw < n_omega; ++iw) {
+    re_grid(iw) = std::complex<double>(iw*(omega_max - omega_min)/n_omega, eta);
+    re_data(iw, 0, 0) = 1./(re_grid(iw) - mu1);
+    re_data(iw, 1, 1) = 1./(re_grid(iw) - mu2);
+  }
 
-TEST(NevanlinnaKernel, CheckEta) { // NOLINT
-  std::string root = TEST_PATH;
-  kernel a;
-  h5::file data(root + "/data.h5", 'r');
-  nda::array<std::complex<double>, 1> im_data;
-  nda::array<std::complex<double>, 1> im_grid;
-  nda::array<std::complex<double>, 1> re_grid;
-
-  h5_read(data, "input/data", im_data);
-  h5_read(data, "input/grid", im_grid);
-  h5_read(data, "output/grid", re_grid);
-  nda::array<std::complex<double>, 1> re_data(re_grid.shape(0));
-  double eta = 0.5;
-  re_grid += eta*1i;
-  std::transform(re_grid.begin(), re_grid.end(), re_data.begin(), [&](const std::complex<double> & w) {return 1.0/(w);});
-
-  a.solve(im_grid, im_data);
-  nda::array<std::complex<double>, 1> result = a.evaluate(re_grid);
+  a.init(im_grid, im_data);
+  nda::array<std::complex<double>, 3> result = a.evaluate(re_grid);
   ASSERT_TRUE(array_are_close(re_data, result, 1e-10));
 }
