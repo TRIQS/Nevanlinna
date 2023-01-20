@@ -5,30 +5,14 @@
 
 #include <complex>
 
-#include <Eigen/Dense>
-
-#ifdef WITH_MPFR
-#include <boost/multiprecision/mpfr.hpp>
-#else
-#include <boost/multiprecision/cpp_dec_float.hpp>
-#endif
-
+#include "types.hpp"
 #include "Nevanlinna_error.hpp"
-
-using namespace std::complex_literals;
 
 namespace triqs_Nevanlinna {
   /**
    * Class to construct Nevanlinna factorization for single orbital
    */
   class Nevanlinna_factorization {
-#ifdef WITH_MPFR
-    using real_t = boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<100>, boost::multiprecision::et_off>;
-#else
-    using real_t = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<100>, boost::multiprecision::et_off>;
-#endif
-    using complex_t = std::complex<real_t>;
-    using matrix_t  = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;
     public:
 
     /**
@@ -56,11 +40,11 @@ namespace triqs_Nevanlinna {
     [[nodiscard]] nda::vector<std::complex<double>> evaluate(nda::vector_const_view<std::complex<double>> grid) const;
 
     private:
-    std::vector<complex_t> _phis;
-    std::vector<matrix_t> _abcds;
-    std::vector<complex_t> _mesh;
+    std::vector<complex_mpt> _phis;
+    std::vector<matrix_cplx_mpt> _abcds;
+    std::vector<complex_mpt> _mesh;
 
-    std::vector<complex_t> mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const;
+    std::vector<complex_mpt> mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const;
 
   };
 

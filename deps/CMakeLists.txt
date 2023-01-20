@@ -61,7 +61,7 @@ endif()
 # -- GTest --
 external_dependency(GTest
   GIT_REPO https://github.com/google/googletest
-  GIT_TAG release-1.10.0
+  GIT_TAG v1.13.0
   BUILD_ALWAYS
   EXCLUDE_FROM_ALL
 )

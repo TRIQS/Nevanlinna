@@ -35,7 +35,7 @@ target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
 option(WITH_MPFR OFF "Use MPFR as a backend for multiprecision operations.")
 if(WITH_MPFR)
   find_package(MPFR REQUIRED)
-  add_compile_definitions(WITH_MPFR)
+  target_compile_definitions(${PROJECT_NAME}_c PUBLIC WITH_MPFR)
   target_link_libraries(${PROJECT_NAME}_c PUBLIC MPFR::Library)
 endif(WITH_MPFR)
 
