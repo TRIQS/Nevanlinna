@@ -12,11 +12,10 @@ namespace triqs_Nevanlinna {
     _Ws.resize(mesh.shape()[0]);
     _sqrt_one.resize(mesh.shape()[0]);
     _sqrt_two.resize(mesh.shape()[0]);
-    complex_mpt One {1., 0.};
-    complex_mpt I {0., 1.};
-    matrix_cplx_mpt id (_dim, _dim);
-    matrix_cplx_mpt val (_dim, _dim);
-    id.setIdentity();
+    auto One = complex_mpt{1., 0.};
+    auto I = complex_mpt{0., 1.};
+    auto id  = matrix_cplx_mpt::Identity(_dim, _dim);
+    auto val = matrix_cplx_mpt(_dim, _dim);
     for (int iw = mesh.shape()[0] - 1, w = 0; iw >= 0 ; --iw, ++w) {
       _mesh[w] = (complex_mpt(mesh(iw)) - I) / (complex_mpt(mesh(iw)) + I);
       _Ws[w].resize(_dim, _dim);
@@ -30,7 +29,6 @@ namespace triqs_Nevanlinna {
       /* ca_real norm_ave = _Ws[iw].norm()/_dim/_dim;
         if (norm_ave > 1) {_Ws[iw] /= norm_ave; std::cout << "hey ";} */
     }
-    std::cout << std::endl;
     for (int i = mesh.size() - 1; i > 0; i--) {
       auto &zi = _mesh[i];
       auto &Wi = _Ws[i];
@@ -63,7 +61,6 @@ namespace triqs_Nevanlinna {
     auto I = complex_mpt{0., 1.};
     auto id = matrix_cplx_mpt::Identity(_dim, _dim);
     nda::array<std::complex<double>, 3> results(grid.shape()[0], _dim, _dim);
-    id.setIdentity();
     for (int i = 0; i < grid.shape()[0]; i++) {
       auto z = (complex_mpt(grid(i)) - I) / (complex_mpt(grid(i)) + I);
       auto& z0 = _mesh[0];

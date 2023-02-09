@@ -19,8 +19,8 @@ namespace triqs_Nevanlinna {
 
     private:
     int _dim;
-    std::vector<complex_t> _mesh;
-    std::vector<matrix_t> _Ws; //W_is
+    std::vector<complex_mpt> _mesh;
+    std::vector<matrix_cplx_mpt> _Ws; //W_is
     // See Eq. 6 PhysRevB.104.165111
     std::vector<matrix_cplx_mpt> _sqrt_one; //[1 - W_i * W_i^dagger]^0.5
     std::vector<matrix_cplx_mpt> _sqrt_two; //[1 - W_i^dagger * W_i]^-0.5
