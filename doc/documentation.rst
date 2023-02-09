@@ -10,6 +10,16 @@ Documentation
               &=  a^2 + 2ab + b^2
 
 
+Tutorials
+=========
+
+.. toctree::
+   :maxdepth: 1
+   
+   tutorials/SIAM_discrete
+   tutorials/GW_tutorial
+   tutorials/hubbard_square_non_int
+
 C++ reference manual
 ====================
 
