@@ -10,7 +10,7 @@ namespace triqs_Nevanlinna {
   class kernel {
     public:
     virtual ~kernel() = default;
-    kernel(int precison = mp_digits) {
+    kernel([[maybe_unused]] int precison = mp_digits) {
 #ifdef WITH_MPFR
       boost::multiprecision::mpfr_float::default_precision(precison);
 #else

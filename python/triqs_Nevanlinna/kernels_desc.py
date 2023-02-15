@@ -27,7 +27,7 @@ c = class_(
         hdf5 = False,
 )
 
-c.add_constructor("""(int precison = 100)""", doc = r"""""")
+c.add_constructor("""(int precison = mp_digits)""", doc = r"""""")
 
 c.add_method("""void init (nda::vector_view<std::complex<double>> mesh, nda::array_view<std::complex<double>, 3> data)""",
              doc = r"""""")
@@ -40,6 +40,10 @@ c.add_method("""nda::array<std::complex<double>, 3> evaluate (nda::vector_view<s
 
 c.add_property(name = "size",
                getter = cfunction("size_t size ()"),
+               doc = r"""""")
+
+c.add_property(name = "pick_eigenvalues",
+               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
                doc = r"""""")
 
 module.add_class(c)
@@ -52,7 +56,7 @@ c = class_(
         hdf5 = False,
 )
 
-c.add_constructor("""(int precision)""", doc = r"""""")
+c.add_constructor("""(int precision = mp_digits)""", doc = r"""""")
 
 c.add_method("""void init (nda::vector_view<std::complex<double>> mesh, nda::array_view<std::complex<double>, 3> data)""",
              doc = r"""""")
@@ -67,6 +71,10 @@ c.add_property(name = "size",
                getter = cfunction("size_t size ()"),
                doc = r"""""")
 
+c.add_property(name = "pick_eigenvalues",
+               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
+               doc = r"""""")
+
 module.add_class(c)
 
 # The class Caratheodory_kernel
@@ -77,7 +85,7 @@ c = class_(
         hdf5 = False,
 )
 
-c.add_constructor("""(int precision)""", doc = r"""""")
+c.add_constructor("""(int precision = mp_digits)""", doc = r"""""")
 
 c.add_method("""void init (nda::vector_view<std::complex<double>> mesh, nda::array_view<std::complex<double>, 3> data)""",
              doc = r"""""")
@@ -85,8 +93,15 @@ c.add_method("""void init (nda::vector_view<std::complex<double>> mesh, nda::arr
 c.add_method("""nda::array<std::complex<double>, 3> evaluate (nda::vector_view<std::complex<double>> grid)""",
              doc = r"""""")
 
+c.add_method("""nda::array<std::complex<double>, 3> evaluate (nda::vector_view<std::complex<double>> grid, nda::array_view<std::complex<double>, 3> theta)""",
+             doc = r"""""")
+
 c.add_property(name = "size",
                getter = cfunction("size_t size ()"),
+               doc = r"""""")
+
+c.add_property(name = "pick_eigenvalues",
+               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
                doc = r"""""")
 
 module.add_class(c)
