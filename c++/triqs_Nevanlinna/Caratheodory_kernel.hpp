@@ -10,7 +10,7 @@ namespace triqs_Nevanlinna {
     static constexpr double tol = 1e-12;
 
     public:
-    Caratheodory_kernel(int precision = mp_digits) : kernel(precision), _dim(0) {}
+    Caratheodory_kernel(int precision = mp_digits) : kernel(precision) {}
 
     void init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) override;
     [[nodiscard]] nda::array<std::complex<double>, 3> evaluate(nda::vector_const_view<std::complex<double>> grid) override;
@@ -28,14 +28,14 @@ namespace triqs_Nevanlinna {
     nda::vector<double> pick_eigenvalues() const override;
 
     private:
-    int _dim;
-    nda::vector<complex_mpt> _mesh;
-    nda::vector<matrix_cplx_mpt> _data; //W_is
-    nda::vector<matrix_cplx_mpt> _Ws;   //W_is
+    int _dim = 0;
+    nda::vector<complex_mpt> _mesh{};
+    nda::vector<matrix_cplx_mpt> _data{}; //W_is
+    nda::vector<matrix_cplx_mpt> _Ws{};   //W_is
     // See Eq. 6 PhysRevB.104.165111
-    nda::vector<matrix_cplx_mpt> _sqrt_one; //[1 - W_i * W_i^dagger]^0.5
-    nda::vector<matrix_cplx_mpt> _sqrt_two; //[1 - W_i^dagger * W_i]^-0.5
-    nda::vector<double> _Pick_eigenvalues;
+    nda::vector<matrix_cplx_mpt> _sqrt_one{}; //[1 - W_i * W_i^dagger]^0.5
+    nda::vector<matrix_cplx_mpt> _sqrt_two{}; //[1 - W_i^dagger * W_i]^-0.5
+    nda::vector<double> _Pick_eigenvalues{};
 
     /**
      * Calculate Hermitian square root of matrix M.
