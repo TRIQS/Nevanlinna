@@ -14,7 +14,6 @@ namespace triqs_Nevanlinna {
    */
   class Nevanlinna_factorization {
     public:
-
     /**
      * Build Nevanlinna factorization for data defined on positive Matsubara mesh
      *
@@ -30,23 +29,50 @@ namespace triqs_Nevanlinna {
      * @param eta  - Lorentzian broadening
      * @return Nevanlinna continuation on the specified grid
      */
-    [[nodiscard]] nda::vector<double> evaluate(nda::vector_const_view<double> grid, double eta = 0.05) const;
+    [[nodiscard]] nda::vector<double> evaluate(nda::vector_const_view<double> grid, double eta = 0.05);
 
     /**
      * Evaluate Nevanlinna continuation on a complex-valued grid
      * @param grid - grid for continuation evaluation
      * @return Nevanlinna continuation on the specified grid
      */
-    [[nodiscard]] nda::vector<std::complex<double>> evaluate(nda::vector_const_view<std::complex<double>> grid) const;
+    [[nodiscard]] nda::vector<std::complex<double>>
+    evaluate(nda::vector_const_view<std::complex<double>> grid,
+             nda::vector_const_view<std::complex<double>> theta_M_1 = nda::vector_const_view<std::complex<double>>());
+
+    nda::vector<double> get_pick_eigenvalues() const {
+      auto M = _data.shape()[0];
+      if (M == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
+      //fill the Pick matrix
+      auto Pick = matrix_cplx_mpt(M, M);
+      auto I    = complex_mpt{0., 1.};
+      auto one  = complex_mpt{1., 0.};
+      for (int i = 0; i < M; i++) {
+        for (int j = 0; j < M; j++) {
+          complex_mpt freq_i = (_mesh(i) - I) / (_mesh(i) + I);
+          complex_mpt freq_j = (_mesh(j) - I) / (_mesh(j) + I);
+          Pick(i, j)         = (one - _data(i) * std::conj(_data(j))) / (one - freq_i * std::conj(freq_j));
+        }
+      }
+      auto evals            = Pick.eigenvalues();
+      auto pick_eigenvalues = nda::vector<double>(M);
+      std::transform(evals.begin(), evals.end(), pick_eigenvalues.begin(), [](const complex_mpt &r) { return r.real().convert_to<double>(); });
+      return pick_eigenvalues;
+    }
 
     private:
-    std::vector<complex_mpt> _phis;
-    std::vector<matrix_cplx_mpt> _abcds;
-    std::vector<complex_mpt> _mesh;
+    nda::vector<complex_mpt> _phis;
+    nda::vector<matrix_cplx_mpt> _abcds;
+    nda::vector<complex_mpt> _mesh;
+    nda::vector<complex_mpt> _data;
+    nda::vector<complex_mpt> _grid;
+    nda::vector<matrix_cplx_mpt> _coeffs;
 
-    std::vector<complex_mpt> mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const;
+    [[nodiscard]] nda::vector<complex_mpt> mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const;
 
+    [[nodiscard]] nda::vector<std::complex<double>> evaluate_for_theta(nda::vector_const_view<std::complex<double>> grid,
+                                                                       nda::vector_const_view<std::complex<double>> theta_M_1) const;
   };
 
-}
+} // namespace triqs_Nevanlinna
 #endif //TRIQS_NEVANLINNA_NEVANLINNA_FACTORIZATION_HPP

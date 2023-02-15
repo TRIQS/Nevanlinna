@@ -12,18 +12,18 @@
 #endif
 
 namespace triqs_Nevanlinna {
-    using nda::range;
+  using nda::range;
 
-    static constexpr auto _ = nda::range::all;
-    static constexpr auto __ = nda::ellipsis{};
+  static constexpr auto _  = nda::range::all;
+  static constexpr auto __ = nda::ellipsis{};
 
-    static constexpr int mp_digits = 100;
+  static constexpr int mp_digits = 100;
 #ifdef WITH_MPFR
-    using complex_mpt = std::complex<boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<mp_digits>, boost::multiprecision::et_off>>;
+  using complex_mpt = std::complex<boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<0>, boost::multiprecision::et_off>>;
 #else
-    using complex_mpt = std::complex<boost::multiprecision::number<boost::multiprecision::cpp_dec_float<mp_digits>, boost::multiprecision::et_off>>;
+  using complex_mpt = std::complex<boost::multiprecision::number<boost::multiprecision::cpp_dec_float<mp_digits>, boost::multiprecision::et_off>>;
 #endif
-    using matrix_cplx_mpt  = Eigen::Matrix<complex_mpt, Eigen::Dynamic, Eigen::Dynamic>;
-}
+  using matrix_cplx_mpt = Eigen::Matrix<complex_mpt, Eigen::Dynamic, Eigen::Dynamic>;
+} // namespace triqs_Nevanlinna
 
 #endif //TRIQS_NEVANLINNA_TYPES_HPP

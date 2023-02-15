@@ -26,5 +26,6 @@ DOC
 
 """
 from .solver import Solver
+from .kernels import *
 
-__all__ = ['Solver']
+__all__ = ['Solver', 'kernels']
