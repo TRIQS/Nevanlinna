@@ -82,26 +82,26 @@ namespace triqs_Nevanlinna {
   }
 
   nda::vector<double> Caratheodory_kernel::pick_eigenvalues() const {
-    auto nw   = _data.shape(0);
-    if (nw == 0) {return nda::vector<double>();}
+    auto nw = _data.shape(0);
+    if (nw == 0) { return nda::vector<double>(); }
     auto N    = _data(0).cols();
     auto Pick = Eigen::MatrixXcd(nw * N, nw * N);
     auto id   = matrix_cplx_mpt::Identity(N, N);
     auto One  = complex_mpt{1., 0.};
     auto I    = complex_mpt{0., 1.};
     for (int i = 0; i < nw; i++) {
-      for (int j = 0; j < nw; j++) { 
+      for (int j = 0; j < nw; j++) {
         auto val = (id - _data(i).adjoint() * _data(j)) / (One - std::conj(_mesh(i)) * _mesh(j));
-        for(int n = 0; n<N; ++n) {
-          for(int m = 0; m<N; ++m) {
-            Pick.block(i * N, j * N, N, N)(n, m) = std::complex<double>(val(n, m).real().convert_to<double>(), val(n, m).imag().convert_to<double>());             
+        for (int n = 0; n < N; ++n) {
+          for (int m = 0; m < N; ++m) {
+            Pick.block(i * N, j * N, N, N)(n, m) = std::complex<double>(val(n, m).real().convert_to<double>(), val(n, m).imag().convert_to<double>());
           }
         }
       }
     }
     auto eigenvalues      = Pick.eigenvalues();
-    auto pick_eigenvalues = nda::vector<double>(nw*N);
-    std::transform(eigenvalues.begin(), eigenvalues.end(), pick_eigenvalues.begin(), [] (const std::complex<double> & r) {return r.real();});
+    auto pick_eigenvalues = nda::vector<double>(nw * N);
+    std::transform(eigenvalues.begin(), eigenvalues.end(), pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real(); });
     return pick_eigenvalues;
   }
 

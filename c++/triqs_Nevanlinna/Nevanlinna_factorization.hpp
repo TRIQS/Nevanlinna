@@ -51,13 +51,13 @@ namespace triqs_Nevanlinna {
         for (int j = 0; j < M; j++) {
           complex_mpt freq_i = (_mesh(i) - I) / (_mesh(i) + I);
           complex_mpt freq_j = (_mesh(j) - I) / (_mesh(j) + I);
-          auto val      = (one - _data(i) * std::conj(_data(j))) / (one - freq_i * std::conj(freq_j));
-          Pick(i, j) = std::complex<double>(val.real().convert_to<double>(), val.imag().convert_to<double>());
+          auto val           = (one - _data(i) * std::conj(_data(j))) / (one - freq_i * std::conj(freq_j));
+          Pick(i, j)         = std::complex<double>(val.real().convert_to<double>(), val.imag().convert_to<double>());
         }
       }
       auto evals            = Pick.eigenvalues();
       auto pick_eigenvalues = nda::vector<double>(M);
-      std::transform(evals.begin(), evals.end(), pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real();});
+      std::transform(evals.begin(), evals.end(), pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real(); });
       return pick_eigenvalues;
     }
 

@@ -26,8 +26,8 @@ namespace triqs_Nevanlinna {
     _data    = mobius_trasformation(data);
     _phis[0] = _data[0];
     for (int k = 0; k < M; k++) {
-      _abcds[k] = matrix_cplx_mpt::Identity(2, 2);
-      _mesh[M - k - 1]  = mesh(k);
+      _abcds[k]        = matrix_cplx_mpt::Identity(2, 2);
+      _mesh[M - k - 1] = mesh(k);
     }
     auto prod = matrix_cplx_mpt(2, 2);
     for (int j = 0; j < M - 1; j++) {
@@ -57,10 +57,9 @@ namespace triqs_Nevanlinna {
       throw Nevanlinna_error("theta_{M+1} should either have a value at every frequency point or be empty.");
     }
     // check if grid has not been changed
-    if (grid.size() == _grid.size()
-        && std::equal(grid.begin(), grid.end(), _grid.begin(), [](const std::complex<double> &w1, const complex_mpt &w2) {
-             return std::abs(w1.real() - w2.real().convert_to<double>()) < 1e-9 && std::abs(w1.imag() - w2.imag().convert_to<double>()) < 1e-9;
-           })) {
+    if (grid.size() == _grid.size() && std::equal(grid.begin(), grid.end(), _grid.begin(), [](const std::complex<double> &w1, const complex_mpt &w2) {
+          return std::abs(w1.real() - w2.real().convert_to<double>()) < 1e-9 && std::abs(w1.imag() - w2.imag().convert_to<double>()) < 1e-9;
+        })) {
       return evaluate_for_theta(grid, theta_M_1);
     }
     _coeffs = std::vector<matrix_cplx_mpt>(grid.size());
