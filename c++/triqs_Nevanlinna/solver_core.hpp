@@ -53,6 +53,8 @@ namespace triqs_Nevanlinna {
 
     [[nodiscard]] nda::vector<double> pick_eigenvalues() const { return _kernel->pick_eigenvalues(); };
 
+    [[nodiscard]] size_t size() const { return _kernel->size(); };
+
     private:
     // vector of Nevanlinna factorization kernels for multi-orbital factorization
     std::unique_ptr<kernel> _kernel;

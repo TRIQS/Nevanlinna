@@ -30,17 +30,17 @@ c = class_(
         hdf5 = False,
 )
 
-c.add_constructor("""(**triqs_Nevanlinna::Nevanlinna_parameters_t)""", doc = r"""
+c.add_constructor("""(**Nevanlinna_parameters_t)""", doc = r"""
 
 
 
-+----------------+---------------------------+------------+---------------+
-| Parameter Name | Type                      | Default    | Documentation |
-+================+===========================+============+===============+
-| kernel         | triqs_Nevanlinna::kernels | NEVANLINNA |               |
-+----------------+---------------------------+------------+---------------+
-| precision      | int                       | 100        |               |
-+----------------+---------------------------+------------+---------------+
++----------------+---------+------------+---------------+
+| Parameter Name | Type    | Default    | Documentation |
++================+=========+============+===============+
+| kernel         | kernels | NEVANLINNA |               |
++----------------+---------+------------+---------------+
+| precision      | int     | 100        |               |
++----------------+---------+------------+---------------+
 """)
 
 c.add_method("""void solve (triqs::gfs::gf_view<triqs::mesh::imfreq> g_iw)""",
@@ -75,6 +75,10 @@ c.add_property(name = "pick_eigenvalues",
                getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
                doc = r"""""")
 
+c.add_property(name = "size",
+               getter = cfunction("size_t size ()"),
+               doc = r"""""")
+
 module.add_class(c)
 
 
@@ -84,7 +88,7 @@ c = converter_(
         doc = r"""""",
 )
 c.add_member(c_name = "kernel",
-             c_type = "triqs_Nevanlinna::kernels",
+             c_type = "kernels",
              initializer = """ NEVANLINNA """,
              doc = r"""""")
 

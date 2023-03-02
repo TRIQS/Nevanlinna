@@ -31,9 +31,10 @@ class test_solver(unittest.TestCase):
         One = np.eye(2)
         g_im << inverse(iOmega_n*One - F)
         g_re << inverse((Omega + eta*1.j)*One - F)
-        solver = Solver(kernel="kernels::CARATHEODORY")
+        solver = Solver(kernel="kernels::CARATHEODORY", precision=128)
         solver.solve(g_im)
         g_re_solver = solver.evaluate(m, eta)
+        print(solver.pick_eigenvalues)
         self.assertTrue(np.allclose(g_re_solver.data, g_re.data))
 
 

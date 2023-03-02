@@ -24,24 +24,27 @@ class Solver(SolverCore):
             for k in range(nk):
                 f_k[k, :] = prefactor * (zz ** k)
             return f_k
-        def get_theta(x, f_k):
+        def update_theta(x, f_k, theta):
             akr, aki, bkr, bki = np.split(x, 4)
             ak = akr + 1.j*aki
             bk = bkr + 1.j*bki
-            theta = np.dot(ak, f_k) + np.dot(bk, np.conj(f_k))
+            nk = f_k.shape[0]
+            for i in range(self.size):
+                theta[:, i, i] = np.dot(ak[i * nk: (i+1)*nk], f_k) + np.dot(bk[i * nk: (i+1)*nk], np.conj(f_k))
             return theta
-        z = grid.data + eta*1.j
+        z = np.array([w + eta*1.j for w in grid.values()])
         # Hardy basis functions
         f_k = get_f_k(nk, z)
+        theta = np.zeros([len(grid), self.size, self.size], dtype=np.complex128)
         # Initial values for Basis coefficients
-        ak = np.zeros([nk], dtype=np.complex128)
-        bk = np.zeros([nk], dtype=np.complex128)
+        ak = np.zeros([self.size, nk], dtype=np.complex128)
+        bk = np.zeros([self.size, nk], dtype=np.complex128)
         def Nevan (x):
-            theta = get_theta(x, f_k)
+            update_theta(x, f_k, theta)
             Gw = self.evaluate(grid, eta, theta)
             return target(Gw)
         res = opt.minimize(Nevan, x0=np.concatenate((ak.real, ak.imag, bk.real, bk.imag)) ,
                               method = "CG", options={'maxiter': maxiter, 'gtol': gtol})
-        theta = get_theta(res.x, f_k)
+        update_theta(res.x, f_k, theta)
         return self.evaluate(grid, eta, theta)
 

@@ -8,6 +8,7 @@ namespace triqs_Nevanlinna {
     nda::vector<complex_mpt> mdata(data.size());
     std::transform(data.begin(), data.end(), mdata.begin(),
                    [](const std::complex<double> &d) { return complex_mpt(-d - 1i) / complex_mpt(-d + 1i); });
+    std::reverse(mdata.begin(), mdata.end());
     return mdata;
   }
 
@@ -26,7 +27,7 @@ namespace triqs_Nevanlinna {
     _phis[0] = _data[0];
     for (int k = 0; k < M; k++) {
       _abcds[k] = matrix_cplx_mpt::Identity(2, 2);
-      _mesh[k]  = mesh(k);
+      _mesh[M - k - 1]  = mesh(k);
     }
     auto prod = matrix_cplx_mpt(2, 2);
     for (int j = 0; j < M - 1; j++) {
@@ -90,7 +91,7 @@ namespace triqs_Nevanlinna {
                                                                                  nda::vector_const_view<std::complex<double>> theta_M_1) const {
     size_t M = _phis.size();
     if (M == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
-    if (theta_M_1.size() != grid.size() || theta_M_1.size() != 0) {
+    if (theta_M_1.size() != grid.size() && theta_M_1.size() != 0) {
       throw Nevanlinna_error("theta_{M+1} should either have a value at every frequency point or be empty.");
     }
     auto I   = complex_mpt{0., 1.};
