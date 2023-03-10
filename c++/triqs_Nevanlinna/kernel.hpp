@@ -10,9 +10,9 @@ namespace triqs_Nevanlinna {
   class kernel {
     public:
     virtual ~kernel() = default;
-    kernel([[maybe_unused]] int precison = mp_digits) {
+    kernel([[maybe_unused]] int precision = mp_digits) {
 #ifdef WITH_MPFR
-      boost::multiprecision::mpfr_float::default_precision(precison);
+      boost::multiprecision::mpfr_float::default_precision(precision);
 #else
       std::cerr << "Precision cannot be selected for boost multiprecision implementation. To set precision rebuild code with MPFR library support."
                 << std::endl;
