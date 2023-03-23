@@ -24,7 +24,7 @@ namespace triqs_Nevanlinna {
 
     [[nodiscard]] size_t size() const override { return _factorizations.size(); }
 
-    [[nodiscard]] nda::vector<double> pick_eigenvalues() const override;
+    [[nodiscard]] nda::vector<double> get_Pick_eigenvalues() const override;
 
     private:
     size_t _N_im_freq{};

@@ -37,12 +37,12 @@ namespace triqs_Nevanlinna {
     }
     return results;
   }
-  nda::vector<double> Nevanlinna_kernel::pick_eigenvalues() const {
+  nda::vector<double> Nevanlinna_kernel::get_Pick_eigenvalues() const {
     if (size() == 0) { return {}; }
     nda::vector<double> pick_eigenvalues(_N_im_freq * size());
 
     for (size_t n = 0; n < size(); ++n) {
-      nda::vector<double> eigenvalues = _factorizations[n].get_pick_eigenvalues();
+      nda::vector<double> eigenvalues = _factorizations[n].get_Pick_eigenvalues();
       std::copy(eigenvalues.begin(), eigenvalues.end(), pick_eigenvalues.begin() + _N_im_freq * n);
     }
     std::sort(pick_eigenvalues.begin(), pick_eigenvalues.end());

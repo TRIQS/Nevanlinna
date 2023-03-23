@@ -25,7 +25,7 @@ namespace triqs_Nevanlinna {
 
     [[nodiscard]] size_t size() const override { return _dim; }
 
-    nda::vector<double> pick_eigenvalues() const override;
+    nda::vector<double> get_Pick_eigenvalues() const override;
 
     private:
     int _dim = 0;

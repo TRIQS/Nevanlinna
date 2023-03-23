@@ -43,7 +43,6 @@ TEST(CaratheodorySolver, TriqsGFData) { // NOLINT
   nda::matrix<double> F(2,2);
   F = {{-mu, 0.5}, {0.5, -mu}};
   gf(w_) << 1.0/(w_ - F);
-  std::cout<<gf.data()<<std::endl;
   re_data(w_) << 1.0/(w_ + eta*1i - F);
   a.solve(gf);
   triqs::gfs::gf<triqs::mesh::refreq> result = a.evaluate(re_grid, eta);

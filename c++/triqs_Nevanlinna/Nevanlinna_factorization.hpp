@@ -40,7 +40,7 @@ namespace triqs_Nevanlinna {
     evaluate(nda::vector_const_view<std::complex<double>> grid,
              nda::vector_const_view<std::complex<double>> theta_M_1 = nda::vector_const_view<std::complex<double>>());
 
-    nda::vector<double> get_pick_eigenvalues() const {
+    nda::vector<double> get_Pick_eigenvalues() const {
       auto M = _data.shape()[0];
       if (M == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
       //fill the Pick matrix
@@ -56,9 +56,9 @@ namespace triqs_Nevanlinna {
         }
       }
       auto evals            = Pick.eigenvalues();
-      auto pick_eigenvalues = nda::vector<double>(M);
-      std::transform(evals.begin(), evals.end(), pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real(); });
-      return pick_eigenvalues;
+      auto Pick_eigenvalues = nda::vector<double>(M);
+      std::transform(evals.begin(), evals.end(), Pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real(); });
+      return Pick_eigenvalues;
     }
 
     private:

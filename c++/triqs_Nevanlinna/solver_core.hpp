@@ -51,7 +51,7 @@ namespace triqs_Nevanlinna {
     [[nodiscard]] triqs::gfs::gf<triqs::mesh::refreq> evaluate(const triqs::mesh::refreq &grid, double eta,
                                                                nda::array_const_view<std::complex<double>, 3> theta);
 
-    [[nodiscard]] nda::vector<double> pick_eigenvalues() const { return _kernel->pick_eigenvalues(); };
+    [[nodiscard]] nda::vector<double> get_Pick_eigenvalues() const { return _kernel->get_Pick_eigenvalues(); };
 
     [[nodiscard]] size_t size() const { return _kernel->size(); };
 

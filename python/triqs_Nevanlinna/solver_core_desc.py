@@ -71,8 +71,8 @@ out
 c.add_method("""triqs::gfs::gf<triqs::mesh::refreq> evaluate (triqs::mesh::refreq grid, double eta, nda::array_view<std::complex<double>, 3> theta)""",
              doc = r"""""")
 
-c.add_property(name = "pick_eigenvalues",
-               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
+c.add_property(name = "Pick_eigenvalues",
+               getter = cfunction("nda::vector<double> get_Pick_eigenvalues ()"),
                doc = r"""""")
 
 c.add_property(name = "size",

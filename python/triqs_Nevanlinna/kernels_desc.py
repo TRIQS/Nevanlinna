@@ -42,8 +42,8 @@ c.add_property(name = "size",
                getter = cfunction("size_t size ()"),
                doc = r"""""")
 
-c.add_property(name = "pick_eigenvalues",
-               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
+c.add_property(name = "Pick_eigenvalues",
+               getter = cfunction("nda::vector<double> get_Pick_eigenvalues ()"),
                doc = r"""""")
 
 module.add_class(c)
@@ -71,8 +71,8 @@ c.add_property(name = "size",
                getter = cfunction("size_t size ()"),
                doc = r"""""")
 
-c.add_property(name = "pick_eigenvalues",
-               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
+c.add_property(name = "Pick_eigenvalues",
+               getter = cfunction("nda::vector<double> get_Pick_eigenvalues ()"),
                doc = r"""""")
 
 module.add_class(c)
@@ -100,8 +100,8 @@ c.add_property(name = "size",
                getter = cfunction("size_t size ()"),
                doc = r"""""")
 
-c.add_property(name = "pick_eigenvalues",
-               getter = cfunction("nda::vector<double> pick_eigenvalues ()"),
+c.add_property(name = "Pick_eigenvalues",
+               getter = cfunction("nda::vector<double> get_Pick_eigenvalues ()"),
                doc = r"""""")
 
 module.add_class(c)

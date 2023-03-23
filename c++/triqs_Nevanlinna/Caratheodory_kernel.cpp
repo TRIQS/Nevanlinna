@@ -81,7 +81,7 @@ namespace triqs_Nevanlinna {
     return results;
   }
 
-  nda::vector<double> Caratheodory_kernel::pick_eigenvalues() const {
+  nda::vector<double> Caratheodory_kernel::get_Pick_eigenvalues() const {
     auto nw = _data.shape(0);
     if (nw == 0) { return nda::vector<double>(); }
     auto N    = _data(0).cols();

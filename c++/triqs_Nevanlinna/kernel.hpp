@@ -39,7 +39,7 @@ namespace triqs_Nevanlinna {
     };
 
     [[nodiscard]] virtual size_t size() const { return 0; };
-    [[nodiscard]] virtual nda::vector<double> pick_eigenvalues() const {
+    [[nodiscard]] virtual nda::vector<double> get_Pick_eigenvalues() const {
       throw Nevanlinna_error("This method is not implemented in the base class.");
     };
   };
