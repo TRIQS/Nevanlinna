@@ -70,24 +70,24 @@ namespace triqs_Nevanlinna {
     std::transform(grid.begin(), grid.end(), _grid.begin(), [](const std::complex<double> &w) { return complex_mpt{w.real(), w.imag()}; });
     auto results = nda::vector<std::complex<double>>(grid.size());
 #pragma omp parallel
-{
-    auto prod    = matrix_cplx_mpt(2, 2);
+    {
+      auto prod = matrix_cplx_mpt(2, 2);
 
-    for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
-      matrix_cplx_mpt result = matrix_cplx_mpt::Identity(2, 2);
-      auto z                 = _grid[i];
-      for (int j = 0; j < M; j++) {
-        prod << (z - _mesh[j]) / (z - std::conj(_mesh[j])), _phis[j], std::conj(_phis[j]) * ((z - _mesh[j]) / (z - std::conj(_mesh[j]))), One;
-        result *= prod;
+      for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
+        matrix_cplx_mpt result = matrix_cplx_mpt::Identity(2, 2);
+        auto z                 = _grid[i];
+        for (int j = 0; j < M; j++) {
+          prod << (z - _mesh[j]) / (z - std::conj(_mesh[j])), _phis[j], std::conj(_phis[j]) * ((z - _mesh[j]) / (z - std::conj(_mesh[j]))), One;
+          result *= prod;
+        }
+        _coeffs[i] = result;
+        auto param = complex_mpt{0., 0.}; //theta_{M+1}, choose to be constant function 0 here
+        auto theta = complex_mpt(result(0, 0) * param + result(0, 1)) / (result(1, 0) * param + result(1, 1));
+        auto value = complex_mpt(I * (One + theta) / (One - theta));
+        results(i) =
+           -std::complex<double>(value.real().convert_to<double>(), value.imag().convert_to<double>()); //inverse Mobius transform from theta to NG
       }
-      _coeffs[i] = result;
-      auto param = complex_mpt{0., 0.}; //theta_{M+1}, choose to be constant function 0 here
-      auto theta = complex_mpt(result(0, 0) * param + result(0, 1)) / (result(1, 0) * param + result(1, 1));
-      auto value = complex_mpt(I * (One + theta) / (One - theta));
-      results(i) =
-         -std::complex<double>(value.real().convert_to<double>(), value.imag().convert_to<double>()); //inverse Mobius transform from theta to NG
     }
-}
     results = mpi::all_reduce(results);
     return results;
   }

@@ -50,7 +50,7 @@ namespace triqs_Nevanlinna {
     if (_dim == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
     std::vector<matrix_cplx_mpt> Vs(_mesh.size()); //intermediate Vs (for calculating Psis)
     std::vector<matrix_cplx_mpt> Fs(_mesh.size()); //intermediate Psis (Schur class functions)
-    auto id  = matrix_cplx_mpt::Identity(_dim, _dim);
+    auto id = matrix_cplx_mpt::Identity(_dim, _dim);
     nda::array<std::complex<double>, 3> results(grid.shape()[0], _dim, _dim);
     for (int i = 0; i < grid.shape()[0]; i++) {
       auto z   = (complex_mpt(grid(i)) - I) / (complex_mpt(grid(i)) + I);
