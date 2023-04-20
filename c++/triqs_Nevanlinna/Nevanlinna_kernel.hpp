@@ -28,7 +28,7 @@ namespace triqs_Nevanlinna {
 
     private:
     size_t _N_im_freq{};
-    std::vector<Nevanlinna_factorization> _factorizations;
+    std::vector<Nevanlinna_factorization> _factorizations{};
   };
 
 } // namespace triqs_Nevanlinna

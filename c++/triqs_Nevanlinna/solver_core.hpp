@@ -57,6 +57,6 @@ namespace triqs_Nevanlinna {
 
     private:
     // vector of Nevanlinna factorization kernels for multi-orbital factorization
-    std::unique_ptr<kernel> _kernel;
+    std::unique_ptr<kernel> _kernel{};
   };
 } // namespace triqs_Nevanlinna

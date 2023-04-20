@@ -40,7 +40,7 @@ namespace triqs_Nevanlinna {
     evaluate(nda::vector_const_view<std::complex<double>> grid,
              nda::vector_const_view<std::complex<double>> theta_M_1 = nda::vector_const_view<std::complex<double>>());
 
-    nda::vector<double> get_Pick_eigenvalues() const {
+    [[nodiscard]] nda::vector<double> get_Pick_eigenvalues() const {
       auto M = _data.shape()[0];
       if (M == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
       //fill the Pick matrix
@@ -60,12 +60,12 @@ namespace triqs_Nevanlinna {
     }
 
     private:
-    nda::vector<complex_mpt> _phis;
-    nda::vector<matrix_cplx_mpt> _abcds;
-    nda::vector<complex_mpt> _mesh;
-    nda::vector<complex_mpt> _data;
-    nda::vector<complex_mpt> _grid;
-    nda::vector<matrix_cplx_mpt> _coeffs;
+    nda::vector<complex_mpt> _phis{};
+    nda::vector<matrix_cplx_mpt> _abcds{};
+    nda::vector<complex_mpt> _mesh{};
+    nda::vector<complex_mpt> _data{};
+    nda::vector<complex_mpt> _grid{};
+    nda::vector<matrix_cplx_mpt> _coeffs{};
 
     [[nodiscard]] nda::vector<complex_mpt> mobius_trasformation(nda::vector_const_view<std::complex<double>> data) const;
 
