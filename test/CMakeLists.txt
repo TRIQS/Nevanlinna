@@ -1,5 +1,5 @@
 add_subdirectory(c++)
 
-if(PythonSupport)
+if(Python_Support)
  add_subdirectory(python)
 endif()

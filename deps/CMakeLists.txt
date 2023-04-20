@@ -48,7 +48,7 @@ else()
 endif()
 
 # -- Cpp2Py --
-if(PythonSupport OR Build_Documentation)
+if(Python_Support OR Build_Documentation)
   external_dependency(Cpp2Py
     GIT_REPO https://github.com/TRIQS/cpp2py
     VERSION 2.0
@@ -57,6 +57,12 @@ if(PythonSupport OR Build_Documentation)
     EXCLUDE_FROM_ALL
   )
 endif()
+
+# -- nda --
+external_dependency(nda
+  GIT_REPO https://github.com/TRIQS/nda
+  GIT_TAG DEV_CUDA_LINALG_MIGUEL
+)
 
 # -- GTest --
 external_dependency(GTest

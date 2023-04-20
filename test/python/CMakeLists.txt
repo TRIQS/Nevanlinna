@@ -5,7 +5,9 @@ foreach(file ${all_h5_ref_files})
 endforeach()
 
 # List of all tests
-set(all_tests Solver)
+if(TRIQS_Support)
+  set(all_tests Solver)
+endif()
 
 foreach(test ${all_tests})
   get_filename_component(test_name ${test} NAME_WE)
