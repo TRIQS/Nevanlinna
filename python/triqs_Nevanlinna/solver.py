@@ -5,7 +5,7 @@ from .solver_core import SolverCore
 
 class Solver(SolverCore):
 
-    def __init__(self, kernel='kernels::NEVANLINNA', precision=100):
+    def __init__(self, kernel='NEVANLINNA', precision=100):
         SolverCore.__init__(self, kernel=kernel, precision=precision)
 
     def optimize(self, grid, eta, target, nk=15, maxiter=1000, gtol=1e-3):

@@ -27,7 +27,7 @@ TEST(NevanlinnaSolver, TriqsGFData) { // NOLINT
 }
 
 TEST(CaratheodorySolver, TriqsGFData) { // NOLINT
-  Nevanlinna_parameters_t p{kernels::CARATHEODORY, 128};
+  Nevanlinna_parameters_t p{CARATHEODORY, 128};
   solver_core a(p);
   const double eta = 0.1;
   const double mu = 1.0;

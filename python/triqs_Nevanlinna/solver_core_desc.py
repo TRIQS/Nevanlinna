@@ -20,7 +20,7 @@ module.add_preamble("""
 using namespace triqs_Nevanlinna;
 """)
 
-module.add_enum("kernels", ['kernels::NEVANLINNA', 'kernels::CARATHEODORY'], "triqs_Nevanlinna", doc = r"""""")
+module.add_enum("kernels", ['NEVANLINNA', 'CARATHEODORY'], "triqs_Nevanlinna", doc = r"""""")
 
 # The class solver_core
 c = class_(
@@ -30,17 +30,17 @@ c = class_(
         hdf5 = False,
 )
 
-c.add_constructor("""(**Nevanlinna_parameters_t)""", doc = r"""
+c.add_constructor("""(**triqs_Nevanlinna::Nevanlinna_parameters_t)""", doc = r"""
 
 
 
-+----------------+---------+------------+---------------+
-| Parameter Name | Type    | Default    | Documentation |
-+================+=========+============+===============+
-| kernel         | kernels | NEVANLINNA |               |
-+----------------+---------+------------+---------------+
-| precision      | int     | 100        |               |
-+----------------+---------+------------+---------------+
++----------------+---------------------------+------------+---------------+
+| Parameter Name | Type                      | Default    | Documentation |
++================+===========================+============+===============+
+| kernel         | triqs_Nevanlinna::kernels | NEVANLINNA |               |
++----------------+---------------------------+------------+---------------+
+| precision      | int                       | 100        |               |
++----------------+---------------------------+------------+---------------+
 """)
 
 c.add_method("""void solve (triqs::gfs::gf_view<triqs::mesh::imfreq> g_iw)""",
@@ -88,7 +88,7 @@ c = converter_(
         doc = r"""""",
 )
 c.add_member(c_name = "kernel",
-             c_type = "kernels",
+             c_type = "triqs_Nevanlinna::kernels",
              initializer = """ NEVANLINNA """,
              doc = r"""""")
 
