@@ -30,28 +30,37 @@ endif()
 project(triqs_Nevanlinna VERSION 3.1.0 LANGUAGES C CXX)
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
-
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# ############
-# Load TRIQS and CPP2PY
-find_package(TRIQS 3.1 REQUIRED)
-
 # Get the git hash & print status
-triqs_get_git_hash_of_source_dir(PROJECT_GIT_HASH)
+execute_process(COMMAND git rev-parse HEAD WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} OUTPUT_VARIABLE PROJECT_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "${PROJECT_NAME} version : ${PROJECT_VERSION}")
 message(STATUS "${PROJECT_NAME} Git hash: ${PROJECT_GIT_HASH}")
 
-# Enforce Consistent Versioning
-if(NOT ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} VERSION_EQUAL ${TRIQS_VERSION_MAJOR}.${TRIQS_VERSION_MINOR})
-  message(FATAL_ERROR "The ${PROJECT_NAME} version ${PROJECT_VERSION} is not compatible with TRIQS version ${TRIQS_VERSION}.")
+# ############
+# Load TRIQS
+option(TRIQS_Support "TRIQS Support" ON)
+if(TRIQS_Support)
+  find_package(TRIQS 3.1 REQUIRED)
+  message(STATUS "Compiling with TRIQS Support")
+  
+  # Enforce Consistent Versioning
+  if(NOT ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} VERSION_EQUAL ${TRIQS_VERSION_MAJOR}.${TRIQS_VERSION_MINOR})
+    message(FATAL_ERROR "The ${PROJECT_NAME} version ${PROJECT_VERSION} is not compatible with TRIQS version ${TRIQS_VERSION}.")
+  endif()
+else()
+  message(STATUS "Compiling without TRIQS Support! Limited functionality")
 endif()
 
 # Default Install directory to TRIQS_ROOT if not given or invalid.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR (NOT IS_ABSOLUTE ${CMAKE_INSTALL_PREFIX}))
-  message(STATUS "No install prefix given (or invalid). Defaulting to TRIQS_ROOT")
-  set(CMAKE_INSTALL_PREFIX ${TRIQS_ROOT} CACHE PATH "default install path" FORCE)
-  set(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT FALSE)
+  if(TRIQS_Support)
+    message(STATUS "No install prefix given (or invalid). Defaulting to TRIQS_ROOT")
+    set(CMAKE_INSTALL_PREFIX ${TRIQS_ROOT} CACHE PATH "default install path" FORCE)
+    set(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT FALSE)
+  else()
+  message(FATAL_ERROR "No install prefix given (or invalid)")
+  endif()
 endif()
 if(NOT IS_SUBPROJECT)
   message(STATUS "-------- CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX} --------")
@@ -73,15 +82,12 @@ if(NOT IS_SUBPROJECT)
 endif()
 
 # Python Support
-option(PythonSupport "Build with Python support" ON)
-if(PythonSupport AND NOT TRIQS_WITH_PYTHON_SUPPORT)
-  message(FATAL_ERROR "TRIQS was installed without Python support. Cannot build the Python Interface. Disable the build with -DPythonSupport=OFF")
-endif()
+option(Python_Support "Build with Python support" ON)
 
 # Documentation
 option(Build_Documentation "Build documentation" OFF)
-if(Build_Documentation AND NOT PythonSupport)
-  message(FATAL_ERROR "Build_Documentation=ON requires PythonSupport to be enabled")
+if(Build_Documentation AND NOT Python_Support)
+  message(FATAL_ERROR "Build_Documentation=ON requires Python_Support to be enabled")
 endif()
 
 # Testing
@@ -143,7 +149,7 @@ if(Build_Tests)
 endif()
 
 # Python
-if(PythonSupport)
+if(Python_Support)
   add_subdirectory(python/${PROJECT_NAME})
 endif()
 

@@ -29,15 +29,19 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING
 find_package(Eigen3 REQUIRED)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
 
-find_package(Boost REQUIRED)
-target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
 
-option(WITH_MPFR OFF "Use MPFR as a backend for multiprecision operations.")
+find_package(OpenMP REQUIRED COMPONENTS CXX)
+target_link_libraries(${PROJECT_NAME}_c PUBLIC OpenMP::OpenMP_CXX)
+
+option(WITH_MPFR "Use MPFR as a backend for multiprecision operations. Fallback is boost multiprecision" ON)
 if(WITH_MPFR)
   find_package(MPFR REQUIRED)
   target_compile_definitions(${PROJECT_NAME}_c PUBLIC WITH_MPFR)
   target_link_libraries(${PROJECT_NAME}_c PUBLIC MPFR::Library)
-endif(WITH_MPFR)
+else()
+  find_package(Boost REQUIRED)
+  target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
+endif()
 
 # ========= Static Analyzer Checks ==========
 
