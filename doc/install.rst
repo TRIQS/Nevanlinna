@@ -67,9 +67,13 @@ The compilation of ``Nevanlinna`` can be configured using CMake-options::
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Options                                                         | Syntax                                        |
 +=================================================================+===============================================+
-| Specify an installation path other than path_to_triqs           | -DCMAKE_INSTALL_PREFIX=path_to_Nevanlinna      |
+| Specify an installation path other than path_to_triqs           | -DCMAKE_INSTALL_PREFIX=path_to_Nevanlinna     |
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Build in Debugging Mode                                         | -DCMAKE_BUILD_TYPE=Debug                      |
++-----------------------------------------------------------------+-----------------------------------------------+
+| Build the without TRIQS Support                                 | -DTRIQS_Support=OFF                           |
++-----------------------------------------------------------------+-----------------------------------------------+
+| Build the without Python Support                                | -DPython_Support=OFF                          |
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Disable testing (not recommended)                               | -DBuild_Tests=OFF                             |
 +-----------------------------------------------------------------+-----------------------------------------------+
