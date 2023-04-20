@@ -3,7 +3,7 @@
 from cpp2py.wrap_generator import *
 
 # The module
-module = module_(full_name = "kernels", doc = r"The Nevanlinna kernels python module", app_name = "triqs_Nevanlinna")
+module = module_(full_name = "kernels_core", doc = r"The Nevanlinna kernels python module", app_name = "triqs_Nevanlinna")
 
 # Imports
 

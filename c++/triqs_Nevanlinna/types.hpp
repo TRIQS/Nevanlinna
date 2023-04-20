@@ -24,6 +24,9 @@ namespace triqs_Nevanlinna {
   using complex_mpt = std::complex<boost::multiprecision::number<boost::multiprecision::cpp_dec_float<mp_digits>, boost::multiprecision::et_off>>;
 #endif
   using matrix_cplx_mpt = Eigen::Matrix<complex_mpt, Eigen::Dynamic, Eigen::Dynamic>;
+  static const auto I       = complex_mpt{0., 1.};
+  static const auto One     = complex_mpt{1., 0.};
+
 } // namespace triqs_Nevanlinna
 
 #endif //TRIQS_NEVANLINNA_TYPES_HPP

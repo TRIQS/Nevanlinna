@@ -1,4 +1,7 @@
 #include "Nevanlinna_factorization.hpp"
+#include <itertools/omp_chunk.hpp>
+#include <mpi/mpi.hpp>
+#include <nda/mpi/reduce.hpp>
 
 using namespace std::complex_literals;
 
@@ -65,11 +68,12 @@ namespace triqs_Nevanlinna {
     _coeffs = std::vector<matrix_cplx_mpt>(grid.size());
     _grid.resize(grid.size());
     std::transform(grid.begin(), grid.end(), _grid.begin(), [](const std::complex<double> &w) { return complex_mpt{w.real(), w.imag()}; });
-    auto I       = complex_mpt{0., 1.};
-    auto One     = complex_mpt{1., 0.};
     auto results = nda::vector<std::complex<double>>(grid.size());
+#pragma omp parallel
+{
     auto prod    = matrix_cplx_mpt(2, 2);
-    for (int i = 0; i < grid.size(); ++i) {
+
+    for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
       matrix_cplx_mpt result = matrix_cplx_mpt::Identity(2, 2);
       auto z                 = _grid[i];
       for (int j = 0; j < M; j++) {
@@ -83,6 +87,8 @@ namespace triqs_Nevanlinna {
       results(i) =
          -std::complex<double>(value.real().convert_to<double>(), value.imag().convert_to<double>()); //inverse Mobius transform from theta to NG
     }
+}
+    results = mpi::all_reduce(results);
     return results;
   }
 
@@ -93,10 +99,9 @@ namespace triqs_Nevanlinna {
     if (theta_M_1.size() != grid.size() && theta_M_1.size() != 0) {
       throw Nevanlinna_error("theta_{M+1} should either have a value at every frequency point or be empty.");
     }
-    auto I   = complex_mpt{0., 1.};
-    auto One = complex_mpt{1., 0.};
     nda::vector<std::complex<double>> results(grid.shape());
-    for (int i = 0; i < _grid.size(); ++i) {
+#pragma omp parallel
+    for (auto i : mpi::chunk(omp_chunk(range(_grid.size())))) {
       auto result         = _coeffs[i];
       auto theta_M_plus_1 = theta_M_1.size() == 0 ? complex_mpt{0., 0.} : complex_mpt{theta_M_1(i).real(), theta_M_1(i).imag()};
 
@@ -105,6 +110,7 @@ namespace triqs_Nevanlinna {
       //inverse Mobius transform from theta to NG
       results(i) = -std::complex<double>(value.real().convert_to<double>(), value.imag().convert_to<double>());
     }
+    results = mpi::all_reduce(results);
     return results;
   }
 

@@ -37,7 +37,7 @@ class test_solver(unittest.TestCase):
         solver = Solver(kernel="kernels::CARATHEODORY", precision=128)
         solver.solve(g_im)
         g_re_solver = solver.evaluate(self.w_mesh, self.eta)
-        print(solver.pick_eigenvalues)
+        print(solver.Pick_eigenvalues)
         self.assertTrue(np.allclose(g_re_solver.data, g_re.data))
 
 

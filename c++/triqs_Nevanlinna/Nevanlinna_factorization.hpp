@@ -45,13 +45,11 @@ namespace triqs_Nevanlinna {
       if (M == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
       //fill the Pick matrix
       auto Pick = Eigen::MatrixXcd(M, M);
-      auto I    = complex_mpt{0., 1.};
-      auto one  = complex_mpt{1., 0.};
       for (int i = 0; i < M; i++) {
         for (int j = 0; j < M; j++) {
           complex_mpt freq_i = (_mesh(i) - I) / (_mesh(i) + I);
           complex_mpt freq_j = (_mesh(j) - I) / (_mesh(j) + I);
-          auto val           = (one - _data(i) * std::conj(_data(j))) / (one - freq_i * std::conj(freq_j));
+          auto val           = (One - _data(i) * std::conj(_data(j))) / (One - freq_i * std::conj(freq_j));
           Pick(i, j)         = std::complex<double>(val.real().convert_to<double>(), val.imag().convert_to<double>());
         }
       }

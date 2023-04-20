@@ -9,8 +9,6 @@ namespace triqs_Nevanlinna {
     _Ws.resize(nw);
     _sqrt_one.resize(nw);
     _sqrt_two.resize(nw);
-    auto One = complex_mpt{1., 0.};
-    auto I   = complex_mpt{0., 1.};
     auto id  = matrix_cplx_mpt::Identity(_dim, _dim);
     auto val = matrix_cplx_mpt(_dim, _dim);
     for (int iw = mesh.shape()[0] - 1, w = 0; iw >= 0; --iw) {
@@ -52,8 +50,6 @@ namespace triqs_Nevanlinna {
     if (_dim == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
     std::vector<matrix_cplx_mpt> Vs(_mesh.size()); //intermediate Vs (for calculating Psis)
     std::vector<matrix_cplx_mpt> Fs(_mesh.size()); //intermediate Psis (Schur class functions)
-    auto One = complex_mpt{1., 0.};
-    auto I   = complex_mpt{0., 1.};
     auto id  = matrix_cplx_mpt::Identity(_dim, _dim);
     nda::array<std::complex<double>, 3> results(grid.shape()[0], _dim, _dim);
     for (int i = 0; i < grid.shape()[0]; i++) {
@@ -87,8 +83,6 @@ namespace triqs_Nevanlinna {
     auto N    = _data(0).cols();
     auto Pick = Eigen::MatrixXcd(nw * N, nw * N);
     auto id   = matrix_cplx_mpt::Identity(N, N);
-    auto One  = complex_mpt{1., 0.};
-    auto I    = complex_mpt{0., 1.};
     for (int i = 0; i < nw; i++) {
       for (int j = 0; j < nw; j++) {
         auto val = (id - _data(i).adjoint() * _data(j)) / (One - std::conj(_mesh(i)) * _mesh(j));
