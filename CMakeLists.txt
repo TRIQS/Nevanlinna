@@ -96,6 +96,8 @@ if(Build_Tests)
   enable_testing()
 endif()
 
+option(Build_Examples "Build examples" ON)
+
 # Build static libraries by default
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 
@@ -156,6 +158,10 @@ endif()
 # Docs
 if(Build_Documentation)
   add_subdirectory(doc)
+endif()
+
+if(Build_Examples)
+  add_subdirectory(examples)
 endif()
 
 # Additional configuration files
