@@ -45,7 +45,8 @@ option(WITH_MPFR "Use MPFR as a backend for multiprecision operations." ON)
 if(WITH_MPFR)
   find_package(MPFR REQUIRED)
   target_compile_definitions(${PROJECT_NAME}_c PUBLIC WITH_MPFR)
-  target_link_libraries(${PROJECT_NAME}_c PUBLIC MPFR::Library)
+  target_link_libraries(${PROJECT_NAME}_c PUBLIC MPFR)
+  install(TARGETS MPFR EXPORT ${PROJECT_NAME}-targets)
 endif()
 
 # ========= Static Analyzer Checks ==========
