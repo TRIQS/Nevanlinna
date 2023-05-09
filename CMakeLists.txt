@@ -82,7 +82,7 @@ if(NOT IS_SUBPROJECT)
 endif()
 
 # Python Support
-option(Python_Support "Build with Python support" ON)
+option(PythonSupport "Build with Python support" ON)
 
 # Documentation
 option(Build_Documentation "Build documentation" OFF)
@@ -151,7 +151,7 @@ if(Build_Tests)
 endif()
 
 # Python
-if(Python_Support)
+if(PythonSupport)
   add_subdirectory(python/${PROJECT_NAME})
 endif()
 

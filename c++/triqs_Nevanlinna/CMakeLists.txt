@@ -1,13 +1,15 @@
 file(GLOB_RECURSE sources *.cpp)
+
+if(NOT TRIQS_Support)
+    list(FILTER sources EXCLUDE REGEX ".*solver_core\\.cpp")
+endif()
+
 add_library(${PROJECT_NAME}_c ${sources})
 add_library(${PROJECT_NAME}::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
 
-if(NOT TRIQS_Support)
-  list(REMOVE_ITEM sources "solver_core.cpp")
-endif()
 
 # Link against triqs and enable warnings
-target_link_libraries(${PROJECT_NAME}_c PUBLIC nda::nda_c $<$<BOOL:TRIQS_Support>:triqs> PRIVATE $<BUILD_INTERFACE:${PROJECT_NAME}_warnings>)
+target_link_libraries(${PROJECT_NAME}_c PUBLIC nda::nda_c $<$<BOOL:${TRIQS_Support}>:triqs> PRIVATE $<BUILD_INTERFACE:${PROJECT_NAME}_warnings>)
 
 # Configure target and compilation
 set_target_properties(${PROJECT_NAME}_c PROPERTIES

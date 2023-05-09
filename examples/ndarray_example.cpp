@@ -20,7 +20,9 @@ int main(int argc, char **argv) {
   h5::file input(std::string(DATA_PATH) + "/input.h5", 'r');
   h5::group top(input);
   nda::h5_read(top, std::string("data"), G_iw);
-  nda::h5_read(top, std::string("mesh"), mesh);
+  nda::array<double, 1> tmp;
+  nda::h5_read(top, std::string("mesh"), tmp);
+  mesh = tmp;
   mesh *= 1i;
 
   kernel.init(mesh, G_iw);
