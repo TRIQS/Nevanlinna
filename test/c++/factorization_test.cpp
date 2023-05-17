@@ -5,6 +5,7 @@
 #include <triqs_Nevanlinna/Nevanlinna_factorization.hpp>
 
 using namespace triqs_Nevanlinna;
+using namespace std::complex_literals;
 
 TEST(NevanlinnaFactorization, EvaluateData) { // NOLINT
   std::string root = TEST_PATH;
