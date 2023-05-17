@@ -1,7 +1,9 @@
 #include "Nevanlinna_factorization.hpp"
 #include <itertools/omp_chunk.hpp>
+#ifdef NEV_PARALLEL
 #include <mpi/mpi.hpp>
 #include <nda/mpi/reduce.hpp>
+#endif
 
 using namespace std::complex_literals;
 
@@ -69,11 +71,16 @@ namespace triqs_Nevanlinna {
     _grid.resize(grid.size());
     std::transform(grid.begin(), grid.end(), _grid.begin(), [](const std::complex<double> &w) { return complex_mpt{w.real(), w.imag()}; });
     auto results = nda::vector<std::complex<double>>(grid.size());
+#ifdef NEV_PARALLEL
 #pragma omp parallel
     {
+#endif
       auto prod = matrix_cplx_mpt(2, 2);
-
+#ifdef NEV_PARALLEL
       for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
+#else
+      for (auto i : range(grid.size())) {
+#endif
         matrix_cplx_mpt result = matrix_cplx_mpt::Identity(2, 2);
         auto z                 = _grid[i];
         for (int j = 0; j < M; j++) {
@@ -87,8 +94,10 @@ namespace triqs_Nevanlinna {
         results(i) =
            -std::complex<double>(value.real().convert_to<double>(), value.imag().convert_to<double>()); //inverse Mobius transform from theta to NG
       }
+#ifdef NEV_PARALLEL
     }
     results = mpi::all_reduce(results);
+#endif
     return results;
   }
 
@@ -100,8 +109,12 @@ namespace triqs_Nevanlinna {
       throw Nevanlinna_error("theta_{M+1} should either have a value at every frequency point or be empty.");
     }
     nda::vector<std::complex<double>> results(grid.shape());
+#ifdef NEV_PARALLEL
 #pragma omp parallel
     for (auto i : mpi::chunk(omp_chunk(range(_grid.size())))) {
+#else
+    for (auto i : range(_grid.size())) {
+#endif
       auto result         = _coeffs[i];
       auto theta_M_plus_1 = theta_M_1.size() == 0 ? complex_mpt{0., 0.} : complex_mpt{theta_M_1(i).real(), theta_M_1(i).imag()};
 
@@ -110,7 +123,9 @@ namespace triqs_Nevanlinna {
       //inverse Mobius transform from theta to NG
       results(i) = -std::complex<double>(value.real().convert_to<double>(), value.imag().convert_to<double>());
     }
+#ifdef NEV_PARALLEL
     results = mpi::all_reduce(results);
+#endif
     return results;
   }
 

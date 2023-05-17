@@ -21,6 +21,8 @@ namespace triqs_Nevanlinna {
     [[nodiscard]] nda::array<std::complex<double>, 3> evaluate(nda::vector_const_view<std::complex<double>> grid) override;
     [[nodiscard]] nda::array<std::complex<double>, 3> evaluate(nda::vector_const_view<std::complex<double>> grid,
                                                                nda::array_const_view<std::complex<double>, 3> theta) override;
+    void init_diagonal(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 2> data);
+    [[nodiscard]] nda::array<std::complex<double>, 2> evaluate_diagonal(nda::vector_const_view<std::complex<double>> grid);
 
     [[nodiscard]] size_t size() const override { return _factorizations.size(); }
 

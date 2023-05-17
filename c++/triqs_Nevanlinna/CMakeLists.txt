@@ -37,8 +37,13 @@ target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
 find_package(Boost REQUIRED)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
 
-find_package(OpenMP REQUIRED COMPONENTS CXX)
-target_link_libraries(${PROJECT_NAME}_c PUBLIC OpenMP::OpenMP_CXX)
+
+option(NEV_PARALLEL "Use MPI/OpenMP parallelization." OFF)
+if(NEV_PARALLEL)
+    find_package(OpenMP REQUIRED COMPONENTS CXX)
+    target_link_libraries(${PROJECT_NAME}_c PUBLIC OpenMP::OpenMP_CXX)
+    target_compile_definitions(${PROJECT_NAME}_c PUBLIC NEV_PARALLEL)
+endif()
 
 option(WITH_MPFR "Use MPFR as a backend for multiprecision operations." ON)
 if(WITH_MPFR)

@@ -37,6 +37,37 @@ namespace triqs_Nevanlinna {
     }
     return results;
   }
+
+  void Nevanlinna_kernel::init_diagonal(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 2> data) {
+    _factorizations.clear();
+    size_t N  = data.shape()[1];
+    size_t nw = std::count_if(mesh.begin(), mesh.end(), [](const std::complex<double> &w) { return w.imag() > 0; });
+    nda::vector<std::complex<double>> data_in(nw);
+    nda::vector<std::complex<double>> mesh_in(nw);
+    _N_im_freq = nw;
+    for (size_t n = 0; n < N; ++n) {
+      for (size_t iw = 0, iww = 0; iw < mesh.shape()[0]; ++iw) {
+        if (mesh(iw).imag() < 0) continue;
+        data_in(iww) = data(iw, n);
+        mesh_in(iww) = mesh(iw);
+        ++iww;
+      }
+      Nevanlinna_factorization f;
+      f.build(mesh_in, data_in);
+      _factorizations.push_back(f);
+    }
+  }
+
+  nda::array<std::complex<double>, 2> Nevanlinna_kernel::evaluate_diagonal(nda::vector_const_view<std::complex<double>> grid) {
+    nda::array<std::complex<double>, 2> results(grid.shape()[0], size());
+    nda::vector<std::complex<double>> theta_(0);
+    for (size_t n = 0; n < size(); ++n) {
+      nda::vector<std::complex<double>> data = _factorizations[n].evaluate(grid, theta_);
+      for (size_t iw = 0; iw < grid.shape()[0]; ++iw) { results(iw, n) = data(iw); }
+    }
+    return results;
+  }
+
   nda::vector<double> Nevanlinna_kernel::get_Pick_eigenvalues() const {
     if (size() == 0) { return {}; }
     nda::vector<double> pick_eigenvalues(_N_im_freq * size());
