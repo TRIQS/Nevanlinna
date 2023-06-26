@@ -3,10 +3,10 @@
 .. _install:
 
 Install Nevanlinna
-*******************
+******************
 
 Compiling Nevanlinna from source
-===============================
+================================
 
 .. note:: To guarantee reproducibility in scientific calculations we strongly recommend the use of a stable `release <https://github.com/TRIQS/triqs/releases>`_ of both TRIQS and its applications.
 
@@ -21,15 +21,11 @@ Installation steps
 
 #. Download the source code of the latest stable version by cloning the ``TRIQS/Nevanlinna`` repository from GitHub::
 
-     $ git clone https://github.com/TRIQS/Nevanlinna nevanlinna.src
+     $ git clone https://github.com/TRIQS/Nevanlinna Nevanlinna.src
 
 #. Create and move to a new directory where you will compile the code::
 
-     $ mkdir Nevanlinna.build && cd nevanlinna.build
-
-#. Ensure that your shell contains the TRIQS environment variables by sourcing the ``triqsvars.sh`` file from your TRIQS installation::
-
-     $ source path_to_triqs/share/triqs/triqsvars.sh
+     $ mkdir Nevanlinna.build && cd Nevanlinna.build
 
 #. In the build directory call cmake, including any additional custom CMake options, see below::
 

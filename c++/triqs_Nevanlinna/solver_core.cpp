@@ -6,7 +6,7 @@ namespace triqs_Nevanlinna {
 
   void solver_core::solve(triqs::gfs::gf_const_view<triqs::mesh::imfreq> g_iw) {
     nda::vector<std::complex<double>> mesh(g_iw.mesh().size());
-    std::transform(g_iw.mesh().begin(), g_iw.mesh().end(), mesh.begin(), [](const triqs::mesh::imfreq::domain_pt_t &w) { return w; });
+    std::transform(g_iw.mesh().begin(), g_iw.mesh().end(), mesh.begin(), [](const triqs::mesh::imfreq::value_t &w) { return w; });
     _kernel->init(mesh, g_iw.data());
   }
 

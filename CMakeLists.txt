@@ -19,18 +19,16 @@
 #
 # ##############################################################################
 
-cmake_minimum_required(VERSION 3.12.4 FATAL_ERROR)
-cmake_policy(VERSION 3.12.4)
-if(POLICY CMP0077)
-  cmake_policy(SET CMP0077 NEW)
-endif()
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+cmake_policy(VERSION 3.20)
 
 # ############
 # Define Project
-project(triqs_Nevanlinna VERSION 3.1.0 LANGUAGES C CXX)
+project(triqs_Nevanlinna VERSION 3.2.0 LANGUAGES C CXX)
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
 
 # Get the git hash & print status
 execute_process(COMMAND git rev-parse HEAD WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} OUTPUT_VARIABLE PROJECT_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -82,7 +80,7 @@ if(NOT IS_SUBPROJECT)
 endif()
 
 # Python Support
-option(PythonSupport "Build with Python support" ON)
+option(Python_Support "Build with Python support" ON)
 
 # Documentation
 option(Build_Documentation "Build documentation" OFF)
@@ -119,6 +117,7 @@ target_compile_options(${PROJECT_NAME}_warnings
   INTERFACE
     -Wall
     -Wextra
+    -Wfloat-conversion
     -Wpedantic
     -Wno-sign-compare
     $<$<CXX_COMPILER_ID:GNU>:-Wno-comma-subscript>
@@ -151,7 +150,7 @@ if(Build_Tests)
 endif()
 
 # Python
-if(PythonSupport)
+if(Python_Support)
   add_subdirectory(python/${PROJECT_NAME})
 endif()
 
@@ -180,7 +179,7 @@ if(BUILD_DEBIAN_PACKAGE AND NOT IS_SUBPROJECT)
   set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
   set(CPACK_PACKAGE_CONTACT "https://github.com/TRIQS/Nevanlinna")
   execute_process(COMMAND dpkg --print-architecture OUTPUT_VARIABLE CMAKE_DEBIAN_PACKAGE_ARCHITECTURE OUTPUT_STRIP_TRAILING_WHITESPACE)
-  set(CPACK_DEBIAN_PACKAGE_DEPENDS "triqs (>= 3.1)")
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS "triqs (>= 3.2)")
   set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
   set(CPACK_DEBIAN_PACKAGE_GENERATE_SHLIBS ON)
   include(CPack)

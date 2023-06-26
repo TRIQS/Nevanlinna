@@ -24,7 +24,7 @@ macro(generate_docs header_file)
   )
 endmacro(generate_docs)
 
-generate_docs(${PROJECT_SOURCE_DIR}/c++/${PROJECT_NAME}/solver.hpp)
+generate_docs(${PROJECT_SOURCE_DIR}/c++/${PROJECT_NAME}/solver_core.hpp)
 
 # --------------------------------------------------------
 # Build & Run the C++ doc examples and capture the output
@@ -76,6 +76,6 @@ endif()
 # ---------------------------------
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html/ COMPONENT documentation DESTINATION share/doc/${PROJECT_NAME}
   FILES_MATCHING
-  REGEX "\\.(html|pdf|png|gif|jpg|svg|js|xsl|css|py|txt|inv|bib|ttf|woff2|eot)$"
+  REGEX "\\.(html|pdf|png|gif|jpg|svg|ico|js|xsl|css|py|txt|inv|bib|ttf|woff2|eot)$"
   PATTERN "_*"
 )
