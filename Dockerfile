@@ -2,7 +2,7 @@
 FROM flatironinstitute/triqs:unstable-ubuntu-clang
 ARG APPNAME=Nevanlinna
 
-RUN apt-get install -y libeigen3-dev
+RUN apt-get install -y libeigen3-dev libmpfr-dev
 
 COPY requirements.txt /src/$APPNAME/requirements.txt
 RUN pip3 install -r /src/$APPNAME/requirements.txt
