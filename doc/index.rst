@@ -14,7 +14,7 @@ Nevanlinna
          :target: https://github.com/triqs/Nevanlinna
 
 
-An example application using cpp2py and :ref:`TRIQS <triqslibs:welcome>`.
+Nevanlinna analytic continuation.
 
 This documentation is generated based on `rst <https://de.wikipedia.org/wiki/ReStructuredText>`_ files
 and the comments in the sources and headers.

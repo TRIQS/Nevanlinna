@@ -1,8 +1,10 @@
-#include <triqs/test_tools/gfs.hpp>
+#include <gtest/gtest.h>
+#include <nda/gtest_tools.hpp>
 #include <triqs_Nevanlinna/Nevanlinna_kernel.hpp>
 #include <triqs_Nevanlinna/Caratheodory_kernel.hpp>
 
 using namespace triqs_Nevanlinna;
+using namespace std::complex_literals;
 
 TEST(NevanlinnaKernelFactorization, EvaluateData) {
   const double eta = 0.1;

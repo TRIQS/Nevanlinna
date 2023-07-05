@@ -1,9 +1,14 @@
 file(GLOB_RECURSE sources *.cpp)
+
+if(NOT TRIQS_Support)
+    list(FILTER sources EXCLUDE REGEX ".*solver_core\\.cpp")
+endif()
+
 add_library(${PROJECT_NAME}_c ${sources})
 add_library(${PROJECT_NAME}::${PROJECT_NAME}_c ALIAS ${PROJECT_NAME}_c)
 
-# Link against triqs and enable warnings
-target_link_libraries(${PROJECT_NAME}_c PUBLIC triqs PRIVATE $<BUILD_INTERFACE:${PROJECT_NAME}_warnings>)
+# Link against nda / triqs and enable warnings
+target_link_libraries(${PROJECT_NAME}_c PUBLIC nda::nda_c $<$<BOOL:${TRIQS_Support}>:triqs> PRIVATE $<BUILD_INTERFACE:${PROJECT_NAME}_warnings>)
 
 # Configure target and compilation
 set_target_properties(${PROJECT_NAME}_c PROPERTIES
@@ -32,12 +37,16 @@ target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
 find_package(Boost REQUIRED)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
 
-option(WITH_MPFR OFF "Use MPFR as a backend for multiprecision operations.")
+find_package(OpenMP REQUIRED COMPONENTS CXX)
+target_link_libraries(${PROJECT_NAME}_c PUBLIC OpenMP::OpenMP_CXX)
+
+option(WITH_MPFR "Use MPFR as a backend for multiprecision operations." ON)
 if(WITH_MPFR)
   find_package(MPFR REQUIRED)
   target_compile_definitions(${PROJECT_NAME}_c PUBLIC WITH_MPFR)
-  target_link_libraries(${PROJECT_NAME}_c PUBLIC MPFR::Library)
-endif(WITH_MPFR)
+  target_link_libraries(${PROJECT_NAME}_c PUBLIC MPFR)
+  install(TARGETS MPFR EXPORT ${PROJECT_NAME}-targets)
+endif()
 
 # ========= Static Analyzer Checks ==========
 

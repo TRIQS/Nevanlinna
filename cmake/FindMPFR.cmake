@@ -71,12 +71,12 @@ find_package_handle_standard_args(MPFR DEFAULT_MSG
         MPFR_INCLUDES MPFR_LIBRARIES MPFR_VERSION_OK)
 mark_as_advanced(MPFR_INCLUDES MPFR_LIBRARIES)
 
-if(MPFR_INCLUDES AND MPFR_LIBRARIES AND NOT TARGET MPFR::Library)
-    add_library(MPFR::Library INTERFACE IMPORTED)
-    set_target_properties(MPFR::Library PROPERTIES
+if(MPFR_INCLUDES AND MPFR_LIBRARIES AND NOT TARGET MPFR)
+    add_library(MPFR INTERFACE)
+    set_target_properties(MPFR PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES ${MPFR_INCLUDES}
             )
-    set_target_properties(MPFR::Library PROPERTIES
+    set_target_properties(MPFR PROPERTIES
             INTERFACE_LINK_LIBRARIES ${MPFR_LIBRARIES}
             )
 endif()
@@ -85,10 +85,10 @@ find_path(GMPXX_INCLUDES NAMES gmpxx.h PATHS $ENV{GMPDIR} $ENV{MPFRDIR}
         ${INCLUDE_INSTALL_DIR})
 message(STATUS "GMPXX_INCLUDES=${GMPXX_INCLUDES}")
 
-if(GMPXX_INCLUDES AND TARGET MPFR::Library AND NOT TARGET MPFR::GMPXX)
-    add_library(MPFR::GMPXX INTERFACE IMPORTED)
-    target_link_libraries(MPFR::GMPXX INTERFACE MPFR::Library)
-    set_target_properties(MPFR::Library PROPERTIES
+if(GMPXX_INCLUDES AND TARGET MPFR AND NOT TARGET GMPXX)
+    add_library(GMPXX INTERFACE)
+    target_link_libraries(GMPXX INTERFACE MPFR)
+    set_target_properties(MPFR PROPERTIES
             INTERFACE_INCLUDE_DIRECTORIES ${GMPXX_INCLUDES}
             )
 endif()

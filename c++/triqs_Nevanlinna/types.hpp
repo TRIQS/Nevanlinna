@@ -22,12 +22,14 @@ namespace triqs_Nevanlinna {
 
   static constexpr int mp_digits = 100;
 #ifdef WITH_MPFR
-  using real_mpt = boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<mp_digits>, boost::multiprecision::et_off>;
+  using real_mpt = boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<0>, boost::multiprecision::et_off>;
 #else
   using real_mpt = boost::multiprecision::number<boost::multiprecision::cpp_dec_float<mp_digits>, boost::multiprecision::et_off>;
 #endif
   using complex_mpt     = std::complex<real_mpt>;
   using matrix_cplx_mpt = Eigen::Matrix<complex_mpt, Eigen::Dynamic, Eigen::Dynamic>;
+  static const auto I   = complex_mpt{0., 1.};
+  static const auto One = complex_mpt{1., 0.};
 
   template <typename T>
   concept ArithmeticTypes = std::is_arithmetic<T>::value && std::is_convertible<T, real_mpt>::value;
@@ -40,8 +42,6 @@ namespace triqs_Nevanlinna {
 
   namespace internal {
     template <typename T, CompatibleTypes<T> U> struct complex_return_t {
-      //      using type         = typename std::enable_if<std::is_convertible<U, T>::value || std::is_convertible<T, U>::value,
-      //                                             typename std::conditional<std::is_convertible<T, U>::value, U, T>::type>::type;
       using type         = decltype(T{} + U{});
       using complex_type = std::complex<type>;
     };
@@ -299,5 +299,4 @@ namespace std {
 
   inline triqs_Nevanlinna::real_mpt imag(const complex<triqs_Nevanlinna::real_mpt> &x) { return x.imag(); }
 } // namespace std
-
 #endif //TRIQS_NEVANLINNA_TYPES_HPP

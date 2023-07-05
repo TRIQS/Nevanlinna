@@ -35,7 +35,7 @@ include(external_dependency.cmake)
 #                     In particular the dependency will not be installed.
 
 if(NOT DEFINED Build_Deps)
-  set(Build_Deps "IfNotFound" CACHE STRING "Do we build dependencies from source? [Never/Always/IfNotFound]")
+  set(Build_Deps "Always" CACHE STRING "Do we build dependencies from source? [Never/Always/IfNotFound]")
 else()
   set(Build_Deps_Opts "Never" "Always" "IfNotFound")
   if(NOT ${Build_Deps} IN_LIST Build_Deps_Opts)
@@ -48,7 +48,7 @@ else()
 endif()
 
 # -- Cpp2Py --
-if(PythonSupport OR Build_Documentation)
+if(Python_Support OR Build_Documentation)
   external_dependency(Cpp2Py
     GIT_REPO https://github.com/TRIQS/cpp2py
     VERSION 2.0
@@ -58,10 +58,16 @@ if(PythonSupport OR Build_Documentation)
   )
 endif()
 
+# -- nda --
+external_dependency(nda
+  GIT_REPO https://github.com/TRIQS/nda
+  GIT_TAG DEV_CUDA_LINALG_MIGUEL
+)
+
 # -- GTest --
 external_dependency(GTest
   GIT_REPO https://github.com/google/googletest
-  GIT_TAG v1.13.0
+  GIT_TAG main
   BUILD_ALWAYS
   EXCLUDE_FROM_ALL
 )

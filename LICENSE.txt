@@ -1,8 +1,8 @@
-triqs_Nevanlinna - Nevanlinna analytical continuation using TRIQS
+Nevanlinna - Analytic continuation
 
-Copyright (C) 2022, Sergei Iskakov
-Copyright (C) 2022, The Simons Foundation
-  authors: N. Wentzell
+Copyright (C) 2023, S. Iskakov
+Copyright (C) 2023, The Simons Foundation
+  authors: A. Hampel, N. Wentzell
 
 Nevanlinna is free software: you can redistribute it and/or modify it under the
 terms of the GNU General Public License as published by the Free Software

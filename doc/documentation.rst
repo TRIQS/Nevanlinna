@@ -4,11 +4,15 @@ Documentation
 *************
 
 
-.. math::
+Tutorials
+=========
 
-   (a + b)^2  &=  (a + b)(a + b) \\
-              &=  a^2 + 2ab + b^2
-
+.. toctree::
+   :maxdepth: 1
+   
+   tutorials/SIAM_discrete
+   tutorials/GW_tutorial
+   tutorials/hubbard_square_non_int
 
 C++ reference manual
 ====================

@@ -1,4 +1,7 @@
-#include <triqs/test_tools/gfs.hpp>
+#include <gtest/gtest.h>
+#include <nda/gtest_tools.hpp>
+#include <h5/h5.hpp>
+#include <nda/h5.hpp>
 #include <triqs_Nevanlinna/Nevanlinna_factorization.hpp>
 
 using namespace triqs_Nevanlinna;

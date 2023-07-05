@@ -8,7 +8,7 @@ if len(sys.argv) != 2:
     print("Please pass the application name")
     sys.exit()
 
-app_name = str(sys.argv[1]).lower()
+app_name = str(sys.argv[1])
 capital_name = app_name.upper()
 
 # Move app4triqs directories if necessary
