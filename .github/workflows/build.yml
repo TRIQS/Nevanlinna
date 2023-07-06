@@ -40,6 +40,7 @@ jobs:
         libc++-15-dev
         libc++abi-15-dev
         libomp-15-dev
+        libeigen3-dev
         libfftw3-dev
         libgfortran5
         libgmp-dev
@@ -63,7 +64,7 @@ jobs:
     - name: Install homebrew dependencies
       if: matrix.os == 'macos-12'
       run: |
-        brew install gcc@12 llvm boost fftw hdf5 open-mpi openblas
+        brew install gcc@12 llvm boost fftw hdf5 open-mpi openblas eigen
         pip3 install mako numpy scipy mpi4py
         pip3 install -r requirements.txt
 

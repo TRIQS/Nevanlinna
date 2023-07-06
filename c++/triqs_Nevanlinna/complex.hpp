@@ -1,8 +1,6 @@
 #ifndef TRIQS_NEVANLINNA_COMPLEX_HPP
 #define TRIQS_NEVANLINNA_COMPLEX_HPP
 
-#include <complex>
-
 #ifdef WITH_MPFR
 #include <boost/multiprecision/mpfr.hpp>
 #else
@@ -20,7 +18,10 @@ namespace triqs_Nevanlinna {
   concept ArithmeticTypes = std::is_arithmetic<T>::value && std::is_convertible<T, real_mpt>::value;
 
   template <typename T>
-  concept CastableTypes = std::is_convertible<T, real_mpt>::value;
+  concept CastableTypes = std::is_convertible<T, real_mpt>::value && !std::is_same<T, real_mpt>::value;
+
+  template <typename T>
+  concept ConvertibleTypes = std::is_convertible<T, real_mpt>::value;
 
   template <typename T, typename U>
   concept CompatibleTypes = std::is_convertible<U, T>::value || std::is_convertible<T, U>::value;
@@ -136,45 +137,45 @@ namespace std {
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator-=(const complex<S> &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator-=(const complex<S> &rhs) {
       _real -= real_t(rhs.real());
       _imag -= real_t(rhs.imag());
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator+=(const complex<S> &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator+=(const complex<S> &rhs) {
       _real += real_t(rhs.real());
       _imag += real_t(rhs.imag());
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator*=(const complex<S> &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator*=(const complex<S> &rhs) {
       *this = *this * rhs;
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator/=(const complex<S> &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator/=(const complex<S> &rhs) {
       *this = *this / rhs;
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator-=(const S &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator-=(const S &rhs) {
       _real -= real_t(rhs);
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator+=(const S &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator+=(const S &rhs) {
       _real += real_t(rhs);
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator*=(const S &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator*=(const S &rhs) {
       _real *= real_t(rhs);
       _imag *= real_t(rhs);
       return *this;
     }
 
-    template <triqs_Nevanlinna::CastableTypes S> complex<real_t> &operator/=(const S &rhs) {
+    template <triqs_Nevanlinna::ConvertibleTypes S> complex<real_t> &operator/=(const S &rhs) {
       _real /= real_t(rhs);
       _imag /= real_t(rhs);
       return *this;
@@ -206,42 +207,30 @@ namespace std {
     return x.real() == y && x.imag() == 0;
   }
 
-  template <typename S> inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
     return triqs_Nevanlinna::internal::complex_multiply(x, y);
   }
-  template <typename S> inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
     return triqs_Nevanlinna::internal::complex_divide(x, y);
   }
-  template <typename S> inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
     return triqs_Nevanlinna::internal::complex_add(x, y);
   }
-  template <typename S> inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
     return triqs_Nevanlinna::internal::complex_sub(x, y);
   }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-  //    return triqs_Nevanlinna::internal::complex_multiply(x, y);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-  //    return triqs_Nevanlinna::internal::complex_divide(x, y);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-  //    return triqs_Nevanlinna::internal::complex_add(x, y);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-  //    return triqs_Nevanlinna::internal::complex_sub(x, y);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-  //    return triqs_Nevanlinna::internal::complex_multiply(y, x);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-  //    return triqs_Nevanlinna::internal::complex_divide(x, y);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-  //    return triqs_Nevanlinna::internal::complex_add(y, x);
-  //  }
-  //  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-  //    return triqs_Nevanlinna::internal::complex_add(-y, x);
-  //  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
+    return triqs_Nevanlinna::internal::complex_multiply(x, y);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
+    return triqs_Nevanlinna::internal::complex_divide(x, y);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
+    return triqs_Nevanlinna::internal::complex_add(x, y);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
+    return triqs_Nevanlinna::internal::complex_sub(x, y);
+  }
   inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<triqs_Nevanlinna::real_mpt> &y) {
     return triqs_Nevanlinna::internal::complex_multiply(x, y);
   }
@@ -253,6 +242,18 @@ namespace std {
   }
   inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<triqs_Nevanlinna::real_mpt> &y) {
     return triqs_Nevanlinna::internal::complex_sub(x, y);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
+    return triqs_Nevanlinna::internal::complex_multiply(y, x);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
+    return triqs_Nevanlinna::internal::complex_divide(x, y);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
+    return triqs_Nevanlinna::internal::complex_add(y, x);
+  }
+  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
+    return triqs_Nevanlinna::internal::complex_add(-y, x);
   }
 
   inline triqs_Nevanlinna::real_mpt abs(const complex<triqs_Nevanlinna::real_mpt> &x) { return sqrt(x.real() * x.real() + x.imag() * x.imag()); }

@@ -29,7 +29,7 @@ TEST(NevanlinnaComplexMath, MixedMath) {
   x = std::complex(2.0, 1.0);
   y = std::complex(2.0, 2.0);
   w = 2.0;
-  auto z = x+y;
+  std::complex<real_mpt> z = x + y;
   ASSERT_NEAR(z.real().convert_to<double>(), 4, 1e-12);
   ASSERT_NEAR(z.imag().convert_to<double>(), 3, 1e-12);
   z = x-y;
@@ -85,22 +85,6 @@ TEST(NevanlinnaComplexMath, InplaceMath) {
   ASSERT_NEAR(x.imag().convert_to<double>(), -0.25, 1e-12);
 }
 
-//
-//namespace Eigen {
-//  template <>
-//  struct NumTraits<std::complex<T> > : GenericNumTraits<triqs_Nevanlinna::complex<T> > {
-//    typedef real_mpt Real;
-//    typedef T NonInteger;
-//    typedef T Nested;
-//
-//    static inline T epsilon() { return 0; }
-//    static inline T dummy_precision() { return 0; }
-//    static inline int digits10() { return 0; }
-//
-//    enum { IsInteger = 0, IsSigned = 1, IsComplex = 1, RequireInitialization = 1, ReadCost = 6, AddCost = 150, MulCost = 100 };
-//  };
-//}
-
 TEST(NevanlinnaComplexMath, MatrixMath) {
   using complex_t = std::complex<real_mpt>;
   using matrix_t = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;
@@ -118,11 +102,13 @@ TEST(NevanlinnaComplexMath, EigenSolverMath) {
   using complex_t = std::complex<real_mpt>;
   using matrix_t = Eigen::Matrix<complex_t, Eigen::Dynamic, Eigen::Dynamic>;
   using namespace triqs_Nevanlinna;
+  using namespace std::complex_literals;
 
   matrix_t M(2,2);
-  M << 1., 2., 2., 1.;
+  M << 1., 2., 1.i, 1.;
   Eigen::ComplexEigenSolver<matrix_t> ces;
   ces.compute(M);
   matrix_t D = ces.eigenvalues();
-  ASSERT_NEAR(D(0,0).real().convert_to<double>(), -1, 1e-9);
+  ASSERT_NEAR(D(1,0).real().convert_to<double>(), 2, 1e-9);
+  ASSERT_NEAR(D(1,0).imag().convert_to<double>(), 1, 1e-9);
 }
