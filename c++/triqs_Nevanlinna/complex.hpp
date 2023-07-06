@@ -18,7 +18,7 @@ namespace triqs_Nevanlinna {
   concept ArithmeticTypes = std::is_arithmetic<T>::value && std::is_convertible<T, real_mpt>::value;
 
   template <typename T>
-  concept CastableTypes = std::is_convertible<T, real_mpt>::value && !std::is_same<T, real_mpt>::value;
+  concept CastableTypes = std::is_convertible<T, real_mpt>::value && !std::is_same<T, real_mpt>::value && std::is_floating_point<T>::value;
 
   template <typename T>
   concept ConvertibleTypes = std::is_convertible<T, real_mpt>::value;

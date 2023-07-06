@@ -46,6 +46,7 @@ jobs:
         libgmp-dev
         libhdf5-dev
         liblapack-dev
+        libmpfr-dev
         libopenmpi-dev
         openmpi-bin
         openmpi-common
@@ -64,7 +65,7 @@ jobs:
     - name: Install homebrew dependencies
       if: matrix.os == 'macos-12'
       run: |
-        brew install gcc@12 llvm boost fftw hdf5 open-mpi openblas eigen
+        brew install gcc@12 llvm boost eigen fftw hdf5 mpfr open-mpi openblas
         pip3 install mako numpy scipy mpi4py
         pip3 install -r requirements.txt
 
