@@ -8,6 +8,7 @@
 #endif
 
 namespace triqs_Nevanlinna {
+  static constexpr int mp_digits = 100;
 #ifdef WITH_MPFR
   using real_mpt = boost::multiprecision::number<boost::multiprecision::mpfr_float_backend<0>, boost::multiprecision::et_off>;
 #else

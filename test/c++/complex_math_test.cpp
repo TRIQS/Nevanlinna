@@ -24,7 +24,7 @@ TEST(NevanlinnaComplexMath, SimpleMath) {
 
 TEST(NevanlinnaComplexMath, MixedMath) {
   std::complex<real_mpt> x;
-  std::complex<double> y;
+  std::complex<dousble> y;
   double w;
   x = std::complex(2.0, 1.0);
   y = std::complex(2.0, 2.0);
