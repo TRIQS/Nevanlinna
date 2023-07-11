@@ -90,7 +90,6 @@ namespace triqs_Nevanlinna {
 
     template <typename U, typename V> inline typename complex_return_t<U, V>::complex_type complex_divide(V lhs, const std::complex<U> &rhs) {
       typename complex_return_t<U, V>::type a     = lhs;
-      typename complex_return_t<U, V>::type b     = 0;
       typename complex_return_t<U, V>::type c     = rhs.real();
       typename complex_return_t<U, V>::type d     = rhs.imag();
       typename complex_return_t<U, V>::type denom = c * c + d * d;
