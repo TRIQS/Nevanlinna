@@ -8,7 +8,7 @@ class Solver(SolverCore):
     def __init__(self, kernel='NEVANLINNA', precision=100):
         SolverCore.__init__(self, kernel=kernel, precision=precision)
 
-    def optimize(self, grid, eta, target, nk=15, maxiter=1000, gtol=1e-3):
+    def optimize(self, grid, eta, target, nk=15, maxiter=1000, gtol=1e-3, verbose = False):
         def get_f_k(nk, z):
             '''
             Compute Hardy functions basis
@@ -46,5 +46,8 @@ class Solver(SolverCore):
         res = opt.minimize(Nevan, x0=np.concatenate((ak.real, ak.imag, bk.real, bk.imag)) ,
                               method = "CG", options={'maxiter': maxiter, 'gtol': gtol})
         update_theta(res.x, f_k, theta)
+        if verbose:
+            print(res.message)
+            print(f'The optimizer performed {res.nit} functions evaluations.')
         return self.evaluate(grid, eta, theta)
 
