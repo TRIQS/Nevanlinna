@@ -14,7 +14,14 @@ namespace triqs_Nevanlinna {
 
   using complex_mpt     = std::complex<real_mpt>;
   using matrix_cplx_mpt = Eigen::Matrix<complex_mpt, Eigen::Dynamic, Eigen::Dynamic>;
+
   static const auto I   = complex_mpt{0., 1.};
   static const auto One = complex_mpt{1., 0.};
+
+  static const int NEVANLINNA_NUM_THREADS = []() {
+    const char *s = std::getenv("NEVANLINNA_NUM_THREADS");
+    return s ? std::stoi(s) : 1;
+  }();
+
 } // namespace triqs_Nevanlinna
 #endif //TRIQS_NEVANLINNA_TYPES_HPP
