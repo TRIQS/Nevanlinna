@@ -19,102 +19,14 @@ namespace triqs_Nevanlinna {
   concept ArithmeticTypes = std::is_arithmetic<T>::value && std::is_convertible<T, real_mpt>::value;
 
   template <typename T>
-  concept CastableTypes = std::is_convertible<T, real_mpt>::value && !std::is_same<T, real_mpt>::value && std::is_floating_point<T>::value;
+  concept CastableTypes = std::is_convertible<T, real_mpt>::value && !std::is_same<T, real_mpt>::value;
 
   template <typename T>
   concept ConvertibleTypes = std::is_convertible<T, real_mpt>::value;
-
-  template <typename T, typename U>
-  concept CompatibleTypes = std::is_convertible<U, T>::value || std::is_convertible<T, U>::value;
-
-  namespace internal {
-    template <typename T, CompatibleTypes<T> U> struct complex_return_t {
-      using type         = decltype(T{} + U{});
-      using complex_type = std::complex<type>;
-    };
-
-    template <typename U, typename V>
-    inline typename complex_return_t<U, V>::complex_type complex_multiply(const std::complex<U> &lhs, const std::complex<V> &rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs.real();
-      typename complex_return_t<U, V>::type d = rhs.imag();
-      return typename complex_return_t<U, V>::complex_type((a * c - b * d), (a * d + b * c));
-    }
-
-    template <typename U, typename V>
-    inline typename complex_return_t<U, V>::complex_type complex_divide(const std::complex<U> &lhs, const std::complex<V> &rhs) {
-      typename complex_return_t<U, V>::type a     = lhs.real();
-      typename complex_return_t<U, V>::type b     = lhs.imag();
-      typename complex_return_t<U, V>::type c     = rhs.real();
-      typename complex_return_t<U, V>::type d     = rhs.imag();
-      typename complex_return_t<U, V>::type denom = c * c + d * d;
-      typename complex_return_t<U, V>::type x     = (a * c + b * d) / denom;
-      typename complex_return_t<U, V>::type y     = (b * c - a * d) / denom;
-      return typename complex_return_t<U, V>::complex_type(x, y);
-    }
-
-    template <typename U, typename V>
-    inline typename complex_return_t<U, V>::complex_type complex_add(const std::complex<U> &lhs, const std::complex<V> &rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs.real();
-      typename complex_return_t<U, V>::type d = rhs.imag();
-      return typename complex_return_t<U, V>::complex_type((a + c), (b + d));
-    }
-
-    template <typename U, typename V>
-    inline typename complex_return_t<U, V>::complex_type complex_sub(const std::complex<U> &lhs, const std::complex<V> &rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs.real();
-      typename complex_return_t<U, V>::type d = rhs.imag();
-      return typename complex_return_t<U, V>::complex_type((a - c), (b - d));
-    }
-
-    template <typename U, typename V> inline typename complex_return_t<U, V>::complex_type complex_multiply(const std::complex<U> &lhs, V rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs;
-      return typename complex_return_t<U, V>::complex_type(a * c, b * c);
-    }
-
-    template <typename U, typename V> inline typename complex_return_t<U, V>::complex_type complex_divide(const std::complex<U> &lhs, V rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs;
-      typename complex_return_t<U, V>::type x = a / c;
-      typename complex_return_t<U, V>::type y = b / c;
-      return typename complex_return_t<U, V>::complex_type(x, y);
-    }
-
-    template <typename U, typename V> inline typename complex_return_t<U, V>::complex_type complex_divide(V lhs, const std::complex<U> &rhs) {
-      typename complex_return_t<U, V>::type a     = lhs;
-      typename complex_return_t<U, V>::type c     = rhs.real();
-      typename complex_return_t<U, V>::type d     = rhs.imag();
-      typename complex_return_t<U, V>::type denom = c * c + d * d;
-      typename complex_return_t<U, V>::type x     = (a * c) / denom;
-      typename complex_return_t<U, V>::type y     = -(a * d) / denom;
-      return typename complex_return_t<U, V>::complex_type(x, y);
-    }
-
-    template <typename U, typename V> inline typename complex_return_t<U, V>::complex_type complex_add(const std::complex<U> &lhs, V rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs;
-      return typename complex_return_t<U, V>::complex_type(a + c, b);
-    }
-
-    template <typename U, typename V> inline typename complex_return_t<U, V>::complex_type complex_sub(const std::complex<U> &lhs, V rhs) {
-      typename complex_return_t<U, V>::type a = lhs.real();
-      typename complex_return_t<U, V>::type b = lhs.imag();
-      typename complex_return_t<U, V>::type c = rhs;
-      return typename complex_return_t<U, V>::complex_type((a - c), b);
-    }
-  } // namespace internal
 } // namespace triqs_Nevanlinna
 
 namespace std {
+  // std::complex explicit template specialization for triqs_Nevanlinna::real_mpt to overcome libc++ limitations.
   template <> class complex<triqs_Nevanlinna::real_mpt> {
     using real_t = triqs_Nevanlinna::real_mpt;
 
@@ -207,53 +119,39 @@ namespace std {
     return x.real() == y && x.imag() == 0;
   }
 
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
-    return triqs_Nevanlinna::internal::complex_multiply(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
-    return triqs_Nevanlinna::internal::complex_divide(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
-    return triqs_Nevanlinna::internal::complex_add(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<S> &y) {
-    return triqs_Nevanlinna::internal::complex_sub(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-    return triqs_Nevanlinna::internal::complex_multiply(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-    return triqs_Nevanlinna::internal::complex_divide(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-    return triqs_Nevanlinna::internal::complex_add(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, S y) {
-    return triqs_Nevanlinna::internal::complex_sub(x, y);
-  }
   inline auto operator*(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_multiply(x, y);
+    triqs_Nevanlinna::real_mpt a = x.real();
+    triqs_Nevanlinna::real_mpt b = x.imag();
+    triqs_Nevanlinna::real_mpt c = y.real();
+    triqs_Nevanlinna::real_mpt d = y.imag();
+    return typename std::complex<triqs_Nevanlinna::real_mpt>((a * c - b * d), (a * d + b * c));
   }
+
   inline auto operator/(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_divide(x, y);
+    triqs_Nevanlinna::real_mpt a     = x.real();
+    triqs_Nevanlinna::real_mpt b     = x.imag();
+    triqs_Nevanlinna::real_mpt c     = y.real();
+    triqs_Nevanlinna::real_mpt d     = y.imag();
+    triqs_Nevanlinna::real_mpt denom = c * c + d * d;
+    triqs_Nevanlinna::real_mpt r     = (a * c + b * d) / denom;
+    triqs_Nevanlinna::real_mpt i     = (b * c - a * d) / denom;
+    return typename std::complex<triqs_Nevanlinna::real_mpt>(r, i);
   }
+
   inline auto operator+(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_add(x, y);
+    triqs_Nevanlinna::real_mpt a = x.real();
+    triqs_Nevanlinna::real_mpt b = x.imag();
+    triqs_Nevanlinna::real_mpt c = y.real();
+    triqs_Nevanlinna::real_mpt d = y.imag();
+    return typename std::complex<triqs_Nevanlinna::real_mpt>((a + c), (b + d));
   }
+
   inline auto operator-(const complex<triqs_Nevanlinna::real_mpt> &x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_sub(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator*(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_multiply(y, x);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator/(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_divide(x, y);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator+(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_add(y, x);
-  }
-  template <triqs_Nevanlinna::CastableTypes S> inline auto operator-(S x, const complex<triqs_Nevanlinna::real_mpt> &y) {
-    return triqs_Nevanlinna::internal::complex_add(-y, x);
+    triqs_Nevanlinna::real_mpt a = x.real();
+    triqs_Nevanlinna::real_mpt b = x.imag();
+    triqs_Nevanlinna::real_mpt c = y.real();
+    triqs_Nevanlinna::real_mpt d = y.imag();
+    return typename std::complex<triqs_Nevanlinna::real_mpt>((a - c), (b - d));
   }
 
   inline triqs_Nevanlinna::real_mpt abs(const complex<triqs_Nevanlinna::real_mpt> &x) { return sqrt(x.real() * x.real() + x.imag() * x.imag()); }
