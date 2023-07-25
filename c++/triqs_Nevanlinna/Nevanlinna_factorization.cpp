@@ -1,4 +1,5 @@
 #include "Nevanlinna_factorization.hpp"
+#include "utils.hpp"
 #include <itertools/omp_chunk.hpp>
 #include <mpi/mpi.hpp>
 #include <nda/mpi/reduce.hpp>
@@ -69,7 +70,7 @@ namespace triqs_Nevanlinna {
     _grid.resize(grid.size());
     std::transform(grid.begin(), grid.end(), _grid.begin(), [](const std::complex<double> &w) { return complex_mpt{w.real(), w.imag()}; });
     auto results = nda::vector<std::complex<double>>(grid.size());
-#pragma omp parallel
+#pragma omp parallel num_threads(get_env_int("NEVANLINNA_NUM_THREADS", 1))
     {
       auto prod = matrix_cplx_mpt(2, 2);
 
@@ -100,7 +101,7 @@ namespace triqs_Nevanlinna {
       throw Nevanlinna_error("theta_{M+1} should either have a value at every frequency point or be empty.");
     }
     nda::vector<std::complex<double>> results(grid.shape());
-#pragma omp parallel
+#pragma omp parallel num_threads(get_env_int("NEVANLINNA_NUM_THREADS", 1))
     for (auto i : mpi::chunk(omp_chunk(range(_grid.size())))) {
       auto result         = _coeffs[i];
       auto theta_M_plus_1 = theta_M_1.size() == 0 ? complex_mpt{0., 0.} : complex_mpt{theta_M_1(i).real(), theta_M_1(i).imag()};
