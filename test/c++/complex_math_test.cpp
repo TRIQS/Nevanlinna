@@ -1,4 +1,4 @@
-#include <triqs/test_tools/gfs.hpp>
+#include <nda/gtest_tools.hpp>
 #include <triqs_Nevanlinna/types.hpp>
 #include <boost/multiprecision/cpp_complex.hpp>
 #include <Eigen/Dense>
