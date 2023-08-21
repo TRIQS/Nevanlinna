@@ -69,7 +69,7 @@ The compilation of ``Nevanlinna`` can be configured using CMake-options::
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Build the without TRIQS Support                                 | -DTRIQS_Support=OFF                           |
 +-----------------------------------------------------------------+-----------------------------------------------+
-| Build the without Python Support                                | -DPython_Support=OFF                          |
+| Build the without Python Support                                | -DPythonSupport=OFF                           |
 +-----------------------------------------------------------------+-----------------------------------------------+
 | Disable testing (not recommended)                               | -DBuild_Tests=OFF                             |
 +-----------------------------------------------------------------+-----------------------------------------------+

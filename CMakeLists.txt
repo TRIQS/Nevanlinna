@@ -84,8 +84,8 @@ option(PythonSupport "Build with Python support" ON)
 
 # Documentation
 option(Build_Documentation "Build documentation" OFF)
-if(Build_Documentation AND NOT Python_Support)
-  message(FATAL_ERROR "Build_Documentation=ON requires Python_Support to be enabled")
+if(Build_Documentation AND NOT PythonSupport)
+  message(FATAL_ERROR "Build_Documentation=ON requires PythonSupport to be enabled")
 endif()
 
 # Testing
@@ -128,11 +128,13 @@ target_compile_options(${PROJECT_NAME}_warnings
     $<$<CXX_COMPILER_ID:Clang>:-Wshadow>
     $<$<CXX_COMPILER_ID:Clang>:-Wno-gcc-compat>
     $<$<CXX_COMPILER_ID:Clang>:-Wno-c++20-extensions>
+    $<$<CXX_COMPILER_ID:Clang>:-Wno-c++20-compat>
     $<$<CXX_COMPILER_ID:AppleClang>:-Wno-deprecated-comma-subscript>
     $<$<CXX_COMPILER_ID:AppleClang>:-Wno-unknown-warning-option>
     $<$<CXX_COMPILER_ID:AppleClang>:-Wshadow>
     $<$<CXX_COMPILER_ID:AppleClang>:-Wno-gcc-compat>
     $<$<CXX_COMPILER_ID:AppleClang>:-Wno-c++20-extensions>
+    $<$<CXX_COMPILER_ID:AppleClang>:-Wno-c++20-compat>
 )
 
 # #############
@@ -150,12 +152,12 @@ if(Build_Tests)
 endif()
 
 # Python
-if(Python_Support)
+if(PythonSupport)
   add_subdirectory(python/${PROJECT_NAME})
 endif()
 
 # Docs
-if(Build_Documentation)
+if(NOT IS_SUBPROJECT AND Build_Documentation)
   add_subdirectory(doc)
 endif()
 
