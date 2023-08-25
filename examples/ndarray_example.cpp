@@ -10,10 +10,10 @@ int main(int argc, char **argv) {
   mpi::environment env(argc, argv);
   triqs_Nevanlinna::Nevanlinna_kernel kernel;
 
-  size_t N_omega = 5000;
+  size_t N_omega   = 5000;
   double omega_min = -10;
   double omega_max = 10;
-  double eta = 0.1;
+  double eta       = 0.1;
   nda::array<std::complex<double>, 3> G_iw;
   nda::array<std::complex<double>, 1> mesh;
 
@@ -29,7 +29,8 @@ int main(int argc, char **argv) {
 
   nda::array<std::complex<double>, 1> grid(N_omega);
   int i = 0;
-  std::transform(grid.begin(), grid.end(), grid.begin(), [&](const std::complex<double> & ) {return omega_min + (i++)*(omega_max - omega_min)/(N_omega - 1) + eta*1i;});
+  std::transform(grid.begin(), grid.end(), grid.begin(),
+                 [&](const std::complex<double> &) { return omega_min + (i++) * (omega_max - omega_min) / (N_omega - 1) + eta * 1i; });
 
   auto G_omega = kernel.evaluate(grid);
 }

@@ -58,8 +58,8 @@ TEST(NevanlinnaFactorization, CheckEta) { // NOLINT
   h5_read(data, "output/grid", re_grid);
   nda::vector<std::complex<double>> re_data(re_grid.shape(0));
   double eta = 0.5;
-  re_grid += eta*1i;
-  std::transform(re_grid.begin(), re_grid.end(), re_data.begin(), [&](const std::complex<double> & w) {return 1.0/(w);});
+  re_grid += eta * 1i;
+  std::transform(re_grid.begin(), re_grid.end(), re_data.begin(), [&](const std::complex<double> &w) { return 1.0 / (w); });
 
   a.build(im_grid, im_data);
   nda::vector<std::complex<double>> result = a.evaluate(re_grid);
