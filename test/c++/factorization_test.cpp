@@ -42,7 +42,7 @@ TEST(NevanlinnaFactorization, UnitializedContinuation) { // NOLINT
   h5::file data(root + "/data.h5", 'r');
   nda::vector<std::complex<double>> re_grid;
   h5_read(data, "output/grid", re_grid);
-  ASSERT_THROW(a.evaluate(re_grid), Nevanlinna_uninitialized_error);
+  ASSERT_THROW(std::ignore = a.evaluate(re_grid), Nevanlinna_uninitialized_error);
 }
 
 TEST(NevanlinnaFactorization, CheckEta) { // NOLINT
