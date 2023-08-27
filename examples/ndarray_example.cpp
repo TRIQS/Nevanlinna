@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   auto G_iw = nda::array<std::complex<double>, 3>{};
 
   // Read imaginary time data from "input.h5" file
-  auto input = h5::file(DATA_PATH + "/input.h5", 'r');
+  auto input = h5::file(DATA_PATH + "/input.h5"s, 'r');
   h5::read(input, "data", G_iw);
   h5::read(input, "mesh", mesh);
 
