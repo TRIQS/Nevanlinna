@@ -1,5 +1,6 @@
 #include <triqs_Nevanlinna/kernels.hpp>
 #include <mpi/mpi.hpp>
+#include <h5/h5.hpp>
 #include <nda/nda.hpp>
 #include <nda/h5.hpp>
 
