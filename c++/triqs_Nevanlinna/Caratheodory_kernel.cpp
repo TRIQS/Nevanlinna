@@ -34,6 +34,7 @@ namespace triqs_Nevanlinna {
       auto sqrt_two_i = sqrt_m(id - Wi.adjoint() * Wi, is_Schur_1);
       auto sqrt_one_i_inv = sqrt_one_i.inverse().eval();
       // See Eq. 8 PhysRevB.104.165111
+#pragma omp parallel for num_threads(NEVANLINNA_NUM_THREADS)
       for (int j = i - 1; j >= 0; j--) {
         auto &zj  = _mesh[j];
         auto &Wj  = _Ws[j];
