@@ -1,5 +1,6 @@
 #include <triqs/test_tools/gfs.hpp>
 #include <triqs_Nevanlinna/solver_core.hpp>
+#include "test_common.hpp"
 
 using namespace triqs_Nevanlinna;
 using nda::clef::placeholder;
@@ -48,3 +49,5 @@ TEST(CaratheodorySolver, TriqsGFData) { // NOLINT
   triqs::gfs::gf<triqs::mesh::refreq> result = a.evaluate(re_grid, eta);
   ASSERT_TRUE(array_are_close(re_data.data(), result.data(), 1e-10));
 }
+
+MAKE_MAIN_MPI

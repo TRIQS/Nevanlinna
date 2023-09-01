@@ -3,6 +3,7 @@
 #include <h5/h5.hpp>
 #include <nda/h5.hpp>
 #include <triqs_Nevanlinna/Nevanlinna_factorization.hpp>
+#include "test_common.hpp"
 
 using namespace triqs_Nevanlinna;
 
@@ -65,3 +66,5 @@ TEST(NevanlinnaFactorization, CheckEta) { // NOLINT
   nda::vector<std::complex<double>> result = a.evaluate(re_grid);
   ASSERT_TRUE(array_are_close(re_data, result, 1e-10));
 }
+
+MAKE_MAIN_MPI

@@ -1,5 +1,8 @@
 #include "Caratheodory_kernel.hpp"
 #include "Nevanlinna_error.hpp"
+#include <itertools/omp_chunk.hpp>
+#include <mpi/mpi.hpp>
+#include <nda/mpi/reduce.hpp>
 
 namespace triqs_Nevanlinna {
   void Caratheodory_kernel::init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) {
@@ -29,13 +32,13 @@ namespace triqs_Nevanlinna {
       bool is_Schur_1 = true;
       auto sqrt_one_i = sqrt_m(id - Wi * Wi.adjoint(), is_Schur_1);
       auto sqrt_two_i = sqrt_m(id - Wi.adjoint() * Wi, is_Schur_1);
+      auto sqrt_one_i_inv = sqrt_one_i.inverse().eval();
       // See Eq. 8 PhysRevB.104.165111
       for (int j = i - 1; j >= 0; j--) {
         auto &zj  = _mesh[j];
         auto &Wj  = _Ws[j];
         auto y_ij = complex_mpt{std::abs(zi), 0.} * (zi - zj) / zi / (One - std::conj(zi) * zj);
-        _Ws[j]    = sqrt_one_i.inverse() * (Wj - Wi) * (id - Wi.adjoint() * Wj).inverse().eval() * sqrt_two_i / y_ij;
-        //        _Ws[j] = sqrt_one_i.inverse() * (id - Wi* Wj.inverse() ) * (Wj.inverse() - Wi.adjoint()).inverse() * sqrt_two_i / y_ij;
+        _Ws[j]    = sqrt_one_i_inv * (Wj - Wi) * (id - Wi.adjoint() * Wj).inverse().eval() * sqrt_two_i / y_ij;
       }
       _sqrt_one[i] = sqrt_one_i;
       _sqrt_two[i] = sqrt_two_i.inverse(); // original
@@ -48,11 +51,13 @@ namespace triqs_Nevanlinna {
 
   nda::array<std::complex<double>, 3> Caratheodory_kernel::evaluate(nda::vector_const_view<std::complex<double>> grid) {
     if (_dim == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
-    std::vector<matrix_cplx_mpt> Vs(_mesh.size()); //intermediate Vs (for calculating Psis)
-    std::vector<matrix_cplx_mpt> Fs(_mesh.size()); //intermediate Psis (Schur class functions)
     auto id = matrix_cplx_mpt::Identity(_dim, _dim);
     nda::array<std::complex<double>, 3> results(grid.shape()[0], _dim, _dim);
-    for (int i = 0; i < grid.shape()[0]; i++) {
+#pragma omp parallel num_threads(NEVANLINNA_NUM_THREADS) 
+    {
+    std::vector<matrix_cplx_mpt> Vs(_mesh.size()); //intermediate Vs (for calculating Psis)
+    std::vector<matrix_cplx_mpt> Fs(_mesh.size()); //intermediate Psis (Schur class functions)
+    for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
       auto z   = (complex_mpt(grid(i)) - I) / (complex_mpt(grid(i)) + I);
       auto &z0 = _mesh[0];
       auto &W0 = _Ws[0];
@@ -74,6 +79,8 @@ namespace triqs_Nevanlinna {
         }
       }
     }
+    }
+    results = mpi::all_reduce(results);
     return results;
   }
 

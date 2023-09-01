@@ -2,6 +2,8 @@
 #include <nda/gtest_tools.hpp>
 #include <triqs_Nevanlinna/Nevanlinna_kernel.hpp>
 #include <triqs_Nevanlinna/Caratheodory_kernel.hpp>
+#include "test_common.hpp"
+
 
 using namespace triqs_Nevanlinna;
 using namespace std::complex_literals;
@@ -145,3 +147,5 @@ TEST(CaratheodoryKernelFactorization, NonNormalized) {
   nda::array<std::complex<double>, 3> result = a.evaluate(re_grid);
   ASSERT_TRUE(array_are_close(re_data, result, 1e-10));
 }
+
+MAKE_MAIN_MPI
