@@ -28,7 +28,6 @@ int main(int argc, char **argv) {
   h5::read(input, "data", G_iw);
   h5::read(input, "mesh", mesh);
   mesh *= 1.i;
-  double start = MPI_Wtime();
   // Build Nevanlinna factorization
   kernel.init(mesh, G_iw);
   // Perform analytical continuation onto real frequency axis
