@@ -4,6 +4,7 @@
 #include <complex>
 
 #include <nda/nda.hpp>
+#include <nda/mpi.hpp>
 
 #include "kernel.hpp"
 #include "Nevanlinna_factorization.hpp"
@@ -14,7 +15,7 @@ namespace triqs_Nevanlinna {
 
     public:
     Nevanlinna_kernel(int precision = mp_digits) : kernel(precision) {
-      std::cerr << "This is Nevanlinna analytical continuation. All off-diagonal elements will be ignored." << std::endl;
+      if(!mpi::communicator().rank()) std::cerr << "This is Nevanlinna analytical continuation. All off-diagonal elements will be ignored." << std::endl;
     }
 
     void init(nda::vector_const_view<std::complex<double>> mesh, nda::array_const_view<std::complex<double>, 3> data) override;

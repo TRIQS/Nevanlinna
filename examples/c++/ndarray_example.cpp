@@ -4,12 +4,13 @@
 #include <nda/nda.hpp>
 #include <nda/h5.hpp>
 
-using namespace std::literals;
+using namespace std::complex_literals;
 
 int main(int argc, char **argv) {
   // Initialize MPI environment
   mpi::environment env(argc, argv);
-
+  int rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   // Create kernel object
   triqs_Nevanlinna::Nevanlinna_kernel kernel;
 
@@ -28,10 +29,10 @@ int main(int argc, char **argv) {
   auto input = h5::file(DATA_PATH + "/input.h5"s, 'r');
   h5::read(input, "data", G_iw);
   h5::read(input, "mesh", mesh);
-
+  mesh *= 1.i;
+  double start = MPI_Wtime();
   // Build Nevanlinna factorization
   kernel.init(mesh, G_iw);
-
   // Perform analytical continuation onto real frequency axis
   auto G_w = kernel.evaluate(grid);
 }
