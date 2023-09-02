@@ -4,7 +4,6 @@
 #include <triqs_Nevanlinna/Caratheodory_kernel.hpp>
 #include "test_common.hpp"
 
-
 using namespace triqs_Nevanlinna;
 using namespace std::complex_literals;
 

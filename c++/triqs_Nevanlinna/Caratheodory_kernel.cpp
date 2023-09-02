@@ -27,11 +27,11 @@ namespace triqs_Nevanlinna {
     }
     _data = _Ws;
     for (int i = _mesh.size() - 1; i > 0; i--) {
-      auto &zi        = _mesh[i];
-      auto &Wi        = _Ws[i];
-      bool is_Schur_1 = true;
-      auto sqrt_one_i = sqrt_m(id - Wi * Wi.adjoint(), is_Schur_1);
-      auto sqrt_two_i = sqrt_m(id - Wi.adjoint() * Wi, is_Schur_1);
+      auto &zi            = _mesh[i];
+      auto &Wi            = _Ws[i];
+      bool is_Schur_1     = true;
+      auto sqrt_one_i     = sqrt_m(id - Wi * Wi.adjoint(), is_Schur_1);
+      auto sqrt_two_i     = sqrt_m(id - Wi.adjoint() * Wi, is_Schur_1);
       auto sqrt_one_i_inv = sqrt_one_i.inverse().eval();
       // See Eq. 8 PhysRevB.104.165111
 #pragma omp parallel for num_threads(NEVANLINNA_NUM_THREADS)
@@ -54,32 +54,32 @@ namespace triqs_Nevanlinna {
     if (_dim == 0) { throw Nevanlinna_uninitialized_error("Empty continuation data. Please run solve(...) first."); }
     auto id = matrix_cplx_mpt::Identity(_dim, _dim);
     nda::array<std::complex<double>, 3> results(grid.shape()[0], _dim, _dim);
-#pragma omp parallel num_threads(NEVANLINNA_NUM_THREADS) 
+#pragma omp parallel num_threads(NEVANLINNA_NUM_THREADS)
     {
-    std::vector<matrix_cplx_mpt> Vs(_mesh.size()); //intermediate Vs (for calculating Psis)
-    std::vector<matrix_cplx_mpt> Fs(_mesh.size()); //intermediate Psis (Schur class functions)
-    for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
-      auto z   = (complex_mpt(grid(i)) - I) / (complex_mpt(grid(i)) + I);
-      auto &z0 = _mesh[0];
-      auto &W0 = _Ws[0];
-      Vs[0]    = complex_mpt{std::abs(z0), 0.} * (z0 - z) / z0 / (One - std::conj(z0) * z) * id;
-      Fs[0]    = (id + Vs[0] * W0.adjoint()).inverse() * (Vs[0] + W0);
-      for (int j = 1; j < _mesh.size(); j++) {
-        auto &zj = _mesh[j];
-        auto &Wj = _Ws[j];
-        // See Eq. 9 PhysRevB.104.165111
-        Vs[j] = complex_mpt{std::abs(zj), 0.} * (zj - z) / zj / (One - std::conj(zj) * z) * _sqrt_one[j] * Fs[j - 1] * _sqrt_two[j];
-        // See Eq. 10 PhysRevB.104.165111
-        Fs[j] = (id + Vs[j] * Wj.adjoint()).inverse() * (Vs[j] + Wj);
-      }
-      // See Eq. 11 PhysRevB.104.165111
-      auto val = matrix_cplx_mpt(-I * (id + Fs[_mesh.size() - 1]).inverse() * (id - Fs[_mesh.size() - 1]));
-      for (int n = 0; n < _dim; ++n) {
-        for (int m = 0; m < _dim; ++m) {
-          results(i, n, m) = std::complex<double>(val(n, m).real().convert_to<double>(), val(n, m).imag().convert_to<double>());
+      std::vector<matrix_cplx_mpt> Vs(_mesh.size()); //intermediate Vs (for calculating Psis)
+      std::vector<matrix_cplx_mpt> Fs(_mesh.size()); //intermediate Psis (Schur class functions)
+      for (auto i : mpi::chunk(omp_chunk(range(grid.size())))) {
+        auto z   = (complex_mpt(grid(i)) - I) / (complex_mpt(grid(i)) + I);
+        auto &z0 = _mesh[0];
+        auto &W0 = _Ws[0];
+        Vs[0]    = complex_mpt{std::abs(z0), 0.} * (z0 - z) / z0 / (One - std::conj(z0) * z) * id;
+        Fs[0]    = (id + Vs[0] * W0.adjoint()).inverse() * (Vs[0] + W0);
+        for (int j = 1; j < _mesh.size(); j++) {
+          auto &zj = _mesh[j];
+          auto &Wj = _Ws[j];
+          // See Eq. 9 PhysRevB.104.165111
+          Vs[j] = complex_mpt{std::abs(zj), 0.} * (zj - z) / zj / (One - std::conj(zj) * z) * _sqrt_one[j] * Fs[j - 1] * _sqrt_two[j];
+          // See Eq. 10 PhysRevB.104.165111
+          Fs[j] = (id + Vs[j] * Wj.adjoint()).inverse() * (Vs[j] + Wj);
+        }
+        // See Eq. 11 PhysRevB.104.165111
+        auto val = matrix_cplx_mpt(-I * (id + Fs[_mesh.size() - 1]).inverse() * (id - Fs[_mesh.size() - 1]));
+        for (int n = 0; n < _dim; ++n) {
+          for (int m = 0; m < _dim; ++m) {
+            results(i, n, m) = std::complex<double>(val(n, m).real().convert_to<double>(), val(n, m).imag().convert_to<double>());
+          }
         }
       }
-    }
     }
     results = mpi::all_reduce(results);
     return results;
