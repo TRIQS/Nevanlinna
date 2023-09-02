@@ -34,15 +34,15 @@ namespace triqs_Nevanlinna {
     }
     for (int j = 0; j < M - 1; j++) {
 #pragma omp parallel num_threads(NEVANLINNA_NUM_THREADS)
-    {
-    auto prod = matrix_cplx_mpt(2, 2);
+      {
+        auto prod = matrix_cplx_mpt(2, 2);
 #pragma omp for
-      for (int k = j; k < M; k++) {
-        prod << (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j])), _phis[j],
-           std::conj(_phis[j]) * (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j])), complex_mpt{1., 0.};
-        _abcds[k] *= prod;
+        for (int k = j; k < M; k++) {
+          prod << (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j])), _phis[j],
+             std::conj(_phis[j]) * (_mesh[k] - _mesh[j]) / (_mesh[k] - std::conj(_mesh[j])), complex_mpt{1., 0.};
+          _abcds[k] *= prod;
+        }
       }
-    }
       _phis[j + 1] = (-_abcds[j + 1](1, 1) * _data[j + 1] + _abcds[j + 1](0, 1)) / (_abcds[j + 1](1, 0) * _data[j + 1] - _abcds[j + 1](0, 0));
     }
     return;
