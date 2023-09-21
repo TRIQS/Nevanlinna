@@ -31,7 +31,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING
 
 # ========= Library Dependencies ==========
 
-find_package(Eigen3 REQUIRED)
+find_package (Eigen3 3.4 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
 
 find_package(Boost REQUIRED)
