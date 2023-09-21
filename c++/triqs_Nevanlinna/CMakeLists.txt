@@ -34,7 +34,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING
 find_package (Eigen3 3.4 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
 
-find_package(Boost REQUIRED)
+find_package(Boost 1.73 REQUIRED)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
 
 find_package(OpenMP REQUIRED COMPONENTS CXX)
