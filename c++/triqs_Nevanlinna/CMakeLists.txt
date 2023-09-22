@@ -31,11 +31,25 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING
 
 # ========= Library Dependencies ==========
 
-find_package(Eigen3 REQUIRED)
+find_package(Eigen3 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Eigen3::Eigen)
+# Prior to Eigen 3.4, the template Eigen::internal::result_of attempts to use
+# std::result_of which was removed in C++20 in favor of
+# std::invoke_result. However, Eigen also has its own implementation of
+# result_of which can be used by simply defining the macro
+# EIGEN_HAS_STD_RESULT_OF=0. It doesn't interfere with newer versions of
+# Eigen. These will still use std::invoke_result because guarded by yet another
+# feature macro.
+# https://gitlab.com/libeigen/eigen/-/commit/a31effc3bca2f0924752caeebfd6f61f7edf9a43
+target_compile_definitions(${PROJECT_NAME}_c PUBLIC EIGEN_HAS_STD_RESULT_OF=0)
 
 find_package(Boost REQUIRED)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC Boost::boost)
+# There is a usage of std::unary_function (remove in C++17) in Boost
+# container_hash that is not correctly guarded before Boost 1.73.0, because
+# _HAS_AUTO_PTR_ETC only exists in MSVC (as far as I can tell).
+# https://github.com/boostorg/container_hash/commit/90a0e3663875973909f77062dc274081bf32dc0d
+target_compile_definitions(${PROJECT_NAME}_c PUBLIC _HAS_AUTO_PTR_ETC=0)
 
 find_package(OpenMP REQUIRED COMPONENTS CXX)
 target_link_libraries(${PROJECT_NAME}_c PUBLIC OpenMP::OpenMP_CXX)
