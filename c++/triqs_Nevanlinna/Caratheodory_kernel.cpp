@@ -103,7 +103,7 @@ namespace triqs_Nevanlinna {
     }
     auto eigenvalues      = Pick.eigenvalues();
     auto pick_eigenvalues = nda::vector<double>(nw * N);
-    std::transform(eigenvalues.begin(), eigenvalues.end(), pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real(); });
+    std::transform(eigenvalues.data(), eigenvalues.data() + eigenvalues.size(), pick_eigenvalues.begin(), [](const std::complex<double> &r) { return r.real(); });
     return pick_eigenvalues;
   }
 
