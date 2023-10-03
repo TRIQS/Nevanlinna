@@ -39,7 +39,7 @@ message(STATUS "${PROJECT_NAME} Git hash: ${PROJECT_GIT_HASH}")
 # Load TRIQS
 option(TRIQS_Support "TRIQS Support" ON)
 if(TRIQS_Support)
-  find_package(TRIQS 3.1 REQUIRED)
+  find_package(TRIQS 3.2 REQUIRED)
   message(STATUS "Compiling with TRIQS Support")
   
   # Enforce Consistent Versioning
