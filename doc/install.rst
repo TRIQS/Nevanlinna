@@ -14,7 +14,7 @@ Ubuntu Debian packages
 
 We provide a Debian package for the Ubuntu LTS Version 22.04 (jammy), which can be installed by following the steps outlined :ref:`here <triqslibs:ubuntu_debian>`, and the subsequent command::
 
-        sudo apt-get install -y triqs_Nevanlinna
+        sudo apt-get install -y triqs_nevanlinna
 
 
 Compiling Nevanlinna from source
