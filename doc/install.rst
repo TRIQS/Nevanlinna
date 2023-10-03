@@ -5,6 +5,18 @@
 Install Nevanlinna
 ******************
 
+
+Packaged Versions of Nevanlinna
+==========================
+.. _ubuntu_debian:
+Ubuntu Debian packages
+----------------------
+
+We provide a Debian package for the Ubuntu LTS Version 22.04 (jammy), which can be installed by following the steps outlined :ref:`here <triqslibs:ubuntu_debian>`, and the subsequent command::
+
+        sudo apt-get install -y triqs_Nevanlinna
+
+
 Compiling Nevanlinna from source
 ================================
 
