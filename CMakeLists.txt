@@ -21,6 +21,9 @@
 
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 cmake_policy(VERSION 3.20)
+if(POLICY CMP0144)
+  cmake_policy(SET CMP0144 NEW)
+endif()
 
 # ############
 # Define Project
@@ -41,7 +44,7 @@ option(TRIQS_Support "TRIQS Support" ON)
 if(TRIQS_Support)
   find_package(TRIQS 3.2 REQUIRED)
   message(STATUS "Compiling with TRIQS Support")
-  
+
   # Enforce Consistent Versioning
   if(NOT ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} VERSION_EQUAL ${TRIQS_VERSION_MAJOR}.${TRIQS_VERSION_MINOR})
     message(FATAL_ERROR "The ${PROJECT_NAME} version ${PROJECT_VERSION} is not compatible with TRIQS version ${TRIQS_VERSION}.")
@@ -50,7 +53,7 @@ else()
   message(STATUS "Compiling without TRIQS Support! Limited functionality")
 endif()
 
-# Default Install directory to TRIQS_ROOT if not given or invalid.
+# Default Install directory to TRIQS_ROOT if not given or when provided as relative path.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR (NOT IS_ABSOLUTE ${CMAKE_INSTALL_PREFIX}))
   if(TRIQS_Support)
     message(STATUS "No install prefix given (or invalid). Defaulting to TRIQS_ROOT")
@@ -102,6 +105,9 @@ option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 # ############
 # Global Compilation Settings
 
+# Build static libraries by default
+option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
+
 # Export the list of compile-commands into compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -121,6 +127,7 @@ target_compile_options(${PROJECT_NAME}_warnings
     -Wpedantic
     -Wno-sign-compare
     $<$<CXX_COMPILER_ID:GNU>:-Wno-comma-subscript>
+    $<$<CXX_COMPILER_ID:GNU>:-Wno-psabi> # Disable notes about ABI changes
     $<$<CXX_COMPILER_ID:GNU>:-Wshadow=local>
     $<$<CXX_COMPILER_ID:GNU>:-Wno-attributes>
     $<$<CXX_COMPILER_ID:GNU>:-Wno-deprecated-declarations>
@@ -132,6 +139,9 @@ target_compile_options(${PROJECT_NAME}_warnings
     $<$<CXX_COMPILER_ID:AppleClang,Clang,IntelLLVM>:-Wno-c++20-compat>
     $<$<CXX_COMPILER_ID:IntelLLVM>:-Wno-tautological-constant-compare>
 )
+
+# Provide GNU Installation directories
+include(GNUInstallDirs)
 
 # #############
 # Build Project
@@ -163,6 +173,9 @@ endif()
 
 # Additional configuration files
 add_subdirectory(share)
+
+# add packaging for automatic Versioning
+add_subdirectory(packaging)
 
 # #############
 # Debian Package
