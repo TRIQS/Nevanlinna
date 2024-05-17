@@ -25,7 +25,8 @@ def platforms = [:]
 
 /****************** linux builds (in docker) */
 /* Each platform must have a corresponding Dockerfile.PLATFORM in triqs/packaging */
-def dockerPlatforms = ["ubuntu-clang", "ubuntu-gcc", "ubuntu-intel", "sanitize"]
+/* Skip "ubuntu-intel", fails due to old boost version using std::unary_function in boost::hash */
+def dockerPlatforms = ["ubuntu-clang", "ubuntu-gcc", "sanitize"]
 /* .each is currently broken in jenkins */
 for (int i = 0; i < dockerPlatforms.size(); i++) {
   def platform = dockerPlatforms[i]
