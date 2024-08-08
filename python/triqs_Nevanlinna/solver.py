@@ -24,8 +24,8 @@ class Solver(SolverCore):
             for k in range(nk):
                 f_k[k, :] = prefactor * (zz ** k)
             return f_k
-        def update_theta(x, f_k, theta):
-            akr, aki, bkr, bki = np.split(x, 4)
+        def update_theta(x, f_k, theta, nk):
+            akr, aki, bkr, bki = np.split(x.reshape(self.size, 4*nk), 4, axis=1)
             ak = akr + 1.j*aki
             bk = bkr + 1.j*bki
             nk = f_k.shape[0]
@@ -40,12 +40,12 @@ class Solver(SolverCore):
         ak = np.zeros([self.size, nk], dtype=np.complex128)
         bk = np.zeros([self.size, nk], dtype=np.complex128)
         def Nevan (x):
-            update_theta(x, f_k, theta)
+            update_theta(x, f_k, theta, nk)
             Gw = self.evaluate(grid, eta, theta)
             return target(Gw)
-        res = opt.minimize(Nevan, x0=np.concatenate((ak.real, ak.imag, bk.real, bk.imag)) ,
+        res = opt.minimize(Nevan, x0=np.concatenate((ak.real, ak.imag, bk.real, bk.imag)).flatten() ,
                               method = "CG", options={'maxiter': maxiter, 'gtol': gtol})
-        update_theta(res.x, f_k, theta)
+        update_theta(res.x, f_k, theta, nk)
         if verbose:
             print(res.message)
             print(f'The optimizer performed {res.nit} functions evaluations.')
