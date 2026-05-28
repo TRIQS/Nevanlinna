@@ -24,7 +24,7 @@ cmake_policy(VERSION ${CMAKE_VERSION})
 
 # ############
 # Define Project
-project(triqs_Nevanlinna VERSION 3.3.0 LANGUAGES CXX)
+project(triqs_Nevanlinna VERSION 4.0.0 LANGUAGES CXX)
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -39,7 +39,7 @@ message(STATUS "${PROJECT_NAME} Git hash: ${PROJECT_GIT_HASH}")
 # Load TRIQS
 option(TRIQS_Support "TRIQS Support" ON)
 if(TRIQS_Support)
-  find_package(TRIQS 3.2 REQUIRED)
+  find_package(TRIQS 4.0 REQUIRED)
   message(STATUS "Compiling with TRIQS Support")
 
   # Enforce Consistent Versioning
@@ -187,7 +187,7 @@ if(BUILD_DEBIAN_PACKAGE AND NOT IS_SUBPROJECT)
   set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
   set(CPACK_PACKAGE_CONTACT "https://github.com/TRIQS/Nevanlinna")
   execute_process(COMMAND dpkg --print-architecture OUTPUT_VARIABLE CMAKE_DEBIAN_PACKAGE_ARCHITECTURE OUTPUT_STRIP_TRAILING_WHITESPACE)
-  set(CPACK_DEBIAN_PACKAGE_DEPENDS "triqs (>= 3.3)")
+  set(CPACK_DEBIAN_PACKAGE_DEPENDS "triqs (>= 4.0)")
   set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
   set(CPACK_DEBIAN_PACKAGE_GENERATE_SHLIBS ON)
   include(CPack)
