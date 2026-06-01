@@ -16,7 +16,7 @@ class test_solver(unittest.TestCase):
 
 
     def test_solver(self):
-        g_im = Gf(indices = [1], mesh= self.iw_mesh, name = "$G_\mathrm{imp}$")
+        g_im = Gf(indices = [1], mesh= self.iw_mesh, name = r"$G_\mathrm{imp}$")
         g_re = Gf(indices = [1], mesh = self.w_mesh)
         g_im << inverse(iOmega_n + 0.5)
         g_re << inverse(Omega + self.eta*1.j + 0.5)
@@ -28,7 +28,7 @@ class test_solver(unittest.TestCase):
     def test_matrix_solver(self):
 
         mu = 1.0
-        g_im = Gf(indices = [1,2], mesh= self.iw_mesh, name = "$G_\mathrm{imp}$")
+        g_im = Gf(indices = [1,2], mesh= self.iw_mesh, name = r"$G_\mathrm{imp}$")
         g_re = Gf(indices = [1,2], mesh = self.w_mesh)
         F = np.array([[-mu, 0.5], [0.5, -mu]])
         One = np.eye(2)
