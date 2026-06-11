@@ -117,9 +117,17 @@ namespace std {
 
     friend inline bool operator==(const complex &x, const complex &y) = default;
 
-    template <convertible_to<value_type> S> friend inline bool operator==(const complex &x, const S &y) { return x.real() == y && x.imag() == 0; }
+    template <convertible_to<value_type> S>
+      requires(!is_same_v<S, value_type>) // value_type itself is handled by the standard complex<T> == T overload
+    friend inline bool operator==(const complex &x, const S &y) {
+      return x.real() == y && x.imag() == 0;
+    }
 
-    template <convertible_to<value_type> S> friend inline bool operator==(const S &y, const complex &x) { return x.real() == y && x.imag() == 0; }
+    template <convertible_to<value_type> S>
+      requires(!is_same_v<S, value_type>)
+    friend inline bool operator==(const S &y, const complex &x) {
+      return x.real() == y && x.imag() == 0;
+    }
 
     value_type real() const { return _re; }
     value_type imag() const { return _im; }
