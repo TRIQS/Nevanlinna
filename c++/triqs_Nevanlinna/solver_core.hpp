@@ -2,6 +2,7 @@
 #include <memory>
 #include <triqs/gfs.hpp>
 #include <triqs/mesh.hpp>
+#include <triqs/utility/macros.hpp>
 #include <nda/nda.hpp>
 #include <h5/h5.hpp>
 #include "Nevanlinna_parameters_t.hpp"
@@ -24,7 +25,6 @@ namespace triqs_Nevanlinna {
      * @brief Construct the solver.
      * @param p Construction parameters (kernel choice and multiprecision precision).
      */
-    CPP2PY_ARG_AS_DICT
     solver_core(Nevanlinna_parameters_t const &p);
 
     // Copy/Move construction
@@ -65,10 +65,10 @@ namespace triqs_Nevanlinna {
                                                                nda::array_const_view<std::complex<double>, 3> theta);
 
     /// Eigenvalues of the Pick matrix (non-negative eigenvalues indicate the data is continuable).
-    [[nodiscard]] nda::vector<double> get_Pick_eigenvalues() const { return _kernel->get_Pick_eigenvalues(); };
+    [[nodiscard]] C2PY_PROPERTY_GET(Pick_eigenvalues) nda::vector<double> get_Pick_eigenvalues() const { return _kernel->get_Pick_eigenvalues(); };
 
     /// Number of orbitals (matrix dimension) of the continued Green's function.
-    [[nodiscard]] size_t size() const { return _kernel->size(); };
+    [[nodiscard]] C2PY_PROPERTY_GET(size) size_t size() const { return _kernel->size(); };
 
     private:
     // vector of Nevanlinna factorization kernels for multi-orbital factorization

@@ -22,8 +22,8 @@
 ################################################################################
 
 r"""
-DOC
-
+Analytic continuation of fermionic Green's functions from the Matsubara (imaginary)
+frequency axis to the real-frequency axis, using the Nevanlinna and Caratheodory kernels.
 """
 from .solver import Solver
 from .kernels import *

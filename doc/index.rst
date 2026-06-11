@@ -1,7 +1,7 @@
 .. _welcome:
 
 Nevanlinna
-*********
+**********
 
 .. sidebar:: Nevanlinna |PROJECT_VERSION|
 

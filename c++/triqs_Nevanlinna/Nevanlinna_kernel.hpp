@@ -5,6 +5,7 @@
 
 #include <nda/nda.hpp>
 #include <nda/mpi.hpp>
+#include <triqs/utility/macros.hpp>
 
 #include "kernel.hpp"
 #include "Nevanlinna_factorization.hpp"
@@ -57,10 +58,10 @@ namespace triqs_Nevanlinna {
                                                                nda::array_const_view<std::complex<double>, 3> theta) override;
 
     /// Number of orbitals (matrix dimension) handled by the kernel.
-    [[nodiscard]] size_t size() const override { return _factorizations.size(); }
+    [[nodiscard]] C2PY_PROPERTY_GET(size) size_t size() const override { return _factorizations.size(); }
 
     /// Eigenvalues of the Pick matrix; non-negative eigenvalues indicate the data is continuable (Nevanlinna).
-    [[nodiscard]] nda::vector<double> get_Pick_eigenvalues() const override;
+    [[nodiscard]] C2PY_PROPERTY_GET(Pick_eigenvalues) nda::vector<double> get_Pick_eigenvalues() const override;
 
     private:
     size_t _N_im_freq{};

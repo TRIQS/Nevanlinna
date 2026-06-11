@@ -1,0 +1,4 @@
+package_name = "triqs_Nevanlinna"
+documentation = "Nevanlinna analytic continuation of fermionic Green's functions to the real-frequency axis."
+namespaces = "triqs_Nevanlinna"
+match_names = "triqs_Nevanlinna::(solver_core|Nevanlinna_parameters_t|kernels)"
