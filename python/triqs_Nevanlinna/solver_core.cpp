@@ -4,3 +4,5 @@
 #include <triqs/c2py_converters/gf.hpp>
 #include <triqs/c2py_converters/mesh.hpp>
 #include <triqs_Nevanlinna/solver_core.hpp>
+
+#include "solver_core.wrap.cxx"
