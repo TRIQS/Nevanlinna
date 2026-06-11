@@ -4,6 +4,8 @@
 #include "types.hpp"
 #include "kernel.hpp"
 
+#include <triqs/utility/macros.hpp>
+
 namespace triqs_Nevanlinna {
 
   /**
@@ -57,10 +59,10 @@ namespace triqs_Nevanlinna {
     };
 
     /// Number of orbitals (matrix dimension) handled by the kernel.
-    [[nodiscard]] size_t size() const override { return _dim; }
+    [[nodiscard]] C2PY_PROPERTY_GET(size) size_t size() const override { return _dim; }
 
     /// Eigenvalues of the Pick matrix; non-negative eigenvalues indicate the data is continuable (Nevanlinna).
-    [[nodiscard]] nda::vector<double> get_Pick_eigenvalues() const override;
+    [[nodiscard]] C2PY_PROPERTY_GET(Pick_eigenvalues) nda::vector<double> get_Pick_eigenvalues() const override;
 
     private:
     int _dim = 0;

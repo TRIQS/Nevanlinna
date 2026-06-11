@@ -1,7 +1,7 @@
 .. _about:
 
 About Nevanlinna
-***************
+****************
 
 TRIQS based implementation of analytical continuation methods using Nevanlinna [#nevanlinna]_ and Caratheodory [#caratheodory]_ functions.
 

@@ -7,8 +7,10 @@ Install Nevanlinna
 
 
 Packaged Versions of Nevanlinna
-==========================
+===============================
+
 .. _ubuntu_debian:
+
 Ubuntu Debian packages
 ----------------------
 

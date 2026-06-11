@@ -1,22 +1,81 @@
+"""High-level Nevanlinna analytic-continuation solver."""
 
 import numpy as np
 import scipy.optimize as opt
-from .solver_core import SolverCore
+from .solver_core import SolverCore, NevanlinnaParametersT
 
 class Solver(SolverCore):
+    r"""
+    Nevanlinna analytic-continuation solver.
+
+    Continues a fermionic Matsubara-frequency Green's function to the real-frequency
+    axis. Call :meth:`solve` with the Matsubara data, then :meth:`evaluate` or
+    :meth:`optimize` to obtain the real-frequency Green's function.
+
+    Parameters
+    ----------
+    kernel : {'NEVANLINNA', 'CARATHEODORY'}, optional
+        Continuation kernel. ``'NEVANLINNA'`` continues each diagonal orbital
+        independently; ``'CARATHEODORY'`` performs a full matrix-valued continuation.
+        Default ``'NEVANLINNA'``.
+    precision : int, optional
+        Number of decimal digits of internal multiprecision arithmetic (only honored
+        when built with MPFR support). Default ``100``.
+    """
 
     def __init__(self, kernel='NEVANLINNA', precision=100):
-        SolverCore.__init__(self, kernel=kernel, precision=precision)
+        SolverCore.__init__(self, NevanlinnaParametersT(kernel=kernel, precision=precision))
 
     def optimize(self, grid, eta, target, nk=15, maxiter=1000, gtol=1e-3, verbose = False):
-        def get_f_k(nk, z):
-            '''
-            Compute Hardy functions basis
+        r"""
+        Optimize the spectral function over a Hardy-function basis.
 
-            :param nk: basis dimension
-            :param z: real frequency with broadening
-            :return: Basis of nk Hardy function
-            '''
+        Adds a Hardy-function basis to the Nevanlinna interpolant and minimizes
+        ``target`` over its coefficients, smoothing the real-frequency Green's function
+        while preserving the input Matsubara data. Requires a prior call to
+        :meth:`solve`.
+
+        Parameters
+        ----------
+        grid : triqs.gf.MeshReFreq
+            Real-frequency mesh on which to evaluate.
+        eta : float
+            Lorentzian broadening added to the real frequencies.
+        target : callable
+            Objective to minimize, called as ``target(G_w)`` with the evaluated
+            real-frequency Green's function and returning a scalar (e.g. a measure of
+            negative spectral weight).
+        nk : int, optional
+            Number of Hardy basis functions per orbital. Default ``15``.
+        maxiter : int, optional
+            Maximum number of conjugate-gradient iterations. Default ``1000``.
+        gtol : float, optional
+            Gradient-norm tolerance for convergence. Default ``1e-3``.
+        verbose : bool, optional
+            If ``True``, print the optimizer status on completion. Default ``False``.
+
+        Returns
+        -------
+        triqs.gf.Gf
+            Real-frequency Green's function evaluated with the optimized Hardy
+            coefficients.
+        """
+        def get_f_k(nk, z):
+            r"""
+            Build the Hardy-function basis.
+
+            Parameters
+            ----------
+            nk : int
+                Number of basis functions.
+            z : numpy.ndarray
+                Complex real-frequency points (real frequency plus broadening).
+
+            Returns
+            -------
+            numpy.ndarray
+                Array of shape ``(nk, len(z))`` with the Hardy basis functions.
+            """
             f_k = np.zeros([nk, z.shape[0]], dtype=np.complex128)
             # Mobius transformation
             zz = (z - 1.j)/(z + 1.j)
