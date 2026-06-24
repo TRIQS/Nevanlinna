@@ -9,11 +9,16 @@ Tutorials
 
 .. toctree::
    :maxdepth: 1
-   
+
    tutorials/SIAM_discrete
    tutorials/GW_tutorial
    tutorials/GW_tutorial-2orb
    tutorials/hubbard_square_non_int
+
+C++ reference manual
+====================
+
+The C++ reference manual can be found `here <./doxygen/index.html>`_.
 
 Python reference manual
 =======================
