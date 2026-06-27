@@ -37,7 +37,7 @@ class Solver(SolverCore):
 
         Parameters
         ----------
-        grid : triqs.gf.MeshReFreq
+        grid : triqs.gfs.MeshReFreq
             Real-frequency mesh on which to evaluate.
         eta : float
             Lorentzian broadening added to the real frequencies.
@@ -56,7 +56,7 @@ class Solver(SolverCore):
 
         Returns
         -------
-        triqs.gf.Gf
+        triqs.gfs.Gf
             Real-frequency Green's function evaluated with the optimized Hardy
             coefficients.
         """

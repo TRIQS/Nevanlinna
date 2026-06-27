@@ -5,7 +5,7 @@ import unittest
 from triqs_Nevanlinna import Solver
 from h5 import *
 import numpy as np
-from triqs.gf import Gf, MeshReFreq, MeshImFreq, iOmega_n, Omega, inverse
+from triqs.gfs import Gf, MeshReFreq, MeshImFreq, iOmega_n, Omega, inverse
 
 class test_solver(unittest.TestCase):
 
