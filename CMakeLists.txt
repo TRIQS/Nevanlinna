@@ -1,6 +1,6 @@
 # ##############################################################################
 #
-# Nevanlinna - An example application using triqs and cpp2py
+# Nevanlinna - An example application using triqs and c2py + clair
 #
 # Copyright (C) ...
 #
