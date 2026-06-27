@@ -1,5 +1,35 @@
 # Changelog
 
+## Version 4.0.0
+
+Nevanlinna version 4.0.0 is a compatibility release for TRIQS version 4.0.0.
+It is based on the latest app4triqs skeleton and ports the Python bindings from
+cpp2py to clair + c2py.
+
+We thank all contributors: Jennifer Coulter, Thomas Hahn, Alexander Hampel, Henri Menke, Dylan Simon, Nils Wentzell
+
+Find below an itemized list of changes in this release.
+
+### General
+* Port to TRIQS 4.0 (run the `port_to_triqs4` script; the `triqs.gf` module is now `triqs.gfs`)
+* Migrate the Python bindings from cpp2py to clair + c2py, generating the `solver_core` and `kernels_core` modules via `c2py_add_module`
+* Use the latest app4triqs skeleton
+* Fix the Hardy optimization function
+* Fix a compilation error with LLVM 22 on macOS
+
+### cmake
+* Use the `clair_c2py_generate_bindings` helper from c2py and disable C++20 module scanning for clair-c2py compatibility
+* Suppress `-Wc2y-extensions` warnings (`__COUNTER__` in `SCOPE_EXIT`) for clang
+
+### jenkins
+* Migrate to the new k8s-based Jenkins system (#26)
+* Install libeigen3-dev and libmpfr-dev in jenkins/Dockerfile
+
+### doc
+* Update the doxygen documentation in the kernel and solver headers and bump the Doxyfile to v1.17.0
+* Update the tutorials for TRIQS 3.3.x and refresh the landing page
+* Add the Flatiron Institute support notice to README.md
+
 ## Version 3.3.0
 
 Nevanlinna version 3.3.0 is a compatibility release for TRIQS version 3.3.0
