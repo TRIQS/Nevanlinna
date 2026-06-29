@@ -50,8 +50,8 @@ endif()
 # -- nda --
 external_dependency(nda
   GIT_REPO https://github.com/TRIQS/nda
-  VERSION 1.2
-  GIT_TAG unstable
+  VERSION 2.0
+  GIT_TAG 2.0.x
 )
 
 # -- GTest --
