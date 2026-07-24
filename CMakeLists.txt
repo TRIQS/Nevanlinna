@@ -32,10 +32,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 # version displayed in the documentation
 set(BRANCH_FOR_DOC unstable)
 
-# ############
-# Load TRIQS
-find_package(TRIQS 4.0 REQUIRED)
-
 # Get the git hash & print status
 execute_process(COMMAND git rev-parse HEAD WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} OUTPUT_VARIABLE PROJECT_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE)
 message(STATUS "${PROJECT_NAME} version : ${PROJECT_VERSION}")
@@ -101,9 +97,6 @@ if(Build_Tests)
 endif()
 
 option(Build_Examples "Build examples" ON)
-
-# Build static libraries by default
-option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 
 # ############
 # Global Compilation Settings
