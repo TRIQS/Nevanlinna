@@ -30,7 +30,7 @@ get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # version displayed in the documentation
-set(BRANCH_FOR_DOC ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.x)
+set(BRANCH_FOR_DOC unstable)
 
 # ############
 # Load TRIQS
@@ -111,6 +111,9 @@ option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 # Build static libraries by default
 option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
 
+# Build a Debian package
+option(BUILD_DEBIAN_PACKAGE "Build a deb package" OFF)
+
 # Export the list of compile-commands into compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -189,7 +192,6 @@ add_subdirectory(packaging)
 # #############
 # Debian Package
 
-option(BUILD_DEBIAN_PACKAGE "Build a deb package" OFF)
 if(BUILD_DEBIAN_PACKAGE AND NOT IS_SUBPROJECT)
   if(NOT CMAKE_INSTALL_PREFIX STREQUAL "/usr")
     message(FATAL_ERROR "CMAKE_INSTALL_PREFIX must be /usr for packaging")
