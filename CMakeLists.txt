@@ -29,6 +29,12 @@ get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
+# version displayed in the documentation
+set(BRANCH_FOR_DOC ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.x)
+
+# ############
+# Load TRIQS
+find_package(TRIQS 4.0 REQUIRED)
 
 # Get the git hash & print status
 execute_process(COMMAND git rev-parse HEAD WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} OUTPUT_VARIABLE PROJECT_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE)
