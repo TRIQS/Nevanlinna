@@ -1,4 +1,5 @@
 [![build](https://github.com/TRIQS/Nevanlinna/workflows/build/badge.svg?branch=unstable)](https://github.com/TRIQS/Nevanlinna/actions?query=workflow%3Abuild)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21691074.svg)](https://doi.org/10.5281/zenodo.21691074)
 
 # Nevanlinna - TRIQS-based application for Nevanlinna analytical continuation
 
