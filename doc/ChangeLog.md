@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 4.0.1
+
+Nevanlinna version 4.0.1 is a patch release that pins the c2py (0.9.x) and nda
+(2.0.x) build dependencies, keeping a fresh build compatible with the released
+triqs 4.0.x, and updates the documentation.
+
+We thank all contributors: Thomas Hahn, Alexander Hampel, Nils Wentzell
+
+Find below an itemized list of changes in this release.
+
+### deps
+* Pin c2py (0.9.x) and nda (2.0.x) for the 4.0.x release
+
+### doc
+* Add a Zenodo DOI badge to the README
+* Fix the documentation website URLs to not use the `triqs_` prefix
+
+
 ## Version 4.0.0
 
 Nevanlinna version 4.0.0 is a compatibility release for TRIQS version 4.0.0.
