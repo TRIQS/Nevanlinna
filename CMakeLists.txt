@@ -24,7 +24,7 @@ cmake_policy(VERSION ${CMAKE_VERSION})
 
 # ############
 # Define Project
-project(triqs_Nevanlinna VERSION 4.0.0 LANGUAGES CXX)
+project(triqs_Nevanlinna VERSION 4.0.1 LANGUAGES CXX)
 get_directory_property(IS_SUBPROJECT PARENT_DIRECTORY)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
